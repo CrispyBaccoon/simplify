@@ -33,7 +33,7 @@ function handleToggleShortcut(event) {
 	}
 
 	// If Ctrl+M was pressed, toggle menu open/closed
-	if (event.ctrlKey && event.key == "m") {
+	if (event.ctrlKey||event.metaKey && event.key == "\\") {
 		document.querySelector('.aeN').classList.toggle('bhZ');
 		toggleMenu();
 		// TODO: if opening, focus the first element
@@ -41,7 +41,7 @@ function handleToggleShortcut(event) {
 }
 window.addEventListener('keydown', handleToggleShortcut, false);
 
-// Handle messages from background script that 
+// Handle messages from background script that
 // supports page action to toggle Simplify on/off
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 	if (message.action === 'toggle_simpl') {
@@ -122,7 +122,7 @@ function updateParam(param, value) {
 	window.localStorage.simplify = JSON.stringify(simplify);
 }
 
-/* Make sure local variables are for the right account 
+/* Make sure local variables are for the right account
  * TODO: for now, when it doesn't match, I just localStorage.clear()
  * but there might be a better way, maybe try and match the correct account?
  */
@@ -265,11 +265,11 @@ if (location.hash.substring(1, 9) == "settings") {
 
 
 /* == INIT STYLESHEET =================================================
- * Certain classnames seem to change often in Gmail. Where possible, use 
- * stable IDs, tags, and attribute selectors (e.g. #gb input[name="q"]). 
+ * Certain classnames seem to change often in Gmail. Where possible, use
+ * stable IDs, tags, and attribute selectors (e.g. #gb input[name="q"]).
  * Other times, classnames don't change often. But for when we have to use
  * a classname and it changes often, detect the classname (usually based on
- * more stable children elements) and inject the style on load. 
+ * more stable children elements) and inject the style on load.
  */
 
 var simplifyStyles;
@@ -324,8 +324,8 @@ function detectClassNames() {
 	addStyles();
 }
 
-// This is all CSS that I need to add dynamically as the classNames often change for these elements 
-// and I couldn't find a stable way to select the elements other than their classnames 
+// This is all CSS that I need to add dynamically as the classNames often change for these elements
+// and I couldn't find a stable way to select the elements other than their classnames
 function addStyles() {
 	// Remove right padding from action bar so search is always correctly placed
 	addCSS(`html.simpl #gb ${simplify[u].elements.searchParent} { padding-right: 0px !important; }`);
@@ -344,7 +344,7 @@ function addStyles() {
 	*/
 
 	// Adjust size of menu button container
-	addCSS(`html.simpl #gb ${simplify[u].elements.menuContainer} { min-width: 58px !important; padding-right: 0px; }`);	
+	addCSS(`html.simpl #gb ${simplify[u].elements.menuContainer} { min-width: 58px !important; padding-right: 0px; }`);
 }
 
 
@@ -498,13 +498,13 @@ function detectTheme(fromObserver) {
 		var menuButtonBg = window.getComputedStyle(menuButton, null).getPropertyValue("color");
 		if (checkboxBg.indexOf('black') > -1) {
 			if (menuButtonBg.indexOf('255, 255, 255') > -1) {
-				// The checkbox is black which means the threadlist 
+				// The checkbox is black which means the threadlist
 				// bg is light, BUT the app bar icons are light
 				htmlEl.classList.add('mediumTheme');
 				htmlEl.classList.remove('lightTheme');
 				htmlEl.classList.remove('darkTheme');
 				updateParam('theme', 'medium');
-			} else {			
+			} else {
 				htmlEl.classList.add('lightTheme');
 				htmlEl.classList.remove('mediumTheme');
 				htmlEl.classList.remove('darkTheme');
@@ -533,9 +533,9 @@ function detectTheme(fromObserver) {
 	}
 }
 function observeThemes() {
-	/* BUG (sort of)... this only works when changing to/from/between themes 
+	/* BUG (sort of)... this only works when changing to/from/between themes
 	 * with background images. It does NOT work when changing between flat color
-	 * themes. This is b/c this only detects when attributes are changed inline or 
+	 * themes. This is b/c this only detects when attributes are changed inline or
 	 * children nodes are added/removed. The switch from white to black themes
 	 * changes the css in the head (inside one of many style tags) which then
 	 * changes the styles. I don't see an inline change I can observe to trigger
@@ -543,11 +543,11 @@ function observeThemes() {
 	 */
 	var themeBg = document.querySelector('.yL .wl');
 
-	if (themeBg) {	
+	if (themeBg) {
 		var themesObserverConfig = { attributes: true, attributeFilter: ["style"], childList: true, subtree: true };
 
 		// Create an observer instance that calls the detectTheme function
-		// Annoying that I have to delay by 200ms... if I don't then 
+		// Annoying that I have to delay by 200ms... if I don't then
 		// it checks to see if anything changed before it had a chance to change
 		var themesObserver = new MutationObserver(function() { setTimeout(detectTheme, 200) });
 
@@ -945,7 +945,7 @@ function detectOtherExtensions() {
 		let extensionsCount = 0;
 		otherExtensionsList.forEach(function(extension) {
 			if (simplifyDebug) console.log(extension);
-			// TODO: See if extension exists and if it does, increment extensionsCount 
+			// TODO: See if extension exists and if it does, increment extensionsCount
 			//       and boost the left position by the width + padding
 		});
 	} else {

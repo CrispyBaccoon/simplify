@@ -2,36 +2,15 @@
 
 A browser extension that brings the simplicity of Google Inbox to Gmail.
 
-## How to use Simplify
-Add the extension to your browser and refresh Gmail. Install the 
-[Chrome extension](https://chrome.google.com/webstore/detail/simplify-gmail/pbmlfaiicoikhdbjagjbglnbfcbcojpj) 
-or [Firefox addon](https://addons.mozilla.org/firefox/addon/simplifygmail/).
+## What is this fork?
+`command + \` to toggle the menu instead of the existing shortcut. Maybe helpful if you're used to Notion. That's the only change.
 
+You can also use `control + \` if you like.
+
+I'll merge updates from @[leggett](https://github.com/leggett)'s [Simplify repo](https://github.com/leggett/simplify) every once and a while probably. Message me on twitter if u need a critical update or st but idk who even reads the readmes of forks lmao.
+
+## How to install
+[Download the repo](https://github.com/mwvd/simplify/archive/master.zip) then load the `gmail` as an unpacked extension in Chrome.
 
 ## Who made Simplify
 Simplify was made by me, [Michael Leggett](https://leggett.org). I was Gmail's lead designer from 2008 to 2012 and co-founded Google Inbox. I've been writing Chrome extensions for years to simplify the apps I use but have only ever shared them with friends. With the unfortunate demise of Google Inbox, I wanted to bring the simplified email experience to Gmail.
-
-
-## Is Simplify safe?
-I'm glad you asked. You should always be super careful what extensions or apps you use, especially with your email. Simplify is mostly some CSS plus a little Javascript to apply the CSS. There are no trackers. No data is sent or shared. And no ads ever. Promise. All of the code can be inspected here on Github.
-
-
-## Send feedback
-Gmail has a lot of features and even more 3rd party plug-ins. I've done my best to support all these things but it still may not work for your setup and that's ok. I'll do my best to update the extension as Gmail's code changes and hope to simplify other apps in the future. The best way to send feedback is here on GitHub but you can also [email me](mailto:hi.simplify@gmail.com) or [send me a tweet](https://twitter.com/leggett), and I'll do my best to respond.
-
-
-## More FAQ
-<https://simpl.fyi/#faq>
-
-
-## Screenshots
-![Screenshot 1](https://github.com/leggett/simplify/raw/master/screens/01.png)
-![Screenshot 2](https://github.com/leggett/simplify/raw/master/screens/02.png)
-![Screenshot 3](https://github.com/leggett/simplify/raw/master/screens/03.png)
-![Screenshot 4](https://github.com/leggett/simplify/raw/master/screens/04.png)
-![Screenshot 5](https://github.com/leggett/simplify/raw/master/screens/05.png)
-![Screenshot 6](https://github.com/leggett/simplify/raw/master/screens/06.png)
-![Screenshot 7](https://github.com/leggett/simplify/raw/master/screens/07.png)
-![Screenshot 8](https://github.com/leggett/simplify/raw/master/screens/08.png)
-![Screenshot 9](https://github.com/leggett/simplify/raw/master/screens/09.png)
-![Screenshot 10](https://github.com/leggett/simplify/raw/master/screens/10.png)
