@@ -13,7 +13,7 @@ I'll merge updates from @[leggett](https://github.com/leggett)'s [Simplify repo]
 [Download the repo](https://github.com/mwvd/simplify/archive/master.zip) then load the `gmail` folder as an unpacked extension in Chrome.
 
 ## Who made Simplify
-Simplify was made by [Michael Leggett](https://leggett.org)
+Simplify was made by [Michael Leggett](https://leggett.org).
 
 ## Merging between forks
 ```
