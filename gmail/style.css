@@ -1,5 +1,5 @@
 /* ==================================================
- * SIMPLIFY GMAIL v1.3.9
+ * SIMPLIFY GMAIL v1.5.7
  * By Michael Leggett: leggett.org
  * Copyright (c) 2019 Michael Hart Leggett
  * Repo: github.com/leggett/simplify/blob/master/gmail/
@@ -14,13 +14,23 @@
  * EXPERIMENTAL
  */
 
+/* Left arrow before profile photo 
+html.simpl .gb_Da::before {
+	content: ' ';
+    position: absolute;
+    left: -8px;
+    top: 18px;
+    width: 24px;
+    height: 24px;
+    opacity: .5;
+    zoom: 0.75;
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSJncmF5IiBkPSJNMTQuNzEgMTUuODhMMTAuODMgMTJsMy44OC0zLjg4Yy4zOS0uMzkuMzktMS4wMiAwLTEuNDEtLjM5LS4zOS0xLjAyLS4zOS0xLjQxIDBMOC43MSAxMS4zYy0uMzkuMzktLjM5IDEuMDIgMCAxLjQxbDQuNTkgNC41OWMuMzkuMzkgMS4wMi4zOSAxLjQxIDAgLjM4LS4zOS4zOS0xLjAzIDAtMS40MnoiLz48L3N2Zz4=")
+}
+*/
 
 
+/* TODO: Change how settings tabs are so top bar is full bleed */
 
-
-/* ==================================================
- * 3RD PARTY EXTENTIONS
- */
 
 
 
@@ -36,10 +46,11 @@ html.simpl .aeG {
 /* Move and restyle banners (vacation auto-responder, account delegation) */
 html.simpl .w-MH,
 html.simpl .ZY,
-html.simpl .w-asV .aG {
+html.simpl .w-asV .aG,
+html.simpl .bir {
 	position: fixed;
 	width: auto;
-	max-width: 450px;
+	max-width: 300px;
 	text-align: left;
     padding: 18px 24px;
     bottom: 24px;
@@ -56,31 +67,10 @@ html.simpl .w-asV .aG {
 }
 html.simpl .w-MH .e,
 html.simpl .ZY .e,
-html.simpl .w-asV .aG a {
+html.simpl .w-asV .aG a,
+html.simpl .bir a {
 	margin-left: 16px;
 	color: #8ab4f8;
-}
-
-/* Reduce delegated account username to one letter */
-html.simpl.delegate #gb a.gb_Ca {
-    font-size: 0px;
-    width: 32px;
-    height: 32px;
-    margin: 4px 6px 0 6px;
-    line-height: 26px;
-    border-radius: 18px;
-    background-color: rgba(0,0,0,0.85);
-    font-weight: bold;
-    text-align: center;
-    text-transform: uppercase;
-    overflow: hidden;
-}
-html.simpl.delegate #gb a.gb_Ca::first-letter {
-    font-size: initial;
-    color: white;
-}
-html.simpl.delegate #gb a.gb_Ca span {
-    display: none;
 }
 
 
@@ -108,25 +98,9 @@ html.simpl.appSwitcher #gbwa {
 }
 
 /* Remove padding around profile photo so settings is better spaced */
-html.simpl .gb_pc {
-	padding-left: 0px !important;
-}
-
-/* Hide oneGoogle ring around profile pic */
-/* UNSTABLE - replace with addCSS call */
-html.simpl #gb div svg[height="40px"] {
-	display: none;
-}
-
-/* Hiding company logo from identy */
-html.simpl #gb .gb_fa {
-	width: 48px !important;
-	border: none !important;
-	background-color: transparent;
-	margin-left: 0px;
-}
-html.simpl .gb_ga {
-	display: none !important;
+/* UNSTABLE */
+html.simpl .gb_Da {
+	padding-left: 2px !important;
 }
 
 /* Clean up the butter bar (loading, etc) */
@@ -234,34 +208,14 @@ html.simpl .aeI .G-atb {
 	-webkit-box-shadow: none;
 }
 
-/* Hide Support button / menu -- Help is available under Settings gear */
-html.simpl #gb div[data-tooltip="Support"],
-html.simpl #gb div.zo {
-	display: none;
-}
-
-/* Hide any buttons after the Search input including the support button (a bit risky) 
- * ADDED VIA ADDSTYLE()
-html.simpl #gb .gb_be.gb_la ~ div {
-	display: none;
-}
-*/
-
-/* Remove right padding from action bar so search is always correctly placed 
- * ADDED VIA ADDSTYLE()
-html.simpl #gb .gb_be.gb_la {
-	padding-right: 0px !important;
-}
-*/
-
 /* Move action bar for Horizontal Multiple Inboxes */
 html.simpl.multiBoxHorz .aeF .G-atb[gh="tm"] {
 	position: fixed;
 	top: 8px;
 	left: 60px;
-	z-index: 5;
+	z-index: 6 !important;
 	width: calc(var(--action-bar-width) - 92px);
-	transition: width 0.15s ease-in 0s;
+	transition: width 0s ease-in 0s; /* was 0.15s - Looks bad with 3rd party extensions */
 }
 html.simpl.multiBoxHorz .aeF .G-atb[gh="tm"]::before {
 	box-shadow: none;
@@ -281,6 +235,7 @@ html.simpl.multiBoxHorz div[role="main"] .byR {
 		max-width: 1400px !important;
 	}
 	/* Keep the max-width of the conversation narrow -- fragile due to use of .BltHke */
+	/* TODO: I should do this at all resolutions for horizontal split view */
 	html.simpl.multiBoxHorz .aeF > div.nH > div.nH:last-child:not(.BltHke) {
 		max-width: 960px !important;
 		margin: 0 auto;
@@ -789,7 +744,7 @@ html.simpl.splitView .G-atb[gh="tm"] {
 	position: fixed;
 	top: 8px;
 	left: 60px;
-	z-index: 7;
+	z-index: 7 !important;
 	padding-right: 0px !important;
 }
 html.simpl.splitView .G-atb[gh="tm"]:before {
@@ -809,7 +764,7 @@ html.simpl.splitView .G-atb[gh="tm"]:not(:first-child) {
 /* Expand action bar when search is hidden */
 html.simpl.splitView.hideSearch .G-atb[gh="tm"] {
 	width: calc(100vw - 206px);
-	transition: width 0.2s ease-in 0s;
+	transition: width 0s; /* was 0.2s ease-in 0s */
 }
 
 html.simpl.splitView:not(.hideSearch) .G-atb[gh="tm"] {
@@ -886,6 +841,14 @@ html.simpl.splitView .aph {
 	}
 }
 
+/* Move the right aligned actions on the inline reply over so the 
+ * compose button doesn't cover them 
+ * TODO: Find a more elegant solution to this problem
+ */
+html.simpl.splitView div[role="listitem"] .btC>.az5 {
+	padding-right: 50px;
+}
+
 
 
 
@@ -913,7 +876,7 @@ html.simpl .bAn .ade:hover {
 }
 
 /* Slightly larger message body text in conversation view and composer */
-html.simpl div[role="textbox"],
+html.simpl div[contenteditable="true"],
 html.simpl div[role="listitem"] .a3s,
 html.simpl div[role="listitem"] .g6,
 html.simpl div[role="listitem"] div:not(.ajA) h3.iw {
@@ -946,10 +909,20 @@ html.simpl .ata-asE .ata-asJ {
 }
 
 /* Keep inline images from being wider than the current view */
+/* TODO: This won't work in split pane view */
 html.simpl table.Bs .gs img {
-    max-width: 100%;
-    margin-right: 0px !important;
+    max-width: calc(var(--content-width) - 80px);
+    height: auto;
 }
+html.simpl.splitView table.Bs .gs img {
+    max-width: 100%;
+}
+
+/* Boost width of the cell that has the reply and more actions buttons */
+html.simpl div[role="listitem"] table td[rowspan="2"] {
+	width: 110px;
+}
+
 
 
 
@@ -1147,7 +1120,7 @@ html.simpl.addOnsOpen:not(.hideSearch) .aeH {
     width: calc(var(--action-bar-width) - 92px) !important;
 }
 html.simpl.addOnsOpen.splitView:not(.hideSearch) .G-atb[gh="tm"] {
-    width: calc(var(--action-bar-width) - 300px) !important;
+    width: calc(var(--action-bar-width) - 345px) !important;
 }
 
 /* Shrink the action bar when the AddOnsPane is open BUT NOT Search */
@@ -1204,10 +1177,135 @@ html.simpl.inSettings .aeH .f2 .fY {
 	padding: 0 8px !important;
 	border-radius: 8px;
 }
+
 /* I'm not sure what element is for but it is ugly when using themes */
 html.simpl.inSettings .aeH .f2 .dJ {
 	display: none;
 }
+
+/* Invert the settings tab bar in the dark theme so it is more seamless */
+html.simpl.inSettings.darkTheme .fY {
+	filter: invert(93%);
+}
+
+
+
+
+/* ==================================================
+ * 3RD PARTY EXTENTIONS
+ */
+
+/* BOOMERANG ---------------------------------------- */
+
+/* Hide Pause Inbox button when Nav is hidden */
+html.simpl:not(.navOpen) .aeN #ibp-main {
+	display: none;
+}
+
+/* Reduce action button to icon and desaturate until hover */
+html.simpl .gm-boomerang-button-home,
+html.simpl .gm-boomerang-button-thread {
+	border: 0px !important;
+	font-size: 0px !important;
+	background: transparent !important;
+	width: auto;
+	filter: grayscale(100%);
+}
+html.simpl .gm-boomerang-button-home:hover,
+html.simpl .gm-boomerang-button-thread:hover {
+	filter: grayscale(0%);
+}
+
+
+/* STREAK / INBOX SDK ------------------------------- */
+
+/* Reduce action button to icon and desaturate until hover */
+html.simpl .inboxsdk__button {
+	filter: grayscale(100%);
+}
+html.simpl .inboxsdk__button:hover {
+	filter: grayscale(0%);
+}
+html.simpl .streak__appToolbarButton_title {
+	display: none;
+}
+
+
+/* MIXMAX ------------------------------------------ */
+
+html.simpl div.G-atb div.mixmax-reminder-thread-button {
+    font-size: 0 !important;
+    background-image: linear-gradient(transparent, transparent) !important;
+    background-color: transparent !important;
+    filter: invert(50%);
+    max-width: 20px !important;
+    border: none !important;
+    box-shadow: none !important;
+    width: 20px !important;
+    padding-left: 0px !important;
+    min-width: 20px !important;
+    padding-right: 0px !important;
+}
+
+
+/* MAIL TRACK ---------------------------------------- */
+
+/* For some reason Mail Track sets the action bar to position:relative 
+ * which screws up moving it on top of the app bar
+ */
+html.simpl.otherExtensions .aeN + .bkK {
+	position: static !important;
+}
+
+
+/* ALL EXTENSIONS ----------------------------------- */
+
+/* Hide top-right icons by default */
+html.simpl:not(.appSwitcher) #gb .manage_menu, /* Boomerang */
+html.simpl:not(.appSwitcher) #gb .mixmax-appbar, /* Mixmax */
+html.simpl:not(.appSwitcher) #gb #mailtrack-menu-opener, /* Mail track */
+html.simpl:not(.appSwitcher) #gb .inboxsdk__appButton /* Streak */
+{
+	display: none !important;
+}
+
+/* Hide label on Streak button */
+html.simpl #gb .inboxsdk__button_icon {
+	margin-right: 0px;
+}
+html.simpl #gb .inboxsdk__appButton_title {
+	font-size: 0px;
+}
+html.simpl #gb .streak__appToolbarButton_title::after {
+	margin-top: -8px;
+}
+
+/* Show them when you hover over the profile pic */
+html.simpl.appSwitcher #gb .manage_menu, /* Boomerang */
+html.simpl.appSwitcher #gb .mixmax-appbar, /* Mixmax */
+html.simpl.appSwitcher #gb #mailtrack-menu-opener, /* Mail track */
+html.simpl.appSwitcher #gb .inboxsdk__appButton /* Streak */
+{
+	display: block !important;
+	position: absolute;
+	right: 100px;
+	padding: inherit 0px !important;
+	margin: inherit 0px !important;
+}
+
+/* Hide Search and Settings when showing extension buttons */
+html.simpl.appSwitcher.otherExtensions div[gh="tm"] div[gh="s"],
+html.simpl.appSwitcher.otherExtensions #gb form,
+html.simpl.appSwitcher.otherExtensions .aeH .aqJ,
+html.simpl.appSwitcher.otherExtensions .aeF .aqJ,
+html.simpl.appSwitcher.otherExtensions .aeH .adF {
+	display: none;
+}
+html.simpl.appSwitcher.otherExtensions .aeH,
+html.simpl.appSwitcher.otherExtensions div.G-atb[gh="tm"] {
+	width: 50vw !important;
+}
+
 
 
 
