@@ -1,5 +1,5 @@
 /* ==================================================
- * SIMPLIFY GMAIL v1.5.9
+ * SIMPLIFY GMAIL v1.5.8
  * By Michael Leggett: leggett.org
  * Copyright (c) 2019 Michael Hart Leggett
  * Repo: github.com/leggett/simplify/blob/master/gmail/
@@ -59,6 +59,7 @@ html.simpl .bir {
 	font-weight: bold;
 	border: none;
 	box-shadow: 0 1px 3px 0 rgba(60,64,67,0.302), 0 4px 8px 3px rgba(60,64,67,0.149);
+	-webkit-box-shadow: 0 1px 3px 0 rgba(60,64,67,0.302), 0 4px 8px 3px rgba(60,64,67,0.149);
 	border-radius: 2px;
 
 	/* Override the black on yellow default theme */
@@ -89,9 +90,9 @@ html.simpl #gb a[href="#inbox"] {
 html.simpl #gbwa {
 	display: none !important;
 	position: absolute;
-    right: 0px;
-    padding: 12px 66px 14px 12px;
-	margin: -8px -12px 0 0;
+    right: 0px !important;
+    padding: 12px 66px 14px 12px !important;
+	margin: -8px -12px 0 0 !important;
 }
 html.simpl.appSwitcher #gbwa {
 	display: block !important;
@@ -109,6 +110,7 @@ html.simpl .vX .vh {
     border-radius: 0 0 4px 4px;
     padding: 8px 16px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    -webkit-box-shadow: 0 2px 8px rgba(0,0,0,0.06);
 }
 
 /* Reduce width of app bar when Addons are open */
@@ -134,7 +136,7 @@ html.simpl .aeH {
 	z-index: 6;
 }
 html.simpl .aeH .G-atb {
-	height: 64px;
+	height: 64px !important;
 }
 
 /* Remove extra right margin from action bar so it is spaced correctly */
@@ -145,8 +147,8 @@ html.simpl .aeH .G-atb[gh="tm"] {
 
 /* Hide extra drop shadow on action bar - it bleeds through on the filter pop-up */
 html.simpl .aeH .G-atb::before {
-	box-shadow: none;
-	-webkit-box-shadow: none;
+	box-shadow: none !important;
+	-webkit-box-shadow: none !important;
 }
 
 /* Make bar wider when search is hidden */
@@ -171,7 +173,7 @@ html.simpl .aeH .G-atb .adF:hover {
 }
 
 /* Below 1350px, hide pagination when search and addOns are both open */
-@media only screen and (max-width: 1370.98px) {
+@media only screen and (max-width: 1350.98px) {
 	html.simpl.addOnsOpen:not(.hideSearch) .aeH .G-atb .aqJ > div:not([gh="s"]),
 	html.simpl.addOnsOpen:not(.hideSearch) .aeH .G-atb .adF > div:not([gh="s"]) {
 		display: none;
@@ -338,7 +340,7 @@ States (text button labels)
 	/* Apply variables to align left edge except if the menu and addOns or rhsChat are both open */
 	html.simpl:not(.splitView):not(.multiBoxHorz):not(.multiBoxVert):not(.addOnsOpen):not(.rhsChat):not(.textButtons) .aeH .G-atb,
 	html.simpl:not(.splitView):not(.multiBoxHorz):not(.multiBoxVert):not(.navOpen):not(.textButtons) .aeH .G-atb {
-		padding-left: calc(((100vw - var(--content-width)) / 2) - var(--left-offset));
+		padding-left: calc(((100vw - var(--content-width)) / 2) - var(--left-offset)) !important;
 		margin-left: 16px !important;
 	}
 
@@ -398,7 +400,7 @@ States (text button labels)
 @media only screen and (min-width: 1641.98px) {
 	/* Apply variables to align left edge */
 	html.simpl:not(.splitView):not(.multiBoxHorz):not(.multiBoxVert) .aeH .G-atb {
-		padding-left: calc(((100vw - var(--content-width)) / 2) - var(--left-offset));
+		padding-left: calc(((100vw - var(--content-width)) / 2) - var(--left-offset)) !important;
 		margin-left: 16px !important;
 	}
 
@@ -444,20 +446,13 @@ html.simpl.textButtons {
 	--action-bar-width: 75%;
 }
 
-/* Shorter search box when nav is open */
-html.simpl.navOpen #gb form {
-	width: 25%;
-}
-html.simpl.navOpen {
-	--action-bar-width: 75%;
-}
-
 /* Minimize search to an icon when hidden */
 html.simpl.hideSearch #gb form {
 	width: 54px;
 	margin-right: 0px;
 	box-shadow: none;
-	background-color: transparent;
+	-webkit-box-shadow: none;
+	background-color: transparent !important;
 }
 
 /* Hide all search form buttons except search button when search is hidden */
@@ -510,6 +505,7 @@ html.simpl.inSettings .aeN {
 /* Don't show the nav when hovering over the compose button */
 html.simpl .bym {
 	box-shadow: none !important;
+	-webkit-box-shadow: none !important;
 }
 html.simpl .bhZ div[role="complementary"],
 html.simpl .bhZ div[gh="ns"] {
@@ -517,17 +513,19 @@ html.simpl .bhZ div[gh="ns"] {
 }
 
 /* No shadow or label on compose button */
-html.simpl .z0 > .L3 {
+html.simpl .z0 > div[gh="cm"] /*.L3*/ {
 	box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3) !important;
-	border-radius: 28px;
-    font-size: 0;
-    height: 56px;
-    padding: 0;
-    width: 56px;
+	-webkit-box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3) !important;
+	border-radius: 28px !important;
+    font-size: 0 !important;
+    height: 56px !important;
+    padding: 0 !important;
+    width: 56px !important;
+    overflow: hidden;
 }
 
 /* Make FAB dark in dark themes */
-html.simpl.darkTheme .z0 > .L3 {
+html.simpl.darkTheme .z0 > div[gh="cm"] /*.L3*/ { 
 	background-color: rgba(51,51,51,.9);
 }
 
@@ -537,9 +535,10 @@ html.simpl .z0 {
     left: calc(100vw - 92px);
     top: calc(100vh - 140px);
     z-index: 3 !important;
-	width: 54px;
-    margin: 0;
-    padding: 0;
+	width: 56px !important;
+	height: 56px !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 /* Move it over futher if RHS Chat is enabled */
@@ -554,8 +553,8 @@ html.simpl .wT {
 
 /* Hide top shadow when you scroll long label list */
 html.simpl .aeN .ajj:before {
-    -webkit-box-shadow: none;
     box-shadow: none;
+    -webkit-box-shadow: none;
 }
 
 /* Hide the compose and add-ons button when in Settings */
@@ -566,13 +565,13 @@ html.simpl.inSettings .bAw {
 
 /* Make the bottom Hangouts tabs a little less ugly */
 html.simpl div[gh="gt"] {
-	text-align: left;
-	border-top: 0px;
+	text-align: left !important;
+	border-top: 0px !important;
 	padding-left: 18px;
 }
 html.simpl.rhsChat div[gh="gt"] {
-	text-align: right;
-	border-top: 0px;
+	text-align: right !important;
+	border-top: 0px !important;
 	padding-left: 0px;
 }
 html.simpl.rhsChat .akj {
@@ -698,6 +697,7 @@ html.simpl .zA.yO .cL {
 /* Less shadow on items on hover */
 html.simpl .zA:hover {
 	box-shadow: inset 1px 0 0 #dadce0, 0 1px 2px 0 rgba(60,64,67,0.15) !important;
+	-webkit-box-shadow: inset 1px 0 0 #dadce0, 0 1px 2px 0 rgba(60,64,67,0.15) !important;
 }
 
 /* Dim Default Inbox category tabs */
@@ -756,8 +756,8 @@ html.simpl.splitView .G-atb[gh="tm"] {
 	padding-right: 0px !important;
 }
 html.simpl.splitView .G-atb[gh="tm"]:before {
-	box-shadow: none;
-	-webkit-box-shadow: none;
+	box-shadow: none !important;
+	-webkit-box-shadow: none !important;
 }
 
 /* If Multiple Inboxes AND Preview Pane are enabled,
@@ -888,7 +888,7 @@ html.simpl div[contenteditable="true"],
 html.simpl div[role="listitem"] .a3s,
 html.simpl div[role="listitem"] .g6,
 html.simpl div[role="listitem"] div:not(.ajA) h3.iw {
-	font-size: .875rem;
+	font-size: 0.875rem !important;
 }
 
 /* Dim from email address in conversation view */
@@ -907,6 +907,7 @@ html.simpl .ata-asE {
 	padding: 18px;
 	border: none;
 	box-shadow: 0 1px 3px 0 rgba(60,64,67,0.302), 0 4px 8px 3px rgba(60,64,67,0.149);
+	-webkit-box-shadow: 0 1px 3px 0 rgba(60,64,67,0.302), 0 4px 8px 3px rgba(60,64,67,0.149);
 }
 html.simpl .ata-asE > span:first-child:not(.ata-asJ) {
 	padding-right: 12px;
@@ -917,136 +918,17 @@ html.simpl .ata-asE .ata-asJ {
 }
 
 /* Keep inline images from being wider than the current view */
-html.simpl table.Bs .gs > div:not(.gE) img {
-	max-width: 100%;
-
-    /* Without this, large portrait images will be squished
-     * but with this, large images that are forced to be small
-     * but not given a height in css are made their actual big size */
-	height: auto;
-}
-
-/* Add CSS for when the height attribute is used instead of CSS
- * so height:auto (above) doesn't override the extected height
- * See more at https://issues.simpl.fyi/196
- */
-html.simpl table.Bs .gs > div:not(.gE) img[height="0"] { height: 0px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="1"] { height: 1px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="2"] { height: 2px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="3"] { height: 3px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="4"] { height: 4px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="5"] { height: 5px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="6"] { height: 6px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="7"] { height: 7px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="8"] { height: 8px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="9"] { height: 9px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="10"] { height: 10px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="11"] { height: 11px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="12"] { height: 12px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="13"] { height: 13px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="14"] { height: 14px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="15"] { height: 15px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="16"] { height: 16px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="17"] { height: 17px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="18"] { height: 18px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="19"] { height: 19px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="20"] { height: 20px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="21"] { height: 21px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="22"] { height: 22px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="23"] { height: 23px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="24"] { height: 24px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="25"] { height: 25px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="26"] { height: 26px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="27"] { height: 27px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="28"] { height: 28px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="29"] { height: 29px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="30"] { height: 30px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="31"] { height: 31px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="32"] { height: 32px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="33"] { height: 33px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="34"] { height: 34px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="35"] { height: 35px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="36"] { height: 36px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="37"] { height: 37px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="38"] { height: 38px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="39"] { height: 39px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="40"] { height: 40px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="41"] { height: 41px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="42"] { height: 42px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="43"] { height: 43px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="44"] { height: 44px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="45"] { height: 45px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="46"] { height: 46px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="47"] { height: 47px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="48"] { height: 48px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="49"] { height: 49px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="50"] { height: 50px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="51"] { height: 51px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="52"] { height: 52px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="53"] { height: 53px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="54"] { height: 54px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="55"] { height: 55px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="56"] { height: 56px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="57"] { height: 57px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="58"] { height: 58px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="59"] { height: 59px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="60"] { height: 60px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="61"] { height: 61px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="62"] { height: 62px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="63"] { height: 63px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="64"] { height: 64px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="65"] { height: 65px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="66"] { height: 66px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="67"] { height: 67px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="68"] { height: 68px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="69"] { height: 69px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="70"] { height: 70px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="71"] { height: 71px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="72"] { height: 72px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="73"] { height: 73px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="74"] { height: 74px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="75"] { height: 75px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="76"] { height: 76px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="77"] { height: 77px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="78"] { height: 78px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="79"] { height: 79px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="80"] { height: 80px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="81"] { height: 81px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="82"] { height: 82px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="83"] { height: 83px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="84"] { height: 84px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="85"] { height: 85px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="86"] { height: 86px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="87"] { height: 87px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="88"] { height: 88px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="89"] { height: 89px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="90"] { height: 90px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="91"] { height: 91px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="92"] { height: 92px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="93"] { height: 93px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="94"] { height: 94px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="95"] { height: 95px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="96"] { height: 96px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="97"] { height: 97px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="98"] { height: 98px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="99"] { height: 99px; }
-html.simpl table.Bs .gs > div:not(.gE) img[height="100"] { height: 100px; }
-
-/* If the content is wider, the image will still scroll horizontally
- * We can set the max-width the the max-width of the content but
- * this sometimes has unintended consequences in html emails
+/* TODO: This won't work in split pane view */
 html.simpl table.Bs .gs img {
-	max-width: calc(var(--content-width) - 80px);
+    max-width: calc(var(--content-width) - 80px);
     height: auto;
 }
 html.simpl.splitView table.Bs .gs img {
     max-width: 100%;
 }
-*/    
-
 
 /* Boost width of the cell that has the reply and more actions buttons */
-html.simpl div[role="listitem"] div:not([dir="ltr"]) table td:last-child[rowspan="2"] {
+html.simpl div[role="listitem"] table td[rowspan="2"] {
 	width: 110px;
 }
 
@@ -1122,23 +1004,25 @@ html.simpl .bAw {
 	overflow-x: hidden;
 	border-radius: 27px;
 	box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3) !important;
+	-webkit-box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3) !important;
 	transition: height 0s ease-out 0s;
 	transition: width 0s ease-out 0s;
 	transition: right 0s ease-out 0s;
+	transition-duration: 0s !important;
 	background-color: rgba(255,255,255,.9);
-	background-image: url("https://www.gstatic.com/images/icons/material/system/2x/more_horiz_grey600_24dp.png");
+	background-image: url("https://www.gstatic.com/images/icons/material/system/2x/more_horiz_grey600_24dp.png") !important;
 	background-repeat: no-repeat;
 	background-position: 6px 7px;
 	background-size: 24px;
 }
 html.simpl.darkTheme .bAw {
 	background-color: rgba(51,51,51,.9);
-	background-image: url("https://www.gstatic.com/images/icons/material/system/2x/more_horiz_white_24dp.png");
+	background-image: url("https://www.gstatic.com/images/icons/material/system/2x/more_horiz_white_24dp.png") !important;
 }
 
 /* Hide everything inside the add-ons menu until you hover on it */
 html.simpl .bAw > div:first-child {
-	display: none;
+	display: none !important;
 }
 
 /* Show add-ons when you hover over the menu */
@@ -1158,7 +1042,7 @@ html.simpl .bAw:hover > div:first-child {
 	background-color: #fff;
 }
 html.simpl .bAw > div:first-child:hover > div {
-	display: block;
+	display: block !important;
 	margin: 0px;
 	opacity: 1;
 }
@@ -1237,6 +1121,7 @@ html.simpl .brC-dA-I.aT5-aOt-I-Jp .aT5-aOt-I-JX-Jw {
 html.simpl .bq9,
 html.simpl .bq9 div {
 	box-shadow: none;
+	-webkit-box-shadow: none;
 }
 html.simpl .bq9 {
 	border-left: 1px solid rgba(0,0,0,0.1);
@@ -1368,6 +1253,7 @@ html.simpl div.G-atb div.mixmax-reminder-thread-button {
     max-width: 20px !important;
     border: none !important;
     box-shadow: none !important;
+    -webkit-box-shadow: none !important;
     width: 20px !important;
     padding-left: 0px !important;
     min-width: 20px !important;
