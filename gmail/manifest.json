@@ -1,37 +1,37 @@
 {
-  "name": "Simplify Gmail",
-  "version": "1.5.9",
-  "manifest_version": 2,
-  "description": "Simplifies Gmail interface to the bare minimum",
-  "homepage_url": "https://simpl.fyi",
-  "icons": {
-    "16": "img/icon16.png",
-    "24": "img/icon24.png",
-    "32": "img/icon32.png",
-    "48": "img/icon48.png",
-    "128": "img/icon128.png",
-    "256": "img/icon256.png"
-  },
-  "options_page": "options.html",
-  "content_scripts": [{
-    "matches": ["*://mail.google.com/*"],
-    "js": ["script.js"],
-    "css": ["style.css"],
-    "run_at": "document_start",
-    "all_frames": false
-  }],
-  "page_action": {},
-  "background": {
-    "scripts": ["toggle.js"],
-    "persistent": false
-  },
-  "commands": {
-    "toggle-simpl": {
-      "description": "Toggle Simplify on / off",
-      "suggested_key": {
-        "default": "Ctrl+J"
-      }
-    }
-  },
-  "content_security_policy": "default-src 'none'; style-src 'self'; script-src 'self'; connect-src 'self'; img-src 'self'"
+"name": "Simplify Gmail",
+	"version": "1.6.0",
+	"manifest_version": 2,
+	"description": "Simplifies Gmail interface to the bare minimum",
+	"homepage_url": "https://simpl.fyi",
+	"icons": {
+		"16": "img/icon16.png",
+		"24": "img/icon24.png",
+		"32": "img/icon32.png",
+		"48": "img/icon48.png",
+		"128": "img/icon128.png",
+		"256": "img/icon256.png"
+	},
+	"options_page": "options.html",
+	"content_scripts": [{
+      	"matches": ["*://mail.google.com/*"],
+      	"js": ["script.js"],
+		"css": ["style.css"],
+		"run_at": "document_start",
+		"all_frames": false
+	}],
+	"page_action": {},
+	"background": {
+		"scripts": [ "toggle.js" ],
+		"persistent": false
+	},
+	"commands": {
+		"toggle-simpl": {
+			"description": "Toggle Simplify on / off",
+			"suggested_key": {
+				"default": "Ctrl+J"
+			}
+		}
+	},
+	"content_security_policy": "default-src 'none'; style-src 'self'; script-src 'self'; connect-src 'self'; img-src 'self'"
 }
