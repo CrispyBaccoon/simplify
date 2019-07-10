@@ -65,7 +65,7 @@ function handleToggleShortcut(event) {
 	}
 
 	// If `Command + \` or `Control + \` was pressed, toggle menu open/closed
-	if (event.ctrlKey||event.metaKey && event.key == "\\") {
+	if (event.ctrlKey|event.metaKey && event.key == "\\") {
 		document.querySelector('.aeN').classList.toggle('bhZ');
 		toggleMenu();
 		event.preventDefault();
