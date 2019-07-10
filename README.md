@@ -17,6 +17,13 @@ I'll merge updates from @[leggett](https://github.com/leggett)'s [Simplify repo]
 ## Who made Simplify
 Simplify was made by [Michael Leggett](https://leggett.org).
 
+## Some notes:
+
+`content_scripts.exclude_matches` - exclude your work email if you want
+```json
+"exclude_matches": ["*://mail.google.com/mail/u/1/"],
+```
+
 ## Merging between forks
 ```
 git remote add og git://github.com/og/repo.git ✔️
