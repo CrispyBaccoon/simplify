@@ -19,14 +19,14 @@ Simplify was made by [Michael Leggett](https://leggett.org).
 
 ## Some notes:
 
-`content_scripts.exclude_matches` - exclude your work email if you want
+Exclude your work email if you want - in [`gmail/manifest.json`](https://github.com/mwvd/simplify/blob/master/gmail/manifest.json), `content_scripts.exclude_matches` ⤵
 ```json
 "exclude_matches": ["*://mail.google.com/mail/u/1/"],
 ```
 
 ## Merging between forks
-```
-git remote add og git://github.com/og/repo.git ✔️
+```shell
+git remote add og https://github.com/leggett/simplify.git # (already done)
 
 git pull og master
 git push origin
