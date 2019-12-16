@@ -1,33 +1,133 @@
 /* ==================================================
- * SIMPLIFY GMAIL v1.6.1
+ * SIMPLIFY GMAIL v1.7.2
  * By Michael Leggett: leggett.org
  * Copyright (c) 2019 Michael Hart Leggett
  * Repo: github.com/leggett/simplify/blob/master/gmail/
- * License: github.com/leggett/simplify/blob/master/gmail/LICENSE
+ * License: github.com/leggett/simplify/blob/master/gmail/LICENSE.md
  * More info: simpl.fyi
  */
 
 
 /* ==================================================
- * EXPERIMENTAL
+ * BUNDLE ITEMS IN INBOX
  */
 
-/* Left arrow before profile photo 
-html.simpl .gb_Da::before {
-	content: ' ';
-    position: absolute;
-    left: -8px;
-    top: 18px;
-    width: 24px;
-    height: 24px;
-    opacity: .5;
-    zoom: 0.75;
-    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSJncmF5IiBkPSJNMTQuNzEgMTUuODhMMTAuODMgMTJsMy44OC0zLjg4Yy4zOS0uMzkuMzktMS4wMiAwLTEuNDEtLjM5LS4zOS0xLjAyLS4zOS0xLjQxIDBMOC43MSAxMS4zYy0uMzkuMzktLjM5IDEuMDIgMCAxLjQxbDQuNTkgNC41OWMuMzkuMzkgMS4wMi4zOSAxLjQxIDAgLjM4LS4zOS4zOS0xLjAzIDAtMS40MnoiLz48L3N2Zz4=")
+html.simpl div[gh="tl"] tr[labels*="Promotions"] ~ tr[labels*="Promotions"],
+html.simpl div[gh="tl"] tr[labels*="Social"] ~ tr[labels*="Social"],
+html.simpl div[gh="tl"] tr[labels*="Updates"] ~ tr[labels*="Updates"],
+html.simpl div[gh="tl"] tr[labels*="Forums"] ~ tr[labels*="Forums"] {
+	display: none;
+}
+
+
+/* ==================================================
+ * SEARCH REFINEMENT BAR
+ */
+
+/* Move search refinement bar below action bar */
+html.simpl .aeH div[gh="tm"] div[role="toolbar"] {
+	position: absolute;
+	top: 44px;
+}
+
+/* Hide search refinement bar when you scroll */
+html.simpl .aeI .aeH div[gh="tm"] div[role="toolbar"] {
+	display: none;
+}
+
+/* Move action bar into correct spot */
+html.simpl .aeH div[gh="tm"] div[role="toolbar"] + .aqK {
+	margin-top: 22px;
+}
+
+/* Hide Advanced search link */
+html.simpl .aeH div[gh="tm"] div[role="toolbar"] div[data-impression-suffix="ADVANCED_SEARCH_LINK"],
+html.simpl .aeH div[gh="tm"] div[role="toolbar"] div:first-child > div[role="button"]:last-child {
+	display: none;
+}
+
+/* TODO: move search refinments to line up with the content under 1280px 
+@media only screen and (max-width: 1278.98px) {
 }
 */
 
 
-/* TODO: Change how settings tabs are so top bar is full bleed */
+
+
+/* ==================================================
+ * INBOX DATE GROUPING
+ */
+
+tr[date="today"],
+tr[date="yesterday"],
+tr[date="month0"],
+tr[date="month1"],
+tr[date="month2"],
+tr[date="earlier"] {
+	margin-top: 3em;
+}
+tr[date="today"] ~ 		tr[date="today"],
+tr[date="yesterday"] ~ 	tr[date="yesterday"],
+tr[date="month0"] ~ 	tr[date="month0"],
+tr[date="month1"] ~ 	tr[date="month1"],
+tr[date="month2"] ~ 	tr[date="month2"],
+tr[date="earlier"] ~ 	tr[date="earlier"] {
+	margin-top: initial;
+}
+
+tr[date="today"]::before,
+tr[date="yesterday"]::before,
+tr[date="month0"]::before,
+tr[date="month1"]::before,
+tr[date="month2"]::before,
+tr[date="earlier"]::before {
+	height: 0px;
+	width: 0px;
+	white-space: nowrap;
+	overflow: visible;
+	font-size: 0.70em;
+	letter-spacing: 1.2;
+	color: #aaa;
+	font-weight: bold;
+	display: block;
+	position: relative;
+	top: -32px;
+	left: 16px;
+}
+
+html.simpl.mediumTheme tr[date="today"]::before,
+html.simpl.mediumTheme tr[date="yesterday"]::before,
+html.simpl.mediumTheme tr[date="month0"]::before,
+html.simpl.mediumTheme tr[date="month1"]::before,
+html.simpl.mediumTheme tr[date="month2"]::before,
+html.simpl.mediumTheme tr[date="earlier"]::before,
+html.simpl.darkTheme tr[date="today"]::before,
+html.simpl.darkTheme tr[date="yesterday"]::before,
+html.simpl.darkTheme tr[date="month0"]::before,
+html.simpl.darkTheme tr[date="month1"]::before,
+html.simpl.darkTheme tr[date="month2"]::before,
+html.simpl.darkTheme tr[date="earlier"]::before {
+	color: #ffffff;
+}
+
+tr[date="today"]::before { content: 'TODAY'; }
+tr[date="yesterday"]::before { content: 'YESTERDAY'; }
+tr[date="month0"]::before { content: 'THIS MONTH'; }
+tr[date="month1"]::before { content: 'LAST MONTH'; }
+tr[date="month2"]::before { content: 'AUGUST'; }
+tr[date="earlier"]::before { content: 'EARLIER'; }
+
+tr[date="today"] ~ tr[date="today"]::before,
+tr[date="yesterday"] ~ tr[date="yesterday"]::before,
+tr[date="month0"] ~ tr[date="month0"]::before,
+tr[date="month1"] ~ tr[date="month1"]::before,
+tr[date="month2"] ~ tr[date="month2"]::before,
+tr[date="earlier"] ~ tr[date="earlier"]::before {
+	content: '';
+	display: none;
+}
+
+
 
 
 /* ==================================================
@@ -153,7 +253,7 @@ html.simpl.hideSearch.addOnsOpen .aeH {
 	width: calc(100vw - 172px - 300px);
 }
 
-/* Dim pagination controls unless hovered over */
+/* Dim pagination controls unless hovered over 
 html.simpl .aeH .G-atb .aqJ,
 html.simpl .aeF .G-atb .aqJ,
 html.simpl .aeH .G-atb .adF {
@@ -164,6 +264,13 @@ html.simpl .aeH .G-atb .aqJ:hover,
 html.simpl .aeF .G-atb .aqJ:hover,
 html.simpl .aeH .G-atb .adF:hover {
 	opacity: 1;
+}
+*/
+/* Don't show pagination menu */
+html.simpl .aeH .G-atb .aqJ .amG,
+html.simpl .aeF .G-atb .aqJ .amG,
+html.simpl .aeH .G-atb .adF .amG {
+	display: none;
 }
 
 /* Below 1350px, hide pagination when search and addOns are both open */
@@ -238,11 +345,12 @@ html.simpl.multiBoxHorz div[role="main"] .byR {
 	}
 }
 @media only screen and (min-width: 1441.98px) {
+	/* Allow the side-by-side multiBox to be a lot wider... */
 	html.simpl.multiBoxHorz .aeF > div.nH {
 		max-width: 2200px !important;
 	}
-	/* Keep the max-width of the conversation narrow -- fragile due to use of .BltHke */
-	html.simpl.multiBoxHorz .aeF > div.nH > div.nH:last-child:not(.BltHke) {
+	/* ... while keeping the max-width of the conversation narrow */
+	html.simpl.multiBoxHorz .aeF > div.nH > div.nH[role="main"]:not(.BltHke) {
 		max-width: 1100px !important;
 		margin: 0 auto;
 	}
@@ -306,7 +414,7 @@ States (text button labels)
 	Menu open, Add-ons open, Search open
  */
 
-@media only screen and (min-width: 1291.98px) {
+@media only screen and (min-width: 1278.98px) {
 	/* DETAULT VIEWS: Move actions to left edge of content */
 	html.simpl {
 		--content-width: 960px;
@@ -390,8 +498,15 @@ States (text button labels)
 	html.simpl.addOnsOpen.rhsChat {
 		--content-width: 1400px;
 	}
+
+	/* Apply variables to align left edge for vertical preview pane when the nav is open */
+	html.simpl.navOpen.splitView:not(.hideSearch):not(.multiBoxHorz):not(.multiBoxVert):not(.textButtons):not(.rhsChat):not(.addOnsOpen) .aeF .G-atb {
+		padding-left: 196px;
+		margin-left: 16px !important;
+		width: calc(var(--action-bar-width) - 322px) !important;
+	}
 }
-@media only screen and (min-width: 1641.98px) {
+@media only screen and (min-width: 1638.98px) {
 	/* Apply variables to align left edge */
 	html.simpl:not(.splitView):not(.multiBoxHorz):not(.multiBoxVert) .aeH .G-atb {
 		padding-left: calc(((100vw - var(--content-width)) / 2) - var(--left-offset));
@@ -523,22 +638,39 @@ html.simpl #gb form td.gssb_e tr[role="separator"] + tr[role="option"] {
  * NAV & COMPOSE BUTTON
  */
 
-/* Hide nav when minimized or in Settings */
-html.simpl .bhZ,
-html.simpl.inSettings .aeN {
-	max-width: 0px !important;
-	min-width: 0px !important;
-	position: relative;
-	z-index: 3 !important;
+/* SHOW NAV ON HOVER */
+/* This is buggy b/c the animation is not instant and flipping between positions is */
+html.simpl .bhZ:not(.bym) div[role="navigation"] {
+	/* display: none; */
+}
+html.simpl .bhZ.bym {
+	/* position: absolute; */
 }
 
-/* Don't show the nav when hovering over the compose button */
+/* Don't show the nav when hovering over the compose button 
+ * TODO: fix this, probably by adding a class on hover of the compose button
+ */
 html.simpl .bym {
 	box-shadow: none !important;
 }
 html.simpl .bhZ div[role="complementary"],
 html.simpl .bhZ div[gh="ns"] {
 	display: none !important;
+}
+
+/* Hide nav when minimized or in Settings */
+html.simpl .bhZ,
+html.simpl.inSettings .aeN {
+	position: relative;
+	z-index: 3 !important;
+
+	/* Remove this to show nav on hover */
+	max-width: 0px !important;
+	min-width: 0px !important;
+}
+html.simpl.inSettings .aeN {
+	width: 0px !important;
+	overflow: hidden;
 }
 
 /* No shadow or label on compose button */
@@ -609,6 +741,12 @@ html.simpl.rhsChat .aCl .akj {
 	padding-right: 0px !important;
 }
 
+/* Hide unread counts in nav if Simplify Setting enabled */
+html.simpl.hideUnreads .bsU {
+	display: none !important;
+}
+
+
 
 /* ==================================================
  * INBOX
@@ -635,9 +773,16 @@ html.simpl .AO .aeF > .nH {
 	margin: 40px auto 0 auto;
 	max-width: 960px;
 }
+html.simpl.splitView.inSettings .AO .aeF > .nH {
+	margin: 40px auto 100px auto !important;
+	max-width: 960px !important;
+}
 @media only screen and (min-width: 1441.98px) {
 	html.simpl:not(.splitView) .AO .aeF > .nH {
 		max-width: 1100px;
+	}
+	html.simpl.splitView.inSettings .AO .aeF > .nH {
+		max-width: 1100px !important;	
 	}
 }
 
@@ -751,7 +896,8 @@ html.simpl .aKh .aDG {
 }
 
 /* Hide ads in top of inbox tabs */
-html.simpl .aKB {
+html.simpl div[gh="tl"] .aKB, /* old way */
+html.simpl div[gh="tl"] div[role="tabpanel"] > div.Cp:first-child {
 	display: none;
 }
 
@@ -764,6 +910,62 @@ html.simpl div[gh="tl"] tr.yO img.brf {
 /* Hide underlines on category tabs in default inbox */
 html.simpl div[role="main"] .J-KU-KO.aAy:before {
 	background-color: transparent !important;
+}
+
+
+
+/* ==================================================
+ * POPOUTS
+ */
+
+/* Correct max-width */
+html.simpl.popout .aeF {
+	padding-right: 0px !important;
+	margin-bottom: 0px !important;
+	max-width: 960px;
+}
+html.simpl.popout .aeF > div {
+	box-shadow: none !important;
+}
+html.simpl.popout .G-atb[gh="tm"] {
+	max-width: 930px;
+	margin: 0 auto !important;
+}
+@media only screen and (min-width: 799.98px) {
+	html.simpl.popout .G-atb[gh="tm"] {
+		min-width: 730px;
+	}
+}
+@media only screen and (min-width: 1441.98px) {
+	html.simpl.popout .aeF {
+		max-width: 1100px;
+	}
+	html.simpl.popout .G-atb[gh="tm"] {
+		max-width: 1070px;
+	}
+}
+@media only screen and (min-width: 1679.98px) {
+	html.simpl.popout .aeF {
+		max-width: 100%;
+	}
+	html.simpl.popout .aeF > div {
+		max-width: 100% !important;
+	}
+	html.simpl.popout .aDc {
+		max-width: 100% !important;
+	}
+	html.simpl.popout .G-atb[gh="tm"] {
+		max-width: calc(100% - 30px);
+	}
+}
+
+/* Hide theme background */
+html.simpl.popout .wl,
+html.simpl.popout .wl div,
+html.simpl.popout .wq,
+html.simpl.popout .wp {
+	background-image: none !important;
+	background-color: #fff !important;
 }
 
 
@@ -836,9 +1038,12 @@ html.simpl.splitView .aNW td.Bu:first-child > div.nH:last-child {
 }
 @media only screen and (min-width: 1441.98px) {
 	html.simpl.splitView .apg .aNW .age .Bs {
-		margin: 1.5vw auto 200px auto;
 		max-width: 1100px;
+		/* float conversation view
+		margin: 1.5vw auto 200px auto;
 		border-radius: 8px;
+		*/
+		margin: 0 auto;
 	}
 	/* Swap margin for padding when message is likely to 
 	 * switch from pane to floating card */
@@ -861,6 +1066,7 @@ html.simpl.splitView .aiw {
 /* Drop the double border between panes to a single border */
 html.simpl.splitView .apj {
 	border-right: none;
+	border-left: none;
 	background-color: transparent;
 }
 html.simpl.splitView .aph {
@@ -942,7 +1148,7 @@ html.simpl .ata-asE .ata-asJ {
 }
 
 /* Keep inline images from being wider than the current view */
-html.simpl table.Bs .gs > div:not(.gE) img {
+html.simpl table.Bs .gs > div:not(.gE) img:not([src*="cleardot.gif"]) {
 	max-width: 100%;
 
     /* Without this, large portrait images will be squished
@@ -1056,6 +1262,11 @@ html.simpl.darkTheme .bAw {
 	background-image: url("https://www.gstatic.com/images/icons/material/system/2x/more_horiz_white_24dp.png");
 }
 
+/* Hide add-ons chooser entirely if Simplify Setting enabled */
+html.simpl.hideAddons .bAw {
+	display: none !important;
+}
+
 /* Hide everything inside the add-ons menu until you hover on it */
 html.simpl .bAw > div:first-child {
 	display: none;
@@ -1167,7 +1378,7 @@ html.simpl.addOnsOpen:not(.hideSearch) .aeH {
     width: calc(var(--action-bar-width) - 92px) !important;
 }
 html.simpl.addOnsOpen.splitView:not(.hideSearch) .G-atb[gh="tm"] {
-    width: calc(var(--action-bar-width) - 345px) !important;
+    width: calc(var(--action-bar-width) - 365px) !important;
 }
 
 /* Shrink the action bar when the AddOnsPane is open BUT NOT Search */
@@ -1197,7 +1408,9 @@ html.simpl.inSettings.hideSearch .aeH {
 	margin-top: -8px;
 }
 html.simpl.inSettings.splitView .aeH {
+	/* Not sure why this was there, deleting for now 
 	left: 72px !important;
+	*/
 }
 html.simpl.inSettings .bkK {
 	margin-left: 72px !important;
@@ -1237,6 +1450,11 @@ html.simpl.inSettings.darkTheme .fY {
 /* Invert back the selected tab */
 html.simpl.inSettings.darkTheme .fY .fZ {
 	filter: invert(1);
+}
+
+/* Hide right side chat when in Settings */
+html.simpl.inSettings.rhsChat .aCl {
+	display: none;
 }
 
 
@@ -1358,22 +1576,177 @@ html.simpl.appSwitcher.otherExtensions div.G-atb[gh="tm"] {
 
 
 
+/* ==================================================
+ * SIMPLIFY IN-GMAIL NOTIFICATIONS
+ */
+
+#simplNotification {
+	position: absolute;
+	z-index: 999;
+	top: 100px;
+	right: 48px;
+	max-width: 300px;
+	line-height: 1.7em;
+	border-radius: 8px;
+	padding: 20px 24px 24px 24px;
+	background-color: white;
+	box-shadow: 0 1px 3px 0 rgba(60,64,67,0.151), 0 4px 8px 3px rgba(60,64,67,0.091);
+}
+#simplNotification button {
+	user-select: none;
+	font-size: 0.87em;
+	font-weight: bold;
+	color: white;
+	padding: 8px 16px;
+	background: #0A6CDD;
+	border-radius: 4px;
+	text-decoration: none;
+	margin: 24px 16px 0 0;
+	border-color: rgba(0, 0, 0, 0.12);
+/*
+	text-shadow: 0 1px 1px rgba(0,0,0,.5);
+	border: 2px solid #0A6CDD;
+	box-shadow: inset 0 -1px 0 rgba(100,121,143,0.122), 0 3px 4px -2px rgba(0,0,0,.3);	
+*/
+}
+#simplNotification button.secondary {
+	color: #0A6CDD;
+	background-color: #f5f5f5;
+/*
+	background: #fff;
+	border: 2px solid rgba(0,0,0,0.12);
+	text-shadow: 0 1px 1px rgba(0,0,0,.12);
+*/
+}
+#simplNotification button:focus {
+	outline: none;
+}
+
+
+
 
 /* ==================================================
- * SIMPLIFY OPTIONS PAGE
+ * SIMPLIFY EXTENSION OPTIONS PAGE
  */
 
 #simplOptions {
-	padding: 50px;
+	padding: 10px 50px 50px 50px;
 	max-width: 800px;
-	margin: 20vh auto;
-	text-align: center;
-	font-size: 1.3em;
+	margin: 5vh auto 0 auto;
+	font-family: system-ui, sans-serif;
+	font-size: 15px;
 	line-height: 2em;
+	text-align: center;
 }
 #simplOptions img {
 	margin-bottom: 2em;
+	zoom: 60%;
 }
 #simplOptions a {
 	color: #555;
+}
+#simplOptions kbd {
+	background-color: #eee;
+	border-radius: 3px;
+	border: 1px solid #b4b4b4;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, .2), 0 2px 0 0 rgba(255, 255, 255, .7) inset;
+	color: #333;
+	display: inline-block;
+	font-size: 1em;
+	font-family: monospace;
+	font-weight: 700;
+	line-height: 1;
+	padding: 4px 6px;
+	margin: 0 4px;
+	white-space: nowrap;
+}
+#simplOptions .footer {
+	opacity: 0.3;
+}
+
+#simplOptions table {
+	padding: 0;
+	margin: 0 auto;
+	border: 0;
+	border-spacing: 0;
+	min-width: 550px;
+}
+#simplOptions td {
+	padding: 16px 8px;
+	text-align: left;
+	border: 0;
+}
+#simplOptions tr td {
+	border-bottom: 1px solid #ddd;
+}
+#simplOptions tr.label td {
+	font-weight: bold;
+}
+#simplOptions tr:first-child td {
+	border-top: 0px;
+}
+#simplOptions tr:not(.label):hover td {
+	background-color: rgba(0,0,0,0.04);
+}
+#simplOptions td.toggle {
+	width: 48px;
+	text-align: center;
+}
+
+#simplOptions label {
+	width: 100%;
+	display: block;
+}
+#simplOptions label,
+#simplOptions input {
+	cursor: pointer;
+}
+
+#simplOptions .beta {
+	display: none;
+}
+
+/* Toggle buttons */
+#simplOptions button.toggle { 
+	margin: 8px 0 0 0;
+	border-radius: 20px;
+	border: 2px solid #D0D0D0;
+	height: 28px;
+	cursor: pointer;
+	width: 54px;
+	position: relative;
+	display: inline-block;
+	user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	-moz-user-select: none;
+}
+#simplOptions button.toggle:focus {
+	outline: none;
+}
+#simplOptions button.toggle span {
+	position: absolute;
+	left: 0;
+	top: 0;
+	border-radius: 100%;
+	width: 26px;
+	height: 26px;
+	background-color: white;
+	float: left;
+	margin: -3px 0 0 -3px;
+	border: 2px solid #D0D0D0;
+ 	transition: left 0.3s;
+}
+#simplOptions button.toggle.on { 
+	background-color: #59E20E;
+	border: 2px solid #4ECD09;
+}
+#simplOptions button.toggle.on span {
+	left: 26px;
+	top: 0;
+	margin: 0;
+	border: none;
+	width: 24px;
+	height: 24px;
+	box-shadow: 0 0 4px rgba(0,0,0,0.1);
 }

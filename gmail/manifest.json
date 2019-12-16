@@ -1,6 +1,6 @@
 {
 	"name": "Simplify Gmail",
-	"version": "1.6.1",
+	"version": "1.7.2",
 	"manifest_version": 2,
 	"description": "Simplifies Gmail interface to the bare minimum",
 	"homepage_url": "https://simpl.fyi",
@@ -12,7 +12,13 @@
 		"128": "img/icon128.png",
 		"256": "img/icon256.png"
 	},
-	"options_page": "options.html",
+	"options_ui": {
+		"page": "options.html",
+		"open_in_tab": true
+	},
+	"web_accessible_resources": [
+		"options.html"
+	],
 	"content_scripts": [{
       	"matches": ["*://mail.google.com/*"],
       	"js": ["script.js"],
@@ -20,6 +26,9 @@
 		"run_at": "document_start",
 		"all_frames": false
 	}],
+	"permissions": [
+		"storage"
+	],
 	"page_action": {},
 	"background": {
 		"scripts": [ "toggle.js" ],

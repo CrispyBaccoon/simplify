@@ -1,19 +1,16 @@
 /* ==================================================
- * SIMPLIFY GMAIL v1.6.1
+ * SIMPLIFY GMAIL v1.7.2
  * By Michael Leggett: leggett.org
  * Copyright (c) 2019 Michael Hart Leggett
  * Repo: github.com/leggett/simplify/blob/master/gmail/
- * License: github.com/leggett/simplify/blob/master/gmail/LICENSE
+ * License: github.com/leggett/simplify/blob/master/gmail/LICENSE.md
  * More info: simpl.fyi
  */
 
 
-// == SIMPL =====================================================
-// Turn debug loggings on/off
-const simplifyDebug = false;
 
-// Print Simplify version number if debug is running
-if (simplifyDebug) console.log('Simplify version ' + chrome.runtime.getManifest().version);
+
+// == SIMPL =====================================================
 
 // Add simpl style to html tag
 const htmlEl = document.documentElement;
@@ -24,84 +21,7 @@ function toggleSimpl() {
 	return htmlEl.classList.toggle('simpl');
 }
 
-// Helper function for keyboard shortcuts to determine if an element is not editable
-function notEditable(el) {
-	el = el ? el : document.activeElement;
-
-	// BUG: Still firing when inputs are in focus
-	// I think Gmail is removing focus before this function runs
-	if (el.isContentEditable || el.tagName == "INPUT") {
-		if (simplifyDebug) {
-			console.log('IS or WAS editable');
-			console.log(el);
-		}
-		return false;
-	}
-	else {
-		if (simplifyDebug) {
-			console.log('NOT editable');
-			console.log(el);			
-		}
-		return true;
-	}
-}
-
-// Handle Simplify keyboard shortcuts
-function handleKeyboardShortcut(event) {	
-	// WIP: If Escape was pressed, close conversation or search
-	if (event.key === "Escape") {
-		// Only close if focus wasn't in an input or content editable div
-		if (notEditable()) {
-			if (simplifyDebug) console.log('Close search or conversation');
-
-			// TODO: IF conversation is open
-
-			// TODO: ELSE If in search results (check url)
-
-			// TODO: ELSE, we could either return to the inbox or do nothing
-
-			// event.preventDefault();
-		}
-	}
-
-	if (event.ctrlKey|event.metaKey && event.key == "\\") {
-		document.querySelector('.aeN').classList.toggle('bhZ');
-		toggleMenu();
-		event.preventDefault();
-
-		// If opening, focus the first element
-		if (!document.querySelector('.aeN').classList.contains('bhZ')) {
-			document.querySelector('div[role="navigation"] a:first-child').focus();
-		}
-	}
-
-	/* If Ctrl+S or Command+S was pressed, toggle Simplify on/off */
-	// mwvd note: disabled
-
-	// if ((event.ctrlKey && event.key === "S") || 
-	// 	(event.metaKey && event.key === "s")) {
-	// 	toggleSimpl();
-	// 	event.preventDefault();
-	// }
-
-	/* If Ctrl+Shift+M or Command+Shift+M was pressed, toggle nav menu open/closed
-	BUG: THIS CONFLICTS WITH CHANGING THE PROFILE IN CHROME
-	if ((event.ctrlKey && event.shiftKey && event.key === "M") || 
-		(event.metaKey && event.shiftKey && event.key === "m")) {
-		document.querySelector('.aeN').classList.toggle('bhZ');
-		toggleMenu();
-		event.preventDefault();
-
-		// If opening, focus the first element
-		if (!document.querySelector('.aeN').classList.contains('bhZ')) {
-			document.querySelector('div[role="navigation"] a:first-child').focus();
-		}
-	}
-	*/
-}
-window.addEventListener('keydown', handleKeyboardShortcut, false);
-
-// Handle messages from background script that
+// Handle messages from background script that 
 // supports page action to toggle Simplify on/off
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 	if (message.action === 'toggle_simpl') {
@@ -112,6 +32,188 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 
 // Activate page action button
 chrome.runtime.sendMessage({action: 'activate_page_action'});
+
+
+
+
+// == SIMPLIFY SETTINGS =====================================================
+
+// Initialize debug as off
+let simplifyDebug = false;
+
+// Load Simplify Settings
+let simplSettings = {};
+if (simplifyDebug) console.log('About to try to get settings');
+chrome.storage.local.get(null, function (results) {
+	if (simplifyDebug) console.log('About to parse settings');
+	if (results == null) {
+		if (simplifyDebug) console.log('No settings yet -- maybe initialize them');
+	} else {
+		simplSettings = results;
+		if (simplifyDebug) console.log(simplSettings);
+	}
+	applySettings(simplSettings);
+	if (simplifyDebug) console.log('Got settings');
+});
+
+
+// Print Simplify version number if debug is running
+if (simplifyDebug) console.log('Simplify version ' + chrome.runtime.getManifest().version);
+
+// Apply setting
+function applySettings(settings) {
+	if (simplifyDebug) console.log('Apply settings');
+	/*
+	TODO: something is breaking here
+	*/
+	for (let key in settings) {
+		if (simplifyDebug) console.log("Applying setting: " + key);
+		switch (key) {
+			case "hideAddons":
+				simplSettings.hideAddons = settings[key];
+				if (simplSettings.hideAddons) {
+					htmlEl.classList.add("hideAddons");
+				} else {
+					htmlEl.classList.remove("hideAddons");
+				}
+				break;
+			case "minimizeSearch":
+				simplSettings.minimizeSearch = settings[key];
+				if (simplSettings.minimizeSearch) {
+					htmlEl.classList.add("hideSearch");
+				} else {
+					htmlEl.classList.remove("hideSearch");
+				}
+				break;
+			case "kbsMenu":
+				simplSettings.kbsMenu = settings[key];
+				break;
+			case "kbsToggle":
+				simplSettings.kbsToggle = settings[key];
+				break;
+			case "dateGrouping":
+				simplSettings.dateGrouping = settings[key];
+				if (simplSettings.dateGrouping) {
+					observeThreadlist();
+				} else {
+					threadlistObserver.disconnect();
+				}
+				break;
+			case "hideUnreads":
+				simplSettings.hideUnreads = settings[key];
+				if (simplSettings.hideUnreads) {
+					htmlEl.classList.add("hideUnreads");
+				} else {
+					htmlEl.classList.remove("hideUnreads");
+				}
+				break;
+			case "bundleCategories":
+				simplSettings.bundleCategories = settings[key];
+				break;
+			case "debug":
+				simplSettings.debug = settings[key];
+				/* This is applied too late to really work... 
+				 * maybe you change the setting and restart the app?
+				 * or I can use localStorage?
+				if (simplSettings.debug) {
+					simplifyDebug = true;
+				} else {
+					simplifyDebug = false;
+				}
+				*/
+				break;
+			default: 
+				console.log('No case for applying setting: ' + key);
+				break;
+		}
+	}
+	if (simplifyDebug) console.log("Apply settings: " + JSON.stringify(settings));
+}
+
+chrome.storage.onChanged.addListener(function(changes, namespace) {
+	for (let key in changes) {
+		let newSettings = {};
+		newSettings[key] = changes[key].newValue;
+		applySettings(newSettings);
+	}
+});
+
+// Add Simplify Settings link to gear menu
+const optionsUrl = chrome.extension.getURL("options.html");
+/*
+let addSettingsLinkLoops = 0;
+function addSettingsGearListener() {
+	let settingsGear = document.querySelector('div[gh="s"]');
+	if (settingsGear) {
+		console.log('found settings gear');
+		// TODO -- add event listener to all children of settingsGear
+		settingsGear.children[0].children[0].addEventListener('click', addSettingsLink, true);
+	} else if (addSettingsLinkLoops < 10) {
+		setTimeout(addSettingsGearListener, 1000);
+		addSettingsLinkLoops++;
+	}
+}
+function addSettingsLink() {
+	// Make sure it doesn't already exist
+	if (!document.querySelector('#simplifySettingsLink')) {
+		// Find the themes menu item
+		let themesMenuItem = document.querySelector('#pbwc');
+		if (themesMenuItem) {
+			// Clone and modify the themes menu item and insert it back into the gear menu
+			let menuItemClone = themesMenuItem.cloneNode(true);
+			menuItemClone.id = 'simplifySettingsLink';
+			menuItemClone.children[0].innerText = 'Simplify Settings';
+			themesMenuItem.parentNode.insertBefore(menuItemClone, themesMenuItem.nextSibling);
+			document.querySelector('#simplifySettingsLink').addEventListener('click', function() {
+				window.open(optionsUrl, '_blank');
+			}, false);
+			console.log('added Simplify Settings menu item');
+		}
+		// let settingsGear = document.querySelector('div[gh="s"]');
+		// settingsGear.removeEventListener('click', addSettingsLink, false);
+	}
+}
+*/
+
+// == IN-GMAIL SIMPLIFY NOTIFICATIONS ======================================
+function showNotification(msg, actions, hideAfter) {
+	let notificationBox = document.getElementById('simplNotification');
+	if (notificationBox) {
+		// If notification already exists, just show it again
+		notificationBox.style.display = "block";
+	} else {
+		// Create notification bubble, attach to body
+		let notificationEl = document.createElement('div');
+		notificationEl.id = "simplNotification";
+		document.body.appendChild(notificationEl);
+		notificationBox = document.getElementById('simplNotification');
+	}
+
+	// Add content and buttons to notification div
+	notificationBox.innerHTML = msg;
+	if (actions == "settingsLink") {
+		notificationBox.innerHTML += '<br><button id="openSettings">Simplify settings</button>'
+		notificationBox.innerHTML += '<button class="secondary" id="closeNotification">Close</button>';
+	}
+
+	// Add event listeners for buttons
+	document.querySelector('#simplNotification #openSettings').addEventListener('click', function() {
+		window.open(optionsUrl, '_blank');
+		notificationBox.style.display = 'none';
+		clearTimeout(autoCloseNotification);
+	}, false);
+	document.querySelector('#simplNotification #closeNotification').addEventListener('click', function() {
+		notificationBox.style.display = 'none';
+		clearTimeout(autoCloseNotification);
+		simplSettings.kbsNotified = true;
+	}, false);
+
+	// Auto hide this notification in 30 seconds
+	let autoCloseNotification = setTimeout(function() {
+		notificationBox.style.display = 'none';
+	}, hideAfter * 1000);
+}
+
 
 
 
@@ -129,6 +231,7 @@ chrome.runtime.sendMessage({action: 'activate_page_action'});
  * with the userId in localStorage.
  */
 const isDelegate = location.pathname.indexOf('/mail/b/') >= 0;
+const isPopout = location.href.indexOf("view=btop") >= 0;
 const userPos = location.pathname.indexOf('/u/');
 const u = isDelegate ? 'b' + location.pathname.substring(userPos+3, userPos+4) : location.pathname.substring(userPos+3, userPos+4);
 
@@ -193,20 +296,28 @@ function updateParam(param, value) {
 	window.localStorage.simplify = JSON.stringify(simplify);
 }
 
-/* Make sure local variables are for the right account
+// Hash string
+function hashCode(s) {
+	return s.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0);              
+}
+
+/* Make sure local variables are for the right account 
  * TODO: for now, when it doesn't match, I just localStorage.clear()
  * but there might be a better way, maybe try and match the correct account?
  */
+let username = "";
 function checkLocalVar() {
-	const usernameStart = document.title.search(/[A-Za-z0-9\.]+\@gmail\.com - Gmail/);
+	const usernameStart = document.title.search(/([\w\.]+\@[\w\.\-]+)/);
 	if (usernameStart > 0) {
-		const username = document.title.substring(usernameStart, document.title.length-8);
+		username = document.title.substring(usernameStart, document.title.lastIndexOf(" - "));
+		const userhash = hashCode(username);
 		if (simplifyDebug) console.log('Username: ' + username);
-		if (simplify[u].username != username) {
+		if (simplifyDebug) console.log('Userhash: ' + userhash);
+		if (simplify[u].username != userhash) {
 			if (simplifyDebug) console.log('Usernames do NOT match');
 			resetLocalStorage();
 		}
-		updateParam("username", username);
+		updateParam("username", userhash);
 	}
 }
 
@@ -243,9 +354,10 @@ if (simplify[u].theme == "light") {
 // Init nav menu
 if (simplify[u].navOpen) {
 	if (simplifyDebug) console.log('Loading with nav menu open');
-	document.documentElement.classList.add('navOpen');
+	htmlEl.classList.add('navOpen');
 } else {
 	if (simplifyDebug) console.log('Loading with nav menu closed');
+	htmlEl.classList.remove('navOpen');
 }
 
 // Init density
@@ -260,7 +372,7 @@ if (simplify[u].density == "low") {
 // Init text button labels
 if (simplify[u].textButtons) {
 	if (simplifyDebug) console.log('Loading with text buttons');
-	document.documentElement.classList.add('textButtons');
+	htmlEl.classList.add('textButtons');
 }
 
 // Init right side chat
@@ -278,7 +390,7 @@ if (simplify[u].minimizeSearch == null) {
 		updateParam('minimizeSearch', false);
 	}
 }
-if (simplify[u].minimizeSearch) {
+if (simplify[u].minimizeSearch || simplSettings.minimizeSearch) {
 	if (simplifyDebug) console.log('Loading with search hidden');
 	htmlEl.classList.add('hideSearch');
 }
@@ -294,6 +406,100 @@ if (simplify[u].otherExtensions) {
 	if (simplifyDebug) console.log('Loading with 3rd party extensions');
 	htmlEl.classList.add('otherExtensions');
 }
+
+// Add .popout if this is a popped out email
+if (isPopout) {
+	htmlEl.classList.add('popout');
+	htmlEl.classList.remove('splitView');
+}
+
+
+
+
+// == KEYBOARD SHORTCUTS =====================================================
+
+// Helper function for keyboard shortcuts to determine if an element is not editable
+function notEditable(el) {
+	el = el ? el : document.activeElement;
+
+	// BUG: Still firing when inputs are in focus
+	// I think Gmail is removing focus before this function runs
+	if (el.isContentEditable || el.tagName == "INPUT") {
+		if (simplifyDebug) {
+			console.log('IS or WAS editable');
+			console.log(el);
+		}
+		return false;
+	}
+	else {
+		if (simplifyDebug) {
+			console.log('NOT editable');
+			console.log(el);			
+		}
+		return true;
+	}
+}
+
+// Handle Simplify keyboard shortcuts
+function handleKeyboardShortcut(event) {
+	// WIP: If Escape was pressed, close conversation or search
+	if (event.key === "Escape") {
+		// Only close if focus wasn't in an input or content editable div
+		if (notEditable()) {
+			if (simplifyDebug) console.log('Close search or conversation');
+
+			// TODO: IF conversation is open
+
+			// TODO: ELSE If in search results (check url)
+
+			// TODO: ELSE, we could either return to the inbox or do nothing
+
+			// event.preventDefault();
+		}
+	}
+
+	/* If Ctrl+M or Command+M was pressed, toggle nav menu open/closed */
+	if ((event.ctrlKey && (event.key === "\\" || event.key === "\\")) || 
+		(event.metaKey && event.key === "\\")) {
+		if (simplSettings.kbsMenu) {
+			document.querySelector('.aeN').classList.toggle('bhZ');
+			toggleMenu();
+			event.preventDefault();
+
+			// If opening, focus the first element
+			if (!document.querySelector('.aeN').classList.contains('bhZ')) {
+				document.querySelector('div[role="navigation"] a:first-child').focus();
+			}
+		} else if (!simplSettings.kbsNotified) {
+			if (htmlEl.classList.contains('navOpen')) {
+				showNotification('Trying to hide the main menu? Enable the keyboard shortcut in Simplify Settings.', 'settingsLink', 30);
+			} else {
+				showNotification('Trying to show the main menu? Enable the keyboard shortcut in Simplify Settings.', 'settingsLink', 30);
+			}
+			
+		}
+	}
+
+/* If Ctrl+S or Command+S was pressed, toggle Simplify on/off */
+	
+// mwvd note: disabled
+
+	// if ((event.ctrlKey && (event.key === "S" || event.key === "s")) || 
+	// 	(event.metaKey && event.key === "s")) {
+	// 	if (simplSettings.kbsToggle) {
+	// 		toggleSimpl();
+	// 		event.preventDefault();
+	// 	} else if (!simplSettings.kbsNotified) {
+	// 		if (htmlEl.classList.contains('simpl')) {
+	// 			showNotification('Trying to disable Simplify? Enable the keyboard shortcut in Simplify Settings.', 'settingsLink', 30);
+	// 		} else {
+	// 			showNotification('Trying to enable Simplify? Enable the keyboard shortcut in Simplify Settings.', 'settingsLink', 30);
+	// 		}
+	// 	}
+	// }
+	
+}
+window.addEventListener('keydown', handleKeyboardShortcut, false);
 
 
 
@@ -325,12 +531,21 @@ window.onhashchange = function() {
 	if (checkThemeLater) {
 		detectTheme();
 	}
+
+	// See if we need to date group the view
+	// todo maybe stop the observer and start a new one?
+	if (simplSettings.dateGrouping) {
+		threadlistObserver.disconnect();
+		observeThreadlist();
+	}
 }
 
 // Show back button if page loaded on Settings
 if (location.hash.substring(1, 9) == "settings") {
 	htmlEl.classList.add('inSettings');
 }
+
+
 
 
 
@@ -368,12 +583,12 @@ function detectClassNames() {
 		const supportButton = document.querySelector('#gb path[d*="18h2v-2h-2v2zm1-16C6.48"]');
 		if (simplifyDebug) {
 			console.log('Detecting class name for support path element:');
-			console.log(supportButton);
+			// console.log(supportButton);
 		}
 		simplify[u].elements["supportButton"] = supportButton ? "." + supportButton.parentElement.parentElement.parentElement.parentElement.classList.value.trim().replace(/ /g,".") : simplify[u].elements["supportButton"];
 
 		// Account switcher (profile pic/name)
-		const accountButton = document.querySelectorAll(`#gb a[aria-label*="${simplify[u].username}"], #gb a[href^="https://accounts.google.com/SignOutOptions"]`)[0];
+		const accountButton = document.querySelector(`#gb a[aria-label*="${username}"], #gb a[href^="https://accounts.google.com/SignOutOptions"]`);
 		simplify[u].elements["accountButton"] = accountButton ? "." + accountButton.classList.value.trim().replace(/ /g,".") : false;
 
 		// Account wrapper (for Gsuite accounts)
@@ -515,7 +730,7 @@ function toggleSearchFocus(onOff) {
 		document.activeElement.blur();
 	} else {
 		// Focus the search input
-		document.querySelector('header#gb form input').focus();
+		document.querySelector('header input[name="q"]').focus();
 	}
 }
 
@@ -531,7 +746,6 @@ function initSearch() {
 		// Focus search when you click anywhere on it
 		searchForm.addEventListener('click', function(event) {
 			toggleSearchFocus();
-			console.log(event.target);
 		}, false);
 
 		// Add function to search button to toggle search open/closed
@@ -565,7 +779,7 @@ function initSearch() {
 			} else {
 				location.hash = closeSearchUrlHash;
 			}
-			if (simplify[u].minimizeSearch) {
+			if (simplify[u].minimizeSearch || simplSettings.minimizeSearch) {
 				htmlEl.classList.add('hideSearch');
 			}
 		}, false);
@@ -598,29 +812,35 @@ function initSearchFocus() {
 			htmlEl.classList.remove('hideSearch');
 		}, false );
 
-		// Hide search box if it loses focus, is empty, and was previously hidden
-		searchInput.addEventListener('blur', function(event) {
-			// if (this.value == "" && (simplify[u].minimizeSearch || event.target.name == "q")) {
-			if (this.value == "" && simplify[u].minimizeSearch) {
-				htmlEl.classList.add('hideSearch');
-			}
-		}, false );
-
 		// Remove the placeholder text in the search box
 		searchInput.placeholder = "";
 
 		// Setup eventListeners for search input
 		searchInput.addEventListener('focus', () => {
 			// Add searchFocus from html element
-			document.documentElement.classList.add('searchFocused');
-			const searchLength = searchInput.value.length;
+			htmlEl.classList.add('searchFocused');
 			setTimeout(function() {
-				searchInput.setSelectionRange(searchLength, searchLength);
-			}, 200);
+				if (searchInput.value == "label:") {
+					searchInput.selectionStart = searchInput.selectionEnd = 10000;
+				} else {
+					searchInput.selectionStart = 0;
+					searchInput.selectionEnd = 10000;
+				}
+			}, 100);
 		});
 		searchInput.addEventListener('blur', () => {
 			// Remove searchFocus from html element
-			document.documentElement.classList.remove('searchFocused');
+			htmlEl.classList.remove('searchFocused');
+
+			// Hide search box if it loses focus, is empty, and was previously hidden
+			if (simplifyDebug) {
+				console.log("Search for '%s' with [u]ms set to %s and ss.ms set to %s", 
+					searchInput.value, simplify[u].minimizeSearch, simplSettings.minimizeSearch);
+			}
+			if ((searchInput.value == "" || searchInput.value == null) && 
+				(simplify[u].minimizeSearch || simplSettings.minimizeSearch)) {
+				htmlEl.classList.add('hideSearch');
+			}
 		});
 	} else {
 		// If the search field can't be found, wait and try again
@@ -826,9 +1046,6 @@ function detectSplitView() {
 				if (simplifyDebug) console.log('Giving up on detecting split view');
 				htmlEl.classList.remove('splitView');
 				updateParam('previewPane', false);
-
-				// Multiple Inboxes only works when Split view is disabled
-				detectMultipleInboxes();
 			}
 		}
 	}
@@ -840,6 +1057,7 @@ function detectSplitView() {
 let detectNumberOfAddOnsLoops = 0;
 function detectNumberOfAddOns() {
 	// Detect how many add-ons there are
+	// TODO: addons not showing
 	const numberOfAddOns = parseInt(document.querySelectorAll('.bAw div[role="tablist"] > div[role="tab"]').length) - 2;
 	if (numberOfAddOns > 0) {
 		if (simplifyDebug) console.log('There are ' + numberOfAddOns + ' add-ons');
@@ -883,7 +1101,7 @@ function detectAddOns() {
 		}
 
 		// Set the height of the add-ons tray based on number of add-ons
-		detectNumberOfAddOns();
+		setTimeout(detectNumberOfAddOns, 2500);
 
 		// Options for the observer (which mutations to observe)
 		const addOnsObserverConfig = { attributes: true, childList: false, subtree: false };
@@ -940,6 +1158,7 @@ function detectRightSideChat() {
 			htmlEl.classList.add('rhsChat');
 			updateParam('rhsChat', true);
 		} else {
+			htmlEl.classList.remove('rhsChat');
 			updateParam('rhsChat', false);
 		}
 	} else {
@@ -1014,18 +1233,19 @@ function detectMenuState() {
 
 // Helper function to toggle nav open/closed
 function toggleMenu() {
-	if (simplifyDebug) console.log('Toggle nav');
 	const menuButton = document.querySelector(`#gb ${simplify[u].elements.menuButton}`);
 
 	if (simplify[u].navOpen) {
 		htmlEl.classList.remove('navOpen');
 		menuButton.setAttribute('aria-expanded', 'false');
 		updateParam('navOpen', false);
+		if (simplifyDebug) console.log('Toggle nav to hidden; simplify.navOpen = ' + simplify[u].navOpen);
 	}
 	else {
 		htmlEl.classList.add('navOpen');
 		menuButton.setAttribute('aria-expanded', 'true');
 		updateParam('navOpen', true);
+		if (simplifyDebug) console.log('Toggle nav to shown;  simplify.navOpen = ' + simplify[u].navOpen);
 	}
 }
 
@@ -1033,19 +1253,26 @@ function toggleMenu() {
 
 // Detect Multiple Inboxes
 function detectMultipleInboxes() {
-	const viewAllButton = document.getElementsByClassName('p9').length;
-
+	const viewAllButton = document.querySelectorAll('div[role="main"] span[action="viewAll"]').length;
 	if (viewAllButton > 0) {
 		if (simplifyDebug) console.log('Multiple inboxes found');
-		const actionBars = document.querySelectorAll('.G-atb[gh="tm"]').length
-		if (actionBars > 1) {
-			htmlEl.classList.add('multiBoxVert');
-			htmlEl.classList.remove('multiBoxHorz');
-			updateParam("multipleInboxes", "vertical");
+
+		// Multiple Inboxes only works when Split view is disabled
+		if (simplify[u].previewPane) {
+			// TODO: If both multiple inboxes and preview pane are enabled, throw an error
+
+			// TODO: what do we do with the multiple inboxes class names & localStorage var?
 		} else {
-			htmlEl.classList.add('multiBoxHorz');
-			htmlEl.classList.remove('multiBoxVert');
-			updateParam("multipleInboxes", "horizontal");
+			const actionBars = document.querySelectorAll('.G-atb[gh="tm"]').length
+			if (actionBars > 1) {
+				htmlEl.classList.add('multiBoxVert');
+				htmlEl.classList.remove('multiBoxHorz');
+				updateParam("multipleInboxes", "vertical");
+			} else {
+				htmlEl.classList.add('multiBoxHorz');
+				htmlEl.classList.remove('multiBoxVert');
+				updateParam("multipleInboxes", "horizontal");
+			}
 		}
 	} else {
 		updateParam("multipleInboxes", "none");
@@ -1206,6 +1433,143 @@ function detectOtherExtensions() {
  */
 
 
+
+/* ==========================================================================================
+	Adding date gaps in the inbox between the following sections
+	Today
+	Yesterday
+	This month
+	<Month name>
+	<Month name year>
+	Earlier
+	----
+	TODO:
+	- Make it more efficient (I'm calling insertDateGaps more often than I should)
+ */
+
+// Date constants
+const now = new Date();
+const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+const yesterday = new Date(now.getFullYear(), now.getMonth(), now.getDate()-1);
+const month0 = new Date(now.getFullYear(), now.getMonth(), 1);
+const month1 = new Date(now.getFullYear(), now.getMonth()-1, 1);
+const month2 = new Date(now.getFullYear(), now.getMonth()-2, 1);
+let justRan = false;
+
+// Insert date gaps
+function insertDateGaps(mutationList, observer) {
+	// Check to see if we're in the inbox and it is empty
+	let threads = document.querySelectorAll('div[gh="tl"] div.Cp tbody tr').length;
+	let inInbox = location.hash.substring(1, 7) == "inbox" ? true : false;
+	if (threads == 0 && inInbox) {
+		// Show inbox zero
+		htmlEl.classList.add('inboxZero');
+	}
+	else {
+		htmlEl.classList.remove('inboxZero');
+		/*
+		if (simplifyDebug) {
+			if (mutationList) {
+				console.log(mutationList);
+			} else {
+				console.log('No mutation list')
+			}		
+		}
+		*/
+
+		let lists = document.querySelectorAll('.UI table[role="grid"]');
+		if (lists.length > 0) {
+			if (simplifyDebug) console.log('Inserting date gaps');
+			lists.forEach(function(list) {
+				let items = list.querySelectorAll('.zA');
+				if (items.length > 0) {
+					items.forEach( function(item) {
+
+						// BUNDLE ITEMS BY LABEL (NOT DONE)
+						/* TODO: 
+						 *	this breaks grouping by date, skip if item is display:none
+						 * 	the remaining item should link to a search, not an email
+						 */
+						
+						// Only bundle items if we're in the Inbox
+						if (inInbox && simplSettings.bundleCategories) {
+							// Get the labels on the item
+							let labels = item.querySelectorAll('.av');
+							if (labels.length > 0) {
+								let labelList = [];
+								labels.forEach( function(label) {
+									labelList.push(label.innerText);
+								});
+								item.setAttribute('labels', labelList.toString());
+							}
+						}
+
+						// Group by date
+						if (!item.querySelector('.byZ > div')) { // Skip item if it was snoozed
+							let dateSpan = item.querySelector('.xW > span');
+							if (dateSpan) {
+								let itemDate = new Date(dateSpan.title);
+								if (itemDate > today) {
+									item.setAttribute('date', 'today');
+								} else if (itemDate >= yesterday) {
+									item.setAttribute('date', 'yesterday');
+								} else if (itemDate >= month0) {
+									item.setAttribute('date', 'month0');
+								} else if (itemDate >= month1) {
+									item.setAttribute('date', 'month1');
+								} else if (itemDate >= month2) {
+									item.setAttribute('date', 'month2');
+								} else {
+									item.setAttribute('date', 'earlier');
+								}
+							}
+						}
+					});
+				}
+			});
+		}
+	}
+}
+
+const threadlistObserver = new MutationObserver(insertDateGaps);
+let observeThreadlistLoops = 1;
+function observeThreadlist() {
+	// Start observing the target node for configured mutations
+	let threadlist = document.querySelector('div[gh="tl"]');
+	if (threadlist) {
+		if (simplSettings.dateGrouping) {
+			insertDateGaps();
+			threadlistObserver.observe(threadlist, { attributes: false, childList: true, subtree: true });
+			if (simplifyDebug) console.log('Adding mutation observer for threadlist');
+		}
+	} else {
+		if (observeThreadlistLoops < 10) {
+			setTimeout(observeThreadlist, 500);
+			observeThreadlistLoops++;
+			if (simplifyDebug) console.log('observeThreadlist attempt #' + observeThreadlistLoops);
+		}
+	}
+}
+observeThreadlist();
+
+
+/*
+mutation observers:
+https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver/MutationObserver
+
+childlist: One or more children have been added to and/or removed from the tree; see mutation.addedNodes and mutation.removedNodes 
+
+attributes: An attribute value changed on the element in mutation.target; the attribute name is in mutation.attributeName and its previous value is in mutation.oldValue
+
+subtree: Omit or set to false to observe only changes to the parent node.
+ */
+
+/* ========================================================================================== */
+
+
+
+
+
 // Initialize styles as soon as head is ready
 const initStyleObserver = new MutationObserver(initStyle);
 function observeHead() {
@@ -1221,18 +1585,19 @@ function initOnDomReady() {
 	initSearchFocus();
 	detectDelegate();
 }
-window.addEventListener('DOMContentLoaded', initOnDomReady, false);
 
 // Initialize everything else when the page is ready
 function initOnPageLoad() {
 	initSettings();
+	// addSettingsGearListener();
 	detectTheme();
 	detectSplitView();
 	detectDensity();
 	detectRightSideChat();
-	detectAddOns();
 	detectMenuState();
 	detectButtonLabel();
+	detectMultipleInboxes();
+	detectAddOns();
 	initAppSwitcher();
 	testPagination();
 	observePagination();
@@ -1244,4 +1609,9 @@ function initOnPageLoad() {
 	// Some elements get loaded in after the page is done loading
 	setTimeout(detectClassNames, 7000);
 }
-window.addEventListener('load', initOnPageLoad, false);
+
+// Only initialize everything if this isn't a popout
+if (!isPopout) {
+	window.addEventListener('DOMContentLoaded', initOnDomReady, false);
+	window.addEventListener('load', initOnPageLoad, false);
+}
