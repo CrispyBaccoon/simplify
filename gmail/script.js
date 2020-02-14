@@ -1,7 +1,7 @@
 /* ==================================================
- * SIMPLIFY GMAIL v1.7.2
+ * SIMPLIFY GMAIL v1.7.7
  * By Michael Leggett: leggett.org
- * Copyright (c) 2019 Michael Hart Leggett
+ * Copyright (c) 2020 Michael Hart Leggett
  * Repo: github.com/leggett/simplify/blob/master/gmail/
  * License: github.com/leggett/simplify/blob/master/gmail/LICENSE.md
  * More info: simpl.fyi
@@ -122,6 +122,10 @@ function applySettings(settings) {
 				}
 				*/
 				break;
+			case "minSearch":
+				// No longer used, delete it
+				chrome.storage.local.remove(["minSearch"]);
+				break;
 			default: 
 				console.log('No case for applying setting: ' + key);
 				break;
@@ -189,19 +193,32 @@ function showNotification(msg, actions, hideAfter) {
 		notificationBox = document.getElementById('simplNotification');
 	}
 
-	// Add content and buttons to notification div
+	// Add content to notification div
 	notificationBox.innerHTML = msg;
+
+	// Add primary action to notification div
 	if (actions == "settingsLink") {
-		notificationBox.innerHTML += '<br><button id="openSettings">Simplify settings</button>'
-		notificationBox.innerHTML += '<button class="secondary" id="closeNotification">Close</button>';
+		notificationBox.innerHTML += '<br><button id="openSettings">Open Simplify settings</button>';
+		document.querySelector('#simplNotification #openSettings').addEventListener('click', function() {
+			window.open(optionsUrl, '_blank');
+			notificationBox.style.display = 'none';
+			clearTimeout(autoCloseNotification);
+		}, false);
+	} else if (actions == "advancedGmailSettings") {
+		notificationBox.innerHTML += '<br><button id="gmailSettings">Open Gmail settings</button>';
+		// TODO: Why do I have to delay this so the button is in the DOM and I can add the function? 
+		setTimeout(function(){ 
+			document.querySelector('#simplNotification #gmailSettings').addEventListener('click', function() {
+				location.hash = 'settings/labs';
+				notificationBox.style.display = 'none';
+				clearTimeout(autoCloseNotification);
+			}, false);		
+		}, 100);
 	}
 
-	// Add event listeners for buttons
-	document.querySelector('#simplNotification #openSettings').addEventListener('click', function() {
-		window.open(optionsUrl, '_blank');
-		notificationBox.style.display = 'none';
-		clearTimeout(autoCloseNotification);
-	}, false);
+
+	// Add close notification action to notification div
+	notificationBox.innerHTML += '<button class="secondary" id="closeNotification">Close</button>';
 	document.querySelector('#simplNotification #closeNotification').addEventListener('click', function() {
 		notificationBox.style.display = 'none';
 		clearTimeout(autoCloseNotification);
@@ -507,9 +524,10 @@ window.addEventListener('keydown', handleKeyboardShortcut, false);
 // == URL HISTORY =====================================================
 
 // Set up urlHashes to track and update for closing Search and leaving Settings
-let closeSearchUrlHash = (location.hash.substring(1, 7) == "search"
-	|| location.hash.substring(1, 6) == "label"
-	|| location.hash.substring(1, 16) == "advanced-search") ? "#inbox" : location.hash;
+let closeSearchUrlHash = (
+	location.hash.substring(1, 7) == "search" ||
+	location.hash.substring(1, 6) == "label" ||
+	location.hash.substring(1, 16) == "advanced-search") ? "#inbox" : location.hash;
 let closeSettingsUrlHash = location.hash.substring(1, 9) == "settings" ? "#inbox" : location.hash;
 
 window.onhashchange = function() {
@@ -624,7 +642,7 @@ function detectClassNames() {
 
 // Helper function to add CSS to Simplify Style Sheet
 function addCSS(css, pos) {
-	const position = pos ? pos : simplifyStyles.cssRules.length;
+	let position = pos ? pos : simplifyStyles.cssRules.length;
 	simplifyStyles.insertRule(css, position);
 	if (simplifyDebug) console.log('CSS added: ' + simplifyStyles.cssRules[position].cssText);
 }
@@ -690,7 +708,8 @@ function initStyle() {
 		simplifyStyles = simplifyStyleEl.sheet;
 
 		// Initialize addOns height now that Style Sheet is setup
-		addCSS(`:root { --add-on-height: ${simplify[u].addOnsCount * 56}px; }`);
+		addCSS(`:root { --add-on-height: ${simplify[u].addOnsCount * 56}px !important; }`);
+		if (simplifyDebug) console.log('Just made room for ' + simplify[u].addOnsCount + ' add ons');
 
 		// Add cached styles
 		addStyles();
@@ -1015,19 +1034,25 @@ function detectSplitView() {
 	} else {
 		const splitViewToggle = document.querySelector('div[selector="nosplit"]');
 		if (splitViewToggle) {
-			// Only the Preview Pane vertical or horizontal has the action bar
-			const splitViewActionBar = document.querySelectorAll('div[role="main"] > .G-atb');
-			if (splitViewActionBar) {
-				if (splitViewActionBar.length > 0) {
+			/* See if the Split View toggle is for toggling back on split view 
+			 * (vertical or horizontal). The Toggle button will be to switch back 
+			 * to Veritcal split or Horizontal split if it is disabled
+			 */
+			const splitViewToggledOff = document.querySelectorAll('div.apI, div.apK');
+			if (splitViewToggledOff) {
+				if (splitViewToggledOff.length == 0) {
 					if (simplifyDebug) console.log('Split view detected and active');
 					htmlEl.classList.add('splitView');
 					updateParam('previewPane', true);
 					/* TODO: Listen for splitview mode toggle via mutation observer */
 				} else {
 					if (simplifyDebug) console.log('Split view enabled but set to No Split');
-					if (simplifyDebug) console.log(splitViewActionBar);
+					if (simplifyDebug) console.log(splitViewToggledOff);
 					htmlEl.classList.remove('splitView');
 					updateParam('previewPane', false);
+
+					// Show warning that Preview Pane should be disabled
+					showNotification('<b>Disable Preview Pane?</b><br>You have Preview Pane enabled in settings but toggled off (set to "No Split"). This breaks Simplify.<br><br>If you do not use Preview Pane it is best to disable it in Gmail Settings.', 'advancedGmailSettings', 30);
 				}
 				// Multiple Inboxes only works when Split view is disabled
 				updateParam("multipleInboxes", "none");
@@ -1057,11 +1082,10 @@ function detectSplitView() {
 let detectNumberOfAddOnsLoops = 0;
 function detectNumberOfAddOns() {
 	// Detect how many add-ons there are
-	// TODO: addons not showing
-	const numberOfAddOns = parseInt(document.querySelectorAll('.bAw div[role="tablist"] > div[role="tab"]').length) - 2;
+	const numberOfAddOns = parseInt(document.querySelectorAll('.bAw div.bse-bvF-I, .bAw div[role="tablist"] > div[role="tab"]').length) - 2;
 	if (numberOfAddOns > 0) {
-		if (simplifyDebug) console.log('There are ' + numberOfAddOns + ' add-ons');
-		if (numberOfAddOns != simplify[u].addOnsCount && numberOfAddOns > 3) {
+		if (simplifyDebug) console.log('There are ' + numberOfAddOns + ' add-ons now');
+		if (numberOfAddOns > 3) {
 			addCSS(`:root { --add-on-height: ${numberOfAddOns * 56}px !important; }`);
 			updateParam('addOnsCount', numberOfAddOns);
 		} else {
@@ -1101,7 +1125,7 @@ function detectAddOns() {
 		}
 
 		// Set the height of the add-ons tray based on number of add-ons
-		setTimeout(detectNumberOfAddOns, 2500);
+		setTimeout(detectNumberOfAddOns, 5000);
 
 		// Options for the observer (which mutations to observe)
 		const addOnsObserverConfig = { attributes: true, childList: false, subtree: false };
