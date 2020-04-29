@@ -1,5 +1,5 @@
-/* ==================================================
- * SIMPLIFY GMAIL v1.7.7
+/* ====================================================================
+ * SIMPLIFY GMAIL v1.7.9
  * By Michael Leggett: leggett.org
  * Copyright (c) 2020 Michael Hart Leggett
  * Repo: github.com/leggett/simplify/blob/master/gmail/
@@ -7,84 +7,44 @@
  * More info: simpl.fyi
  */
 
-/* ==================================================
+/* ====================================================================
  * BUNDLE ITEMS IN INBOX
- */
 
-html.simpl div[gh="tl"] tr[labels*="Promotions"] ~ tr[labels*="Promotions"],
-html.simpl div[gh="tl"] tr[labels*="Social"] ~ tr[labels*="Social"],
-html.simpl div[gh="tl"] tr[labels*="Updates"] ~ tr[labels*="Updates"],
-html.simpl div[gh="tl"] tr[labels*="Forums"] ~ tr[labels*="Forums"] {
+html.simpl div[gh='tl'] tr[labels*='Promotions'] ~ tr[labels*='Promotions'],
+html.simpl div[gh='tl'] tr[labels*='Social'] ~ tr[labels*='Social'],
+html.simpl div[gh='tl'] tr[labels*='Updates'] ~ tr[labels*='Updates'],
+html.simpl div[gh='tl'] tr[labels*='Forums'] ~ tr[labels*='Forums'] {
   display: none;
-}
-
-/* ==================================================
- * SEARCH REFINEMENT BAR
- */
-
-/* Move search refinement bar below action bar */
-html.simpl .aeH div[gh="tm"] div[role="toolbar"] {
-  position: absolute;
-  top: 44px;
-}
-
-/* Hide search refinement bar when you scroll */
-html.simpl .aeI .aeH div[gh="tm"] div[role="toolbar"] {
-  display: none;
-}
-
-/* Move action bar into correct spot */
-html.simpl .aeH div[gh="tm"] div[role="toolbar"] + .aqK {
-  margin-top: 22px;
-}
-
-/* Hide Advanced search link */
-html.simpl
-  .aeH
-  div[gh="tm"]
-  div[role="toolbar"]
-  div[data-impression-suffix="ADVANCED_SEARCH_LINK"],
-html.simpl
-  .aeH
-  div[gh="tm"]
-  div[role="toolbar"]
-  div:first-child
-  > div[role="button"]:last-child {
-  display: none;
-}
-
-/* TODO: move search refinments to line up with the content under 1280px 
-@media only screen and (max-width: 1278.98px) {
 }
 */
 
-/* ==================================================
+/* ====================================================================
  * INBOX DATE GROUPING
  */
 
-tr[date="today"],
-tr[date="yesterday"],
-tr[date="month0"],
-tr[date="month1"],
-tr[date="month2"],
-tr[date="earlier"] {
+html.simpl tr[date="today"],
+html.simpl tr[date="yesterday"],
+html.simpl tr[date="month0"],
+html.simpl tr[date="month1"],
+html.simpl tr[date="month2"],
+html.simpl tr[date="earlier"] {
   margin-top: 3em;
 }
-tr[date="today"] ~ tr[date="today"],
-tr[date="yesterday"] ~ tr[date="yesterday"],
-tr[date="month0"] ~ tr[date="month0"],
-tr[date="month1"] ~ tr[date="month1"],
-tr[date="month2"] ~ tr[date="month2"],
-tr[date="earlier"] ~ tr[date="earlier"] {
+html.simpl tr[date="today"] ~ tr[date="today"],
+html.simpl tr[date="yesterday"] ~ tr[date="yesterday"],
+html.simpl tr[date="month0"] ~ tr[date="month0"],
+html.simpl tr[date="month1"] ~ tr[date="month1"],
+html.simpl tr[date="month2"] ~ tr[date="month2"],
+html.simpl tr[date="earlier"] ~ tr[date="earlier"] {
   margin-top: initial;
 }
 
-tr[date="today"]::before,
-tr[date="yesterday"]::before,
-tr[date="month0"]::before,
-tr[date="month1"]::before,
-tr[date="month2"]::before,
-tr[date="earlier"]::before {
+html.simpl tr[date="today"]::before,
+html.simpl tr[date="yesterday"]::before,
+html.simpl tr[date="month0"]::before,
+html.simpl tr[date="month1"]::before,
+html.simpl tr[date="month2"]::before,
+html.simpl tr[date="earlier"]::before {
   height: 0px;
   width: 0px;
   white-space: nowrap;
@@ -114,36 +74,33 @@ html.simpl.darkTheme tr[date="earlier"]::before {
   color: #ffffff;
 }
 
-tr[date="today"]::before {
+html.simpl tr[date="today"]::before {
   content: "TODAY";
 }
-tr[date="yesterday"]::before {
+html.simpl tr[date="yesterday"]::before {
   content: "YESTERDAY";
 }
-tr[date="month0"]::before {
+html.simpl tr[date="month0"]::before {
   content: "THIS MONTH";
 }
-tr[date="month1"]::before {
+html.simpl tr[date="month1"]::before {
   content: "LAST MONTH";
 }
-tr[date="month2"]::before {
-  content: "AUGUST";
-}
-tr[date="earlier"]::before {
+html.simpl tr[date="earlier"]::before {
   content: "EARLIER";
 }
 
-tr[date="today"] ~ tr[date="today"]::before,
-tr[date="yesterday"] ~ tr[date="yesterday"]::before,
-tr[date="month0"] ~ tr[date="month0"]::before,
-tr[date="month1"] ~ tr[date="month1"]::before,
-tr[date="month2"] ~ tr[date="month2"]::before,
-tr[date="earlier"] ~ tr[date="earlier"]::before {
+html.simpl tr[date="today"] ~ tr[date="today"]::before,
+html.simpl tr[date="yesterday"] ~ tr[date="yesterday"]::before,
+html.simpl tr[date="month0"] ~ tr[date="month0"]::before,
+html.simpl tr[date="month1"] ~ tr[date="month1"]::before,
+html.simpl tr[date="month2"] ~ tr[date="month2"]::before,
+html.simpl tr[date="earlier"] ~ tr[date="earlier"]::before {
   content: "";
   display: none;
 }
 
-/* ==================================================
+/* ====================================================================
  * GLOBAL / APP-LEVEL
  */
 
@@ -183,7 +140,7 @@ html.simpl .bir a {
   color: #8ab4f8;
 }
 
-/* ==================================================
+/* ====================================================================
  * APP BAR (menu and account switcher + container for search)
  */
 
@@ -223,7 +180,7 @@ html.simpl.addOnsOpen header#gb {
   width: calc(100vw - 300px);
 }
 
-/* ==================================================
+/* ====================================================================
  * ACTION BAR (actions, pagination, and settings)
  */
 
@@ -261,7 +218,7 @@ html.simpl.hideSearch.addOnsOpen .aeH {
   width: calc(100vw - 172px - 300px);
 }
 
-/* Dim pagination controls unless hovered over 
+/* Dim pagination controls unless hovered over
 html.simpl .aeH .G-atb .aqJ,
 html.simpl .aeF .G-atb .aqJ,
 html.simpl .aeH .G-atb .adF {
@@ -341,7 +298,7 @@ html.simpl.multiBoxHorz div[role="main"] .byR {
   margin-top: 0px;
 }
 
-@media only screen and (max-width: 1441px) {
+@media only screen and (max-width: 1441.98px) {
   html.simpl.multiBoxHorz .aeF > div.nH {
     max-width: 1400px !important;
   }
@@ -375,7 +332,7 @@ html.simpl .bvE {
   display: none;
 }
 
-/* ==================================================
+/* ====================================================================
  * ALIGN ACTION BAR WITH CONTENT
  */
 
@@ -428,33 +385,102 @@ States (text button labels)
   html.simpl.navOpen {
     --left-offset: -32px;
   }
-  html.simpl.rhsChat {
+  html.simpl.readingPane.navOpen:not(.noSplitPane) {
+    --left-offset: -1px;
+  }
+  html.simpl.rhsChat.navOpen {
+    --left-offset: 68px;
     --content-width: 1164px;
+  }
+  html.simpl.rhsChat:not(.navOpen) {
+    --left-offset: 160px;
   }
   html.simpl.addOnsOpen,
   html.simpl.addOnsOpen.rhsChat {
+    --left-offset: 210px;
     --content-width: 1260px;
   }
   html.simpl.addOnsOpen.rhsChat {
     --left-offset: 12px;
   }
   html.simpl.addOnsOpen.navOpen {
-    --left-offset: -32px;
+    --left-offset: 118px;
   }
   html.simpl.addOnsOpen.rhsChat.navOpen {
     --left-offset: -82px;
   }
+  /* No Split Reading pane */
+  html.simpl.noSplitPane {
+    --left-offset: 64px;
+  }
+  html.simpl.noSplitPane.navOpen {
+    --left-offset: -60px;
+  }
+  html.simpl.noSplitPane.addOnsOpen {
+    --content-width: 960px;
+    --left-offset: 212px;
+  }
+  html.simpl.noSplitPane.navOpen.addOnsOpen {
+    --left-offset: 90px;
+  }
+
   /* Apply variables to align left edge except if the menu and addOns or rhsChat are both open */
-  html.simpl:not(.splitView):not(.multiBoxHorz):not(.multiBoxVert):not(.addOnsOpen):not(.rhsChat):not(.textButtons)
+  html.simpl:not(.readingPane):not(.multiBoxHorz):not(.multiBoxVert):not(.addOnsOpen):not(.rhsChat):not(.textButtons)
     .aeH
     .G-atb,
-  html.simpl:not(.splitView):not(.multiBoxHorz):not(.multiBoxVert):not(.navOpen):not(.textButtons)
+  html.simpl:not(.readingPane):not(.multiBoxHorz):not(.multiBoxVert):not(.navOpen):not(.textButtons)
+    .aeH
+    .G-atb,
+  html.simpl.noSplitPane:not(.multiBoxHorz):not(.multiBoxVert):not(.textButtons)
+    .aeF
+    .G-atb,
+  html.simpl.noSplitPane:not(.multiBoxHorz):not(.multiBoxVert):not(.textButtons)
     .aeH
     .G-atb {
     padding-left: calc(
       ((100vw - var(--content-width)) / 2) - var(--left-offset)
     );
     margin-left: 16px !important;
+  }
+
+  /* Adjust width of action bar for reading pane */
+  html.simpl.readingPane.hideSearch:not(.navOpen) .G-atb[gh="tm"] {
+    width: calc(100vw - 204px);
+  }
+  html.simpl.readingPane:not(.hideSearch):not(.navOpen) .G-atb[gh="tm"] {
+    width: calc(var(--action-bar-width) - 126px);
+  }
+  html.simpl.readingPane.navOpen.hideSearch .G-atb[gh="tm"] {
+    width: calc(100vw - 400px);
+  }
+  html.simpl.readingPane.navOpen:not(.hideSearch) .G-atb[gh="tm"] {
+    width: calc(var(--action-bar-width) - 126px);
+  }
+
+  /* Correct width of action bar for No Split reading pane */
+  html.simpl.noSplitPane.hideSearch:not(.navOpen) .G-atb[gh="tm"] {
+    width: calc(var(--content-width) / 2 + 50vw - 140px);
+  }
+  html.simpl.noSplitPane.hideSearch.navOpen .G-atb[gh="tm"] {
+    width: calc(var(--content-width) / 2 + 50vw - 266px);
+  }
+  html.simpl.noSplitPane:not(.navOpen):not(.hideSearch) .G-atb[gh="tm"] {
+    width: calc(var(--content-width) / 2 + 50vw - 152px - 16%);
+  }
+  html.simpl.noSplitPane.navOpen:not(.hideSearch) .G-atb[gh="tm"] {
+    width: calc(var(--content-width) / 2 + 50vw - 276px - 16%);
+  }
+  html.simpl.noSplitPane.addOnsOpen:not(.hideSearch) .G-atb[gh="tm"] {
+    width: calc(var(--content-width) / 2 + 50vw - 253px - 16%);
+  }
+  html.simpl.noSplitPane.hideSearch.addOnsOpen:not(.navOpen) .G-atb[gh="tm"] {
+    width: calc(var(--content-width) / 2 + 50vw - 294px);
+  }
+  html.simpl.noSplitPane.hideSearch.addOnsOpen.navOpen .G-atb[gh="tm"] {
+    width: calc(var(--content-width) / 2 + 50vw - 416px);
+  }
+  html.simpl.noSplitPane.addOnsOpen.navOpen:not(.hideSearch) .G-atb[gh="tm"] {
+    width: calc(var(--content-width) / 2 + 50vw - 375px - 16%);
   }
 
   /* Move pagination controls to right edge of content
@@ -465,60 +491,107 @@ States (text button labels)
   html.simpl.hideSearch.navOpen {
     --right-offset: 252px;
   }
+  html.simpl.hideSearch.addOnsOpen {
+    --right-offset: 310px;
+  }
   html.simpl.hideSearch.rhsChat {
-    --right-offset: -42px;
+    /* --right-offset: -42px; */
+    --right-offset: 58px;
+  }
+  html.simpl.hideSearch.rhsChat.navOpen {
+    --right-offset: 150px;
   }
   html.simpl.hideSearch.addOnsOpen.rhsChat {
     --right-offset: 208px;
   }
-  html.simpl.hideSearch.navOpen.addOnsOpen,
+  html.simpl.hideSearch.navOpen.addOnsOpen {
+    /* --right-offset: 300px; */
+    --right-offset: 400px;
+  }
   html.simpl.hideSearch.navOpen.addOnsOpen.rhsChat {
     --right-offset: 300px;
   }
-  html.simpl.hideSearch.navOpen.rhsChat {
-    --right-offset: 44px;
+
+  /* No Split reading pane */
+  html.simpl.hideSearch.noSplitPane {
+    --right-offset: 218px;
   }
-  html.simpl.hideSearch.addOnsOpen.navOpen {
-    --right-offset: 246px;
+  html.simpl.hideSearch.noSplitPane.navOpen {
+    --right-offset: 340px;
+  }
+  html.simpl.hideSearch.noSplitPane.addOnsOpen {
+    --right-offset: 368px;
+  }
+  html.simpl.hideSearch.noSplitPane.addOnsOpen.navOpen {
+    --right-offset: 490px;
   }
 
   /* Apply variables to align right edge with content */
-  html.simpl.hideSearch:not(.splitView):not(.multiBoxHorz):not(.multiBoxVert):not(.addOnsOpen):not(.rhsChat):not(.textButtons)
+  html.simpl.hideSearch:not(.readingPane):not(.multiBoxHorz):not(.multiBoxVert):not(.addOnsOpen):not(.rhsChat):not(.textButtons)
     .aeH
     .ar5,
-  html.simpl.hideSearch:not(.splitView):not(.multiBoxHorz):not(.multiBoxVert):not(.addOnsOpen):not(.rhsChat):not(.textButtons)
+  html.simpl.hideSearch:not(.readingPane):not(.multiBoxHorz):not(.multiBoxVert):not(.addOnsOpen):not(.rhsChat):not(.textButtons)
     .adF
     .iG,
-  html.simpl.hideSearch:not(.splitView):not(.multiBoxHorz):not(.multiBoxVert):not(.navOpen):not(.textButtons)
+  html.simpl.hideSearch:not(.readingPane):not(.multiBoxHorz):not(.multiBoxVert):not(.navOpen):not(.textButtons)
     .aeH
     .ar5,
-  html.simpl.hideSearch:not(.splitView):not(.multiBoxHorz):not(.multiBoxVert):not(.navOpen):not(.textButtons)
+  html.simpl.hideSearch:not(.readingPane):not(.multiBoxHorz):not(.multiBoxVert):not(.navOpen):not(.textButtons)
     .adF
-    .iG {
+    .iG,
+  html.simpl.hideSearch.noSplitPane:not(.multiBoxHorz):not(.multiBoxVert):not(.textButtons)
+    .aeF
+    .ar5 {
     padding-right: calc(
       ((100vw - var(--content-width)) / 2) - var(--right-offset)
     );
   }
 
+  /* There is no split pane button in conversation view -- add more padding */
+  html.simpl.hideSearch.noSplitPane:not(.multiBoxHorz):not(.multiBoxVert):not(.textButtons)
+    .adF
+    .iG {
+    padding-right: calc(
+      ((100vw - var(--content-width)) / 2) - var(--right-offset) + 60px
+    );
+  }
+
   /* Keep pagination next to settings when search is open */
-  html.simpl:not(.splitView):not(.multiBoxHorz):not(.multiBoxVert):not(.addOnsOpen):not(.rhsChat):not(.textButtons)
+  html.simpl:not(.readingPane):not(.multiBoxHorz):not(.multiBoxVert):not(.addOnsOpen):not(.rhsChat):not(.textButtons)
     .aeH
     .ar5,
-  html.simpl:not(.splitView):not(.multiBoxHorz):not(.multiBoxVert):not(.addOnsOpen):not(.rhsChat):not(.textButtons)
+  html.simpl:not(.readingPane):not(.multiBoxHorz):not(.multiBoxVert):not(.addOnsOpen):not(.rhsChat):not(.textButtons)
     .adF
     .iG,
-  html.simpl:not(.splitView):not(.multiBoxHorz):not(.multiBoxVert):not(.navOpen):not(.textButtons)
+  html.simpl:not(.readingPane):not(.multiBoxHorz):not(.multiBoxVert):not(.navOpen):not(.textButtons)
     .aeH
     .ar5,
-  html.simpl:not(.splitView):not(.multiBoxHorz):not(.multiBoxVert):not(.navOpen):not(.textButtons)
+  html.simpl:not(.readingPane):not(.multiBoxHorz):not(.multiBoxVert):not(.navOpen):not(.textButtons)
+    .adF
+    .iG,
+  html.simpl.noSplitPane:not(.hideSearch):not(.multiBoxHorz):not(.multiBoxVert):not(.textButtons)
+    .aeF
+    .ar5,
+  html.simpl.noSplitPane:not(.hideSearch):not(.multiBoxHorz):not(.multiBoxVert):not(.textButtons)
     .adF
     .iG {
     padding-right: initial;
   }
 }
+
+@media only screen and (min-width: 1278.98px) and (max-width: 1638.98px) {
+  /* Don't align the actions if the nav and add-ons are both open */
+  html.simpl.noSplitPane.navOpen.addOnsOpen .aeF .G-atb[gh="tm"],
+  html.simpl.noSplitPane.navOpen.addOnsOpen .aeH .G-atb[gh="tm"] {
+    padding-left: initial;
+    width: calc(100vw - 445px - 16%);
+  }
+}
+
+/* Adjust aligment and spacing for higher resolutions */
 @media only screen and (min-width: 1441.98px) {
   html.simpl {
-    --content-width: 1100px;
+    --content-width: 1100px !important;
   }
   html.simpl.rhsChat {
     --content-width: 1304px;
@@ -528,18 +601,34 @@ States (text button labels)
     --content-width: 1400px;
   }
 
-  /* Apply variables to align left edge for vertical preview pane when the nav is open */
-  html.simpl.navOpen.splitView:not(.hideSearch):not(.multiBoxHorz):not(.multiBoxVert):not(.textButtons):not(.rhsChat):not(.addOnsOpen)
+  /* Reading pane: Apply variables to align left edge for vertical reading pane when the nav is open */
+  html.simpl.navOpen.readingPane:not(.hideSearch):not(.noSplitPane):not(.multiBoxHorz):not(.multiBoxVert):not(.textButtons):not(.rhsChat):not(.addOnsOpen)
     .aeF
     .G-atb {
-    padding-left: 196px;
+    padding-left: 196px !important;
     margin-left: 16px !important;
     width: calc(var(--action-bar-width) - 322px) !important;
   }
+  html.simpl.navOpen.readingPane.hideSearch:not(.noSplitPane):not(.multiBoxHorz):not(.multiBoxVert):not(.textButtons):not(.rhsChat):not(.addOnsOpen)
+    .adF
+    .G-atb {
+    padding-left: 196px !important;
+    margin-left: 16px !important;
+    width: calc(var(--action-bar-width) - 49px) !important;
+  }
 }
+
 @media only screen and (min-width: 1638.98px) {
   /* Apply variables to align left edge */
-  html.simpl:not(.splitView):not(.multiBoxHorz):not(.multiBoxVert) .aeH .G-atb {
+  html.simpl.navOpen.addOnsOpen:not(.readingPane):not(.multiBoxHorz):not(.multiBoxVert) {
+    --left-offset: 94px;
+  }
+  html.simpl:not(.readingPane):not(.multiBoxHorz):not(.multiBoxVert)
+    .aeH
+    .G-atb,
+  html.simpl.noSplitPane:not(.multiBoxHorz):not(.multiBoxVert)
+    .aeF
+    .G-atb[gh="tm"] {
     padding-left: calc(
       ((100vw - var(--content-width)) / 2) - var(--left-offset)
     );
@@ -547,10 +636,10 @@ States (text button labels)
   }
 
   /* Apply variables to align right edge with content */
-  html.simpl.hideSearch:not(.splitView):not(.multiBoxHorz):not(.multiBoxVert)
+  html.simpl.hideSearch:not(.readingPane):not(.multiBoxHorz):not(.multiBoxVert)
     .aeH
     .ar5,
-  html.simpl.hideSearch:not(.splitView):not(.multiBoxHorz):not(.multiBoxVert)
+  html.simpl.hideSearch:not(.readingPane):not(.multiBoxHorz):not(.multiBoxVert)
     .adF
     .iG {
     padding-right: calc(
@@ -559,13 +648,13 @@ States (text button labels)
   }
 
   /* Keep pagination next to settings when search is open */
-  html.simpl:not(.splitView):not(.multiBoxHorz):not(.multiBoxVert) .aeH .ar5,
-  html.simpl:not(.splitView):not(.multiBoxHorz):not(.multiBoxVert) .adF .iG {
+  html.simpl:not(.readingPane):not(.multiBoxHorz):not(.multiBoxVert) .aeH .ar5,
+  html.simpl:not(.readingPane):not(.multiBoxHorz):not(.multiBoxVert) .adF .iG {
     padding-right: initial;
   }
 }
 
-/* ==================================================
+/* ====================================================================
  * SEARCH
  */
 
@@ -596,7 +685,7 @@ html.simpl.searchFocused .aeH .G-atb .adF {
   display: none;
 }
 
-/* Shorter search box when using text label buttons 
+/* Shorter search box when using text label buttons
 html.simpl.textButtons #gb form {
 	width: 25%;
 }
@@ -605,7 +694,7 @@ html.simpl.textButtons {
 }
 */
 
-/* Shorter search box when nav is open on smaller screens 
+/* Shorter search box when nav is open on smaller screens
 @media only screen and (max-width: 1441.98px) {
 	html.simpl.navOpen #gb form {
 		width: 25%;
@@ -652,7 +741,7 @@ html.simpl.appSwitcher:not(.hideSearch) #gb form {
   margin-right: 58px;
 }
 
-/* Hide search options button until you hover over search box 
+/* Hide search options button until you hover over search box
 html.simpl:not(.hideSearch) #gb form button[gh="sda"] {
 	display: none;
 }
@@ -663,11 +752,180 @@ html.simpl:not(.hideSearch) #gb form:hover button[gh="sda"] {
 
 /* Hide "Search the web" option from search auto-complete */
 html.simpl #gb form td.gssb_e tr[role="separator"],
-html.simpl #gb form td.gssb_e tr[role="separator"] + tr[role="option"] {
+html.simpl #gb form td.gssb_e tr[role="option"]:last-child {
   display: none;
 }
 
-/* ==================================================
+/* ====================================================================
+ * SEARCH REFINEMENT BAR
+ */
+
+/* Move search refinement bar below action bar */
+html.simpl .aeH div[gh="tm"] div[role="toolbar"] {
+  position: absolute;
+  top: 44px;
+}
+/* Reading pane */
+html.simpl.readingPane .G-atb[gh="tm"] > div.G6 {
+  position: absolute;
+  top: 60px;
+  height: 46px;
+  overflow-y: hidden;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: light;
+}
+html.simpl.readingPane .G-atb[gh="tm"] > div[role="toolbar"] > div:first-child {
+  overflow-y: hidden;
+  overflow-x: inherit;
+  height: 46px;
+}
+/* No Split Pane only */
+html.simpl.noSplitPane .G-atb[gh="tm"] > div.G6,
+html.simpl.noSplitPane .G-atb[gh="tm"] > div[role="toolbar"] {
+  width: calc(var(--content-width) - 16px);
+  max-width: calc(var(--content-width) - 16px);
+}
+/* Reading pane only */
+html.simpl.readingPane:not(.noSplitPane) .G-atb[gh="tm"] > div.G6 {
+  left: -32px;
+  width: var(--readingPane-width);
+}
+
+/* BUG: The search refinement bar is pos:absolute making it a higher
+ *      z-index than the search auto-complete that is pos:relative.
+ * FIX: (More of a temporary hack): Hide the search refinement bar
+ *      when search is focused because
+ */
+html.simpl.searchFocused .G-atb[gh="tm"] > div.G6,
+html.simpl.searchFocused .G-atb[gh="tm"] > div[role="toolbar"] {
+  display: none;
+}
+
+/* Add expand button to show all the search chips
+ * TODO: setup event listener for .G6 and see if e.target = .G6
+ *       if so, toggle width of search chips bar
+html.simpl.readingPane:not(.noSplitPane) .G-atb[gh='tm'] > div.G6 {
+  pointer-events: none;
+}
+html.simpl.readingPane .G-atb[gh='tm'] > div[role='toolbar'] > div:first-child {
+  pointer-events: auto;
+}
+html.simpl.readingPane:not(.noSplitPane) .G-atb[gh='tm'] > div.G6::before {
+  content: '»';
+  width: 30px;
+  height: 30px;
+  background: white;
+  display: block;
+  position: absolute;
+  right: 30px;
+  top: 0px;
+  z-index: 1;
+  border-radius: 16px;
+  box-shadow: 0 1px 1px #aaa;
+  line-height: 1.2;
+  text-align: center;
+  font-size: 24px;
+  font-family: Arial, sans-serif;
+  color: #4185f4;
+  border: 1px solid #eee;
+  letter-spacing: -2px;
+  pointer-events: auto;
+  cursor: pointer;
+}
+*/
+
+/* Move search refinement bar over when nav and add-ons are open */
+/* TODO: set left to be dynamic when nav is closed below 1278px so it stays with the content */
+@media only screen and (max-width: 960.98px) {
+  html.simpl div[gh="tm"] div[role="toolbar"] {
+    left: -36px;
+  }
+}
+@media only screen and (max-width: 1278.98px) {
+  html.simpl.navOpen div[gh="tm"] div[role="toolbar"] {
+    left: 205px;
+  }
+}
+@media only screen and (max-width: 1638.98px) {
+  html.simpl.navOpen.readingPane:not(.noSplitPane)
+    div[gh="tm"]
+    div[role="toolbar"],
+  html.simpl.navOpen.readingPane:not(.noSplitPane) div[gh="tm"] div.G6 {
+    left: 205px;
+    max-width: calc(100vw - 266px);
+  }
+  html.simpl.navOpen.addOnsOpen div[gh="tm"] div[role="toolbar"],
+  html.simpl.navOpen.addOnsOpen div[gh="tm"] div.G6 {
+    left: 205px;
+    max-width: calc(100vw - 566px);
+  }
+  html.simpl.navOpen.addOnsOpen.noSplitPane
+    div.G-atb[gh="tm"]
+    div[role="toolbar"],
+  html.simpl.navOpen.addOnsOpen.noSplitPane div.G-atb[gh="tm"] div.G6 {
+    left: 185px;
+    max-width: calc(100vw - 566px);
+  }
+}
+
+/* Hide search refinement bar when you scroll */
+/* .aeI is added to a parent Div when you are scrolled to the top */
+/* but not for Reading Pane = Vertical|Horizontal */
+html.simpl .aeI .aeH div.G-atb[gh="tm"] div[role="toolbar"],
+html.simpl .aeI .aeF div.G-atb[gh="tm"] div[role="toolbar"] {
+  display: none;
+}
+
+/* Move action bar into correct spot */
+/* Maybe add .inSearch for not reading pane? */
+html.simpl .aeH div[gh="tm"] div[role="toolbar"] + .aqK {
+  margin-top: 22px;
+}
+/* Reading pane */
+html.simpl.readingPane.inSearch .G-atb[gh="tm"] > div.G6 ~ div.aqK,
+html.simpl.readingPane.inSearch
+  .G-atb[gh="tm"]
+  > div[role="toolbar"]
+  ~ div.aqK {
+  margin-top: 14px;
+}
+
+/* Create more space above the results for the search chips in Reading pane */
+/* TODO not sure if .PY only is added when the search chips are present or if it is a stable classname */
+html.simpl.noSplitPane.inSearch .aeF .G-atb.PY ~ .UI .ae4 {
+  padding-top: 20px;
+}
+html.simpl.readingPane.inSearch:not(.noSplitPane) .aeF .G-atb.PY ~ .UI .ae4 {
+  padding-top: 70px;
+}
+
+/* Keep the action bar from covering the left nav */
+html.simpl.readingPane.inSearch .G-atb[gh="tm"] {
+  height: 54px;
+}
+
+/* Shift message list down to make space for search chips */
+html.simpl.inSearch .aeF div[role="main"] > .bX,
+html.simpl.inSearch .aeF div[role="main"] > .afn + .ae4 {
+  margin-top: 72px;
+}
+
+/* Hide Advanced search link */
+html.simpl
+  div.G-atb[gh="tm"]
+  div[role="toolbar"]
+  div[data-impression-suffix="ADVANCED_SEARCH_LINK"],
+html.simpl
+  .aeH
+  div[gh="tm"]
+  div[role="toolbar"]
+  div:first-child
+  > div[role="button"]:last-child {
+  display: none;
+}
+
+/* ====================================================================
  * NAV & COMPOSE BUTTON
  */
 
@@ -680,7 +938,7 @@ html.simpl .bhZ.bym {
   /* position: absolute; */
 }
 
-/* Don't show the nav when hovering over the compose button 
+/* Don't show the nav when hovering over the compose button
  * TODO: fix this, probably by adding a class on hover of the compose button
  */
 html.simpl .bym {
@@ -779,16 +1037,16 @@ html.simpl.hideUnreads .bsU {
   display: none !important;
 }
 
-/* ==================================================
+/* ====================================================================
  * INBOX
  */
 
 /* Bump up the line height a little in the inbox */
-html.simpl.lowDensityInbox:not(.splitView) .zA {
+html.simpl.lowDensityInbox:not(.readingPane) .zA {
   padding-top: 12px !important;
   padding-bottom: 12px !important;
 }
-html.simpl.highDensityInbox:not(.splitView) .zA {
+html.simpl.highDensityInbox:not(.readingPane) .zA {
   padding-top: 4px !important;
   padding-bottom: 4px !important;
 }
@@ -804,15 +1062,15 @@ html.simpl .AO .aeF > .nH {
   margin: 40px auto 0 auto;
   max-width: 960px;
 }
-html.simpl.splitView.inSettings .AO .aeF > .nH {
+html.simpl.readingPane.inSettings .AO .aeF > .nH {
   margin: 40px auto 100px auto !important;
   max-width: 960px !important;
 }
 @media only screen and (min-width: 1441.98px) {
-  html.simpl:not(.splitView) .AO .aeF > .nH {
+  html.simpl:not(.readingPane) .AO .aeF > .nH {
     max-width: 1100px;
   }
-  html.simpl.splitView.inSettings .AO .aeF > .nH {
+  html.simpl.readingPane.inSettings .AO .aeF > .nH {
     max-width: 1100px !important;
   }
 }
@@ -841,6 +1099,11 @@ html.simpl div[gh="tl"] div[role="tabpanel"] > div.afn {
 	margin-bottom: -2em;
 }
 */
+
+/* Remove top border on TL */
+html.simpl:not(.readingPane) .aeF div[gh="tl"] {
+  border-top: 0px;
+}
 
 /* Add spacing between vertically stacked Multiple Inboxes */
 html.simpl.multiBoxVert .nH > .nK {
@@ -943,7 +1206,7 @@ html.simpl div[role="main"] .J-KU-KO.aAy:before {
   background-color: transparent !important;
 }
 
-/* ==================================================
+/* ====================================================================
  * POPOUTS
  */
 
@@ -997,74 +1260,91 @@ html.simpl.popout .wp {
   background-color: #fff !important;
 }
 
-/* ==================================================
- * SPLIT PANE VIEW
+/* ====================================================================
+ * READING PANE VIEW
  */
 
 /* Move action bar over app bar */
-html.simpl.splitView .G-atb[gh="tm"] {
+html.simpl.readingPane .G-atb[gh="tm"] {
   position: fixed;
-  top: 8px;
+  top: 5px;
   left: 60px;
   z-index: 7 !important;
   padding-right: 0px !important;
+  height: 54px;
 }
-html.simpl.splitView .G-atb[gh="tm"]:before {
+/* Different top pos for when search chips are enabled */
+html.simpl.readingPane.inSearch .PY.G-atb[gh="tm"] {
+  top: 8px;
+}
+
+html.simpl.readingPane .G-atb[gh="tm"]:before {
   box-shadow: none;
   -webkit-box-shadow: none;
 }
-
-/* If Multiple Inboxes AND Preview Pane are enabled,
- * there will be multiple action bars; Multiple Inboxes
- * only works when Preview Pane is disabled. So hide
- * the other action bars if there are multiple
- */
-html.simpl.splitView .G-atb[gh="tm"]:not(:first-child) {
-  display: none;
+@media only screen and (min-width: 1278.98px) {
+  html.simpl.readingPane.navOpen.hideSearch:not(.noSplitPane) .G-atb[gh="tm"] {
+    padding-left: 212px;
+  }
 }
 
-/* Expand action bar when search is hidden */
-html.simpl.splitView.hideSearch .G-atb[gh="tm"] {
-  width: calc(100vw - 206px);
-  transition: width 0s; /* was 0.2s ease-in 0s */
+/* Add border under app bar, remove for threadlist */
+html.simpl.readingPane header#gb {
+  border-bottom: 1px solid rgba(100, 121, 143, 0.122);
+}
+html.simpl.readingPane .UJ {
+  border-top: none;
 }
 
-html.simpl.splitView:not(.hideSearch) .G-atb[gh="tm"] {
-  width: calc(var(--action-bar-width) - 126px);
+/* Adjust width of action bar for small resolutions */
+@media only screen and (max-width: 1278.98px) {
+  html.simpl.readingPane.hideSearch .G-atb[gh="tm"] {
+    width: calc(100vw - 204px);
+  }
+  html.simpl.readingPane:not(.hideSearch) .G-atb[gh="tm"] {
+    width: calc(var(--action-bar-width) - 126px);
+  }
+  html.simpl.readingPane.addOnsOpen.hideSearch .G-atb[gh="tm"] {
+    width: calc(100vw - 502px);
+  }
+  html.simpl.readingPane.addOnsOpen:not(.hideSearch) .G-atb[gh="tm"] {
+    width: calc(var(--action-bar-width) - 366px);
+  }
 }
 
-/* Hide footer & space usage in preview pane */
-html.simpl.splitView .apc,
-html.simpl.splitView .apO {
+/* Hide footer & space usage in reading pane */
+html.simpl.readingPane .apc,
+html.simpl.readingPane .apO,
+html.simpl.readingPane div[role="contentinfo"] {
   display: none;
 }
 
 /* Reduce left margin on main view */
-html.simpl.splitView .bhZ + .bkK {
+html.simpl.readingPane .bhZ + .bkK {
   margin-left: 12px !important;
 }
 
 /* Override padding around main view */
-html.simpl.splitView .aeF {
+html.simpl.readingPane .aeF {
   padding-right: 0px !important;
   margin-bottom: 0px !important;
 }
 
 /* Max width view 100% */
-html.simpl.splitView .AO .aeF > .nH {
+html.simpl.readingPane .AO .aeF > .nH {
   margin: 0px; /*40px auto 0 auto;*/
   max-width: 100%;
 }
 
 /* Max-width and margin on conversation */
-html.simpl.splitView .apg .aNW .age .Bs {
+html.simpl.readingPane .apg .aNW .age .Bs {
   max-width: 1050px;
 }
-html.simpl.splitView .aNW td.Bu:first-child > div.nH:last-child {
+html.simpl.readingPane .aNW td.Bu:first-child > div.nH:last-child {
   padding-bottom: 200px;
 }
 @media only screen and (min-width: 1441.98px) {
-  html.simpl.splitView .apg .aNW .age .Bs {
+  html.simpl.readingPane .apg .aNW .age .Bs {
     max-width: 1100px;
     /* float conversation view
 		margin: 1.5vw auto 200px auto;
@@ -1072,50 +1352,132 @@ html.simpl.splitView .aNW td.Bu:first-child > div.nH:last-child {
 		*/
     margin: 0 auto;
   }
-  /* Swap margin for padding when message is likely to 
+  /* Swap margin for padding when message is likely to
 	 * switch from pane to floating card */
-  html.simpl.splitView .aNW td.Bu:first-child > div.nH:last-child {
+  html.simpl.readingPane .aNW td.Bu:first-child > div.nH:last-child {
     padding-bottom: 0px;
   }
 }
 
 /* Add right margin to inbox tabs */
-html.simpl.splitView .aeF .aKh {
+html.simpl.readingPane .aeF .aKh {
   margin-right: 16px;
 }
 
 /* No bottom border on app bar */
-html.simpl.splitView .aiw {
+html.simpl.readingPane .aiw {
   box-shadow: none;
   -webkit-box-shadow: none;
 }
 
 /* Drop the double border between panes to a single border */
-html.simpl.splitView .apj {
+html.simpl.readingPane .apj {
   border-right: none;
   border-left: none;
   background-color: transparent;
 }
-html.simpl.splitView .aph {
+html.simpl.readingPane .aph {
   border-bottom: none;
 }
 
 /* Below 1250px, hide the pagination controls */
-@media only screen and (max-width: 1250.98px) {
-  html.simpl.splitView:not(.hideSearch) .aE3 .G-atb .aqJ > div:not([gh="s"]) {
+/* TODO: Shouldn't I do this for all setups, not just reading pane? */
+@media only screen and (max-width: 1278.98px) {
+  html.simpl.readingPane.addOnsOpen:not(.hideSearch)
+    .aE3
+    .G-atb
+    .aqJ
+    > div:not([gh="s"]) {
+    display: none;
+  }
+}
+@media only screen and (max-width: 1100.98px) {
+  html.simpl.readingPane:not(.hideSearch) .aE3 .G-atb .aqJ > div:not([gh="s"]) {
     display: none;
   }
 }
 
-/* Move the right aligned actions on the inline reply over so the 
- * compose button doesn't cover them 
+/* Move the right aligned actions on the inline reply over so the
+ * compose button doesn't cover them
  * TODO: Find a more elegant solution to this problem
  */
-html.simpl.splitView div[role="listitem"] .btC > .az5 {
+html.simpl.readingPane div[role="listitem"] .btC > .az5 {
   padding-right: 50px;
 }
 
-/* ==================================================
+/* Add a bit of right margin to the "Select all?" butter bar */
+html.simpl.readingPane .Tm .ya {
+  margin-right: 16px;
+}
+
+/* ====================================================================
+ * NO SPLIT PREVIEW PANE
+ */
+
+/* Center the inbox */
+html.simpl.noSplitPane div[gh="tl"] .ae4 {
+  max-width: var(--content-width);
+  margin: 0 auto;
+}
+@media only screen and (min-width: 1278.98px) {
+  /* Inbox tabs */
+  html.simpl.noSplitPane .aeF .aKh {
+    max-width: var(--content-width);
+    margin: 0 auto;
+    position: relative;
+    left: -8px;
+  }
+  html.simpl.noSplitPane.navOpen.addOnsOpen .aeF .aKh {
+    max-width: calc(100vw - 573px);
+  }
+  html.simpl.noSplitPane .aeF .aKh > table.aKk {
+    min-width: var(--content-width);
+  }
+}
+
+/* Add padding below inbox */
+html.simpl.noSplitPane .aeF .Nu {
+  padding-bottom: 150px;
+}
+
+/* Add padding above inbox if there are no tabs */
+html.simpl.noSplitPane .aeF .Nu {
+  padding-top: 35px;
+}
+/* More padding if there are search chips */
+html.simpl.noSplitPane .aeF .PY.G-atb ~ .UI > .Nu {
+  padding-top: 55px;
+}
+html.simpl.noSplitPane .aeF .aKh ~ .UI .Nu {
+  padding-top: initial;
+}
+
+/* Center the conversation */
+html.simpl.noSplitPane .aeF div[role="main"][class="nH"] {
+  max-width: var(--content-width);
+  margin: 40px auto 200px auto;
+}
+
+/* Correctly position toolbar in Conversation view */
+html.simpl.noSplitPane .aeH .G-atb[gh="tm"] {
+  top: 0px !important;
+}
+
+/* Center "Select all?" butter bar */
+html.simpl.readingPane.noSplitPane .Tm .ya {
+  max-width: var(--content-width);
+  margin: 4px auto;
+  position: relative;
+  left: -8px;
+}
+@media only screen and (max-width: 1278.98px) {
+  html.simpl.readingPane.noSplitPane .Tm .ya {
+    left: 0;
+    margin-right: 16px;
+  }
+}
+
+/* ====================================================================
  * CONVERSATION VIEW
  */
 
@@ -1138,13 +1500,68 @@ html.simpl .bAn .ade:hover {
   opacity: 1;
 }
 
-/* Slightly larger message body text in conversation view and composer */
+/* Make the right gutter inside the card the same as the left */
+html.simpl div[role="listitem"] .a3s {
+  padding-right: 48px;
+}
+
+/* Slightly larger message body text in conversation view and composer
+ * TODO: There are some bugs with this -- so I'm disabling for now until I can be sure it works 100%;
 html.simpl div[contenteditable="true"],
+html.simpl div[contenteditable="true"] font[size="2"] {
+	font-size: 0.874rem;
+}
 html.simpl div[role="listitem"] .a3s,
+html.simpl div[role="listitem"] .a3s font[size="2"],
 html.simpl div[role="listitem"] .g6,
 html.simpl div[role="listitem"] div:not(.ajA) h3.iw {
-  font-size: 0.875rem;
+	font-size: 0.875rem;
 }
+*/
+
+/* Force it when the font size is set inline
+html.simpl div[role="listitem"] .a3s [style*="font-size: small"],
+html.simpl div[role="listitem"] .a3s [style*="font-size:small"] {
+	font-size: 0.875rem !important;
+}
+
+html.simpl div[role="listitem"] .a3s [style*="font-size: .875rem"],
+html.simpl div[role="listitem"] .a3s [style*="font-size:.875rem"],
+html.simpl div[role="listitem"] .a3s [style*="font-size: 0.875rem"],
+html.simpl div[role="listitem"] .a3s [style*="font-size:0.875rem"] {
+	font-size: 1rem !important;
+	background-color: yellow;
+}
+
+html.simpl div[role="listitem"] .a3s [style*="font-size: .874rem"],
+html.simpl div[role="listitem"] .a3s [style*="font-size:.874rem"],
+html.simpl div[role="listitem"] .a3s [style*="font-size: 0.874rem"],
+html.simpl div[role="listitem"] .a3s [style*="font-size:0.874rem"] {
+	font-size: 1rem !important;
+	background-color: red;
+	color: white;
+}
+*/
+
+/* In case the font size is set to 14px or .875rem, bump it up so it is noticably larger
+html.simpl div[contenteditable="true"] [style*="font-size: 0.875rem"],
+html.simpl div[contenteditable="true"] [style*="font-size:0.875rem"],
+html.simpl div[contenteditable="true"] [style*="font-size: .875rem"],
+html.simpl div[contenteditable="true"] [style*="font-size:.875rem"],
+html.simpl div[contenteditable="true"] [style*="font-size: 14px"],
+html.simpl div[contenteditable="true"] [style*="font-size:14px"],
+html.simpl div[contenteditable="true"] [style*="font-size: small"],
+html.simpl div[contenteditable="true"] [style*="font-size:small"]  {
+	font-size: 1rem !important;
+	background: yellow;
+}
+html.simpl div[contenteditable="true"] [style*="font-size: 0.874rem"],
+html.simpl div[contenteditable="true"] [style*="font-size:0.874rem"] {
+	font-size: 1rem !important;
+	background: red;
+	color: white;
+}
+*/
 
 /* Dim from email address in conversation view */
 html.simpl div[role="listitem"] h3.iw .go {
@@ -1189,7 +1606,7 @@ html.simpl table.Bs .gs img {
 	max-width: calc(var(--content-width) - 80px);
     height: auto;
 }
-html.simpl.splitView table.Bs .gs img {
+html.simpl.readingPane table.Bs .gs img {
     max-width: 100%;
 }
 */
@@ -1203,7 +1620,7 @@ html.simpl
   width: 110px;
 }
 
-/* ==================================================
+/* ====================================================================
  * COMPOSER
  */
 
@@ -1255,8 +1672,9 @@ html.simpl .aSs .a8X .wG[command^="op.money"] {
 }
 */
 
-/* ================================================== */
-/* ADD-ONS RIGHT SIDE PANE */
+/* ====================================================================
+ * ADD-ONS RIGHT SIDE PANE
+ */
 
 /* Shrink the add-on chooser to a small FAB when not hovered on */
 html.simpl .bAw {
@@ -1396,22 +1814,29 @@ html.simpl .bq9 {
 }
 
 /* Shrink the action bar when the AddOnsPane AND Search are open */
-html.simpl.addOnsOpen:not(.hideSearch) .aeH {
+html.simpl.addOnsOpen:not(.hideSearch):not(.noSplitPane) .aeH {
   width: calc(var(--action-bar-width) - 92px) !important;
 }
-html.simpl.addOnsOpen.splitView:not(.hideSearch) .G-atb[gh="tm"] {
+html.simpl.addOnsOpen.readingPane:not(.hideSearch):not(.noSplitPane)
+  .G-atb[gh="tm"] {
   width: calc(var(--action-bar-width) - 365px) !important;
 }
 
 /* Shrink the action bar when the AddOnsPane is open BUT NOT Search */
-html.simpl.addOnsOpen.hideSearch .aeH {
+html.simpl.addOnsOpen.hideSearch:not(.noSplitPane) .aeH {
   width: calc(100vw - 470px) !important;
 }
-html.simpl.addOnsOpen.hideSearch.splitView .G-atb[gh="tm"] {
-  width: calc(100vw - 506px) !important;
+html.simpl.addOnsOpen.hideSearch.readingPane:not(.noSplitPane) .G-atb[gh="tm"] {
+  width: calc(100vw - 505px) !important;
+}
+@media only screen and (min-width: 1278.98px) {
+  html.simpl.addOnsOpen.hideSearch.navOpen.readingPane:not(.noSplitPane)
+    .G-atb[gh="tm"] {
+    width: calc(100vw - 701px) !important;
+  }
 }
 
-/* ==================================================
+/* ====================================================================
  * SETTINGS
  */
 
@@ -1426,10 +1851,9 @@ html.simpl.inSettings.hideSearch .aeH {
   width: calc(100vw - 144px) !important;
   margin-top: -8px;
 }
-html.simpl.inSettings.splitView .aeH {
-  /* Not sure why this was there, deleting for now 
-	left: 72px !important;
-	*/
+/* Shift settings Tessa tabs over so they don't cover the back button */
+html.simpl.inSettings.readingPane .aeH {
+  left: 64px !important;
 }
 html.simpl.inSettings .bkK {
   margin-left: 72px !important;
@@ -1476,7 +1900,7 @@ html.simpl.inSettings.rhsChat .aCl {
   display: none;
 }
 
-/* ==================================================
+/* ====================================================================
  * 3RD PARTY EXTENTIONS
  */
 
@@ -1532,11 +1956,24 @@ html.simpl div.G-atb div.mixmax-reminder-thread-button {
 
 /* MAIL TRACK ---------------------------------------- */
 
-/* For some reason Mail Track sets the action bar to position:relative 
+/* For some reason Mail Track sets the action bar to position:relative
  * which screws up moving it on top of the app bar
  */
 html.simpl.otherExtensions .aeN + .bkK {
   position: static !important;
+}
+
+/* GMELIUS ------------------------------------------ */
+
+/* Hide the "The tracker was blocked on this email" notification */
+/* TODO: Restyle this instead of hiding it */
+html.simpl .gmelius-tracking_notification {
+  display: none;
+}
+
+/* Vertically center unread count */
+html.simpl .inboxsdk__navItem .gmelius-nav_accessory > img {
+  top: 4px;
 }
 
 /* ALL EXTENSIONS ----------------------------------- */
@@ -1545,8 +1982,7 @@ html.simpl.otherExtensions .aeN + .bkK {
 html.simpl:not(.appSwitcher) #gb .manage_menu, /* Boomerang */
 html.simpl:not(.appSwitcher) #gb .mixmax-appbar, /* Mixmax */
 html.simpl:not(.appSwitcher) #gb #mailtrack-menu-opener, /* Mail track */
-html.simpl:not(.appSwitcher) #gb .inboxsdk__appButton /* Streak */
- {
+html.simpl:not(.appSwitcher) #gb .inboxsdk__appButton /* Streak */ {
   display: none !important;
 }
 
@@ -1565,8 +2001,7 @@ html.simpl #gb .streak__appToolbarButton_title::after {
 html.simpl.appSwitcher #gb .manage_menu, /* Boomerang */
 html.simpl.appSwitcher #gb .mixmax-appbar, /* Mixmax */
 html.simpl.appSwitcher #gb #mailtrack-menu-opener, /* Mail track */
-html.simpl.appSwitcher #gb .inboxsdk__appButton /* Streak */
- {
+html.simpl.appSwitcher #gb .inboxsdk__appButton /* Streak */ {
   display: block !important;
   position: absolute;
   right: 100px;
@@ -1587,7 +2022,7 @@ html.simpl.appSwitcher.otherExtensions div.G-atb[gh="tm"] {
   width: 50vw !important;
 }
 
-/* ==================================================
+/* ====================================================================
  * SIMPLIFY IN-GMAIL NOTIFICATIONS
  */
 
@@ -1619,8 +2054,8 @@ html.simpl.appSwitcher.otherExtensions div.G-atb[gh="tm"] {
   /*
 	text-shadow: 0 1px 1px rgba(0,0,0,.5);
 	border: 2px solid #0A6CDD;
-	box-shadow: inset 0 -1px 0 rgba(100,121,143,0.122), 0 3px 4px -2px rgba(0,0,0,.3);	
-*/
+	box-shadow: inset 0 -1px 0 rgba(100,121,143,0.122), 0 3px 4px -2px rgba(0,0,0,.3);
+	*/
 }
 #simplNotification button.secondary {
   color: #0a6cdd;
@@ -1635,7 +2070,7 @@ html.simpl.appSwitcher.otherExtensions div.G-atb[gh="tm"] {
   outline: none;
 }
 
-/* ==================================================
+/* ====================================================================
  * SIMPLIFY EXTENSION OPTIONS PAGE
  */
 
