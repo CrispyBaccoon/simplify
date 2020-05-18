@@ -1,5 +1,5 @@
 /* ====================================================================
- * SIMPLIFY GMAIL v1.7.9
+ * SIMPLIFY GMAIL v1.7.12
  * By Michael Leggett: leggett.org
  * Copyright (c) 2020 Michael Hart Leggett
  * Repo: github.com/leggett/simplify/blob/master/gmail/
@@ -17,6 +17,150 @@ html.simpl div[gh='tl'] tr[labels*='Forums'] ~ tr[labels*='Forums'] {
   display: none;
 }
 */
+
+/* ====================================================================
+ * KEEP CHAT ROSTER MINIMIZED AFTER RELOAD
+ */
+
+html.simpl.chatClosed .aeN div[role="complementary"] {
+  height: 0px !important;
+}
+html.simpl.chatClosed .aeN div[gh="ns"] {
+  display: none !important;
+}
+html.simpl.chatClosed .aeN div[role="navigation"] {
+  height: calc(100vh - 95px) !important;
+}
+
+/* ====================================================================
+ * SHRINK FOOTPRINT OF MEET SECTION IN NAV TO ONE LINE
+ */
+
+/* Hide "New" badge */
+html.simpl
+  .aeN
+  div[role="complementary"]
+  > div[role="navigation"]
+  > div:first-child
+  > span {
+  display: none;
+}
+
+/* Shrink width of title to make room for icons */
+html.simpl
+  .aeN
+  div[role="complementary"]
+  > div[role="navigation"]
+  > div:first-child {
+  float: left;
+  width: 122px;
+}
+
+/* Shrink two actions to icons and put them inline with the title */
+html.simpl
+  .aeN
+  div[role="complementary"]
+  > div[role="navigation"]
+  > div:nth-child(2) {
+  display: block;
+  position: absolute;
+  right: 12px;
+}
+html.simpl
+  .aeN
+  div[role="complementary"]
+  > div[role="navigation"]
+  > div:nth-child(2)
+  .aim {
+  width: 40px;
+  float: left;
+}
+html.simpl
+  .aeN
+  div[role="complementary"]
+  > div[role="navigation"]
+  > div:nth-child(2)
+  .aim
+  .TN {
+  padding: 0 10px;
+}
+html.simpl
+  .aeN
+  div[role="complementary"]
+  > div[role="navigation"]
+  > div:nth-child(2)
+  .aim
+  .TO {
+  border-radius: 16px;
+}
+
+/* Change action label to something shown on hover */
+html.simpl
+  .aeN
+  div[role="complementary"]
+  > div[role="navigation"]
+  > div:nth-child(2)
+  .aim
+  .aio {
+  display: none;
+}
+html.simpl
+  .aeN
+  div[role="complementary"]
+  > div[role="navigation"]
+  > div:nth-child(2)
+  .aim:hover
+  .aio {
+  display: block !important;
+  position: absolute;
+  top: 0px;
+  left: -150px;
+  width: fit-content;
+  max-width: 130px;
+  border-radius: 4px;
+  padding: 5px 12px 7px 12px;
+  background-color: white;
+}
+html.simpl
+  .aeN
+  div[role="complementary"]
+  > div[role="navigation"]
+  > div:nth-child(2)
+  .aim:nth-child(2):hover
+  .aio {
+  left: -190px;
+}
+html.simpl
+  .aeN
+  div[role="complementary"]
+  > div[role="navigation"]
+  > div:nth-child(2)
+  .aim:hover
+  .aio
+  a {
+  color: #202124;
+  text-shadow: none;
+  white-space: nowrap;
+}
+
+/* Move start call buttons when chat is minimized */
+html.simpl
+  .aeN
+  div[role="complementary"][style*="height: 0px"]
+  > div[role="navigation"]
+  > div:nth-child(2) {
+  z-index: 999;
+  right: 48px;
+}
+html.simpl
+  .aeN
+  div[role="complementary"][style*="height: 0px"]
+  > div[role="navigation"]
+  > div:nth-child(2)
+  .aim:hover
+  .aio {
+  display: none !important;
+}
 
 /* ====================================================================
  * INBOX DATE GROUPING
@@ -104,8 +248,15 @@ html.simpl tr[date="earlier"] ~ tr[date="earlier"]::before {
  * GLOBAL / APP-LEVEL
  */
 
-/* Hide footer */
-html.simpl .aeG {
+/* Hide footer
+html.simpl.multiBoxHorz .pfiaof,
+html.simpl.multiBoxVert .pfiaof,
+html.simpl .ae4 + .pfiaof,
+*/
+html.simpl .aeG,
+html.simpl .pfiaof,
+html.simpl.readingPane .apc,
+html.simpl.readingPane .apO {
   display: none;
 }
 
@@ -282,15 +433,21 @@ html.simpl.multiBoxHorz .aeF .G-atb[gh="tm"] {
   top: 8px;
   left: 60px;
   z-index: 6 !important;
-  width: calc(var(--action-bar-width) - 92px);
+  width: calc(var(--action-bar-width) - 128px);
   transition: width 0s ease-in 0s; /* was 0.15s - Looks bad with 3rd party extensions */
 }
 html.simpl.multiBoxHorz .aeF .G-atb[gh="tm"]::before {
   box-shadow: none;
   -webkit-box-shadow: none;
 }
-html.simpl.multiBoxHorz.hideSearch .aeF .G-atb[gh="tm"] {
-  width: calc(100vw - 172px) !important;
+html.simpl.multiBoxHorz.hideSearch:not(.addOnsOpen) .aeF .G-atb[gh="tm"] {
+  width: calc(100vw - 206px) !important;
+}
+html.simpl.multiBoxHorz.hideSearch.addOnsOpen .aeF .G-atb[gh="tm"] {
+  width: calc(var(--action-bar-width) - 152px);
+}
+html.simpl.multiBoxHorz.addOnsOpen:not(.hideSearch) .aeF .G-atb[gh="tm"] {
+  width: calc(var(--action-bar-width) - 370px);
 }
 
 /* Further adjustments for side-by-side multiple inboxes */
@@ -679,6 +836,12 @@ html.simpl.searchFocused #gb form {
 html.simpl.searchFocused {
   --action-bar-width: 59%;
 }
+/* Hack fix b/c I'm not using --action-bar-width in all cases */
+html.simpl.searchFocused.readingPane .aeF .G-atb,
+html.simpl.searchFocused.textButtons .aeH .G-atb {
+  width: 40% !important;
+  overflow: hidden;
+}
 html.simpl.searchFocused .aeH .G-atb .aqJ,
 html.simpl.searchFocused .aeF .G-atb .aqJ,
 html.simpl.searchFocused .aeH .G-atb .adF {
@@ -769,16 +932,16 @@ html.simpl .aeH div[gh="tm"] div[role="toolbar"] {
 html.simpl.readingPane .G-atb[gh="tm"] > div.G6 {
   position: absolute;
   top: 60px;
-  height: 46px;
+  height: 54px;
+  margin-bottom: 14px;
   overflow-y: hidden;
   overflow-x: auto;
-  scrollbar-width: thin;
-  scrollbar-color: light;
 }
 html.simpl.readingPane .G-atb[gh="tm"] > div[role="toolbar"] > div:first-child {
   overflow-y: hidden;
   overflow-x: inherit;
-  height: 46px;
+  height: 54px;
+  margin-right: 0px;
 }
 /* No Split Pane only */
 html.simpl.noSplitPane .G-atb[gh="tm"] > div.G6,
@@ -866,6 +1029,11 @@ html.simpl.readingPane:not(.noSplitPane) .G-atb[gh='tm'] > div.G6::before {
   html.simpl.navOpen.addOnsOpen.noSplitPane div.G-atb[gh="tm"] div.G6 {
     left: 185px;
     max-width: calc(100vw - 566px);
+  }
+}
+@media only screen and (min-width: 1638.98px) {
+  html.simpl.navOpen.readingPane:not(.noSplitPane) div[gh="tm"] div.G6 {
+    left: 205px;
   }
 }
 
@@ -1312,13 +1480,6 @@ html.simpl.readingPane .UJ {
   }
 }
 
-/* Hide footer & space usage in reading pane */
-html.simpl.readingPane .apc,
-html.simpl.readingPane .apO,
-html.simpl.readingPane div[role="contentinfo"] {
-  display: none;
-}
-
 /* Reduce left margin on main view */
 html.simpl.readingPane .bhZ + .bkK {
   margin-left: 12px !important;
@@ -1436,8 +1597,11 @@ html.simpl.noSplitPane div[gh="tl"] .ae4 {
 }
 
 /* Add padding below inbox */
-html.simpl.noSplitPane .aeF .Nu {
+html.simpl.noSplitPane:not(.multiBoxVert2) .aeF .Nu {
   padding-bottom: 150px;
+}
+html.simpl.noSplitPane.multiBoxVert2 .aeF .Nu {
+  padding-bottom: 40px;
 }
 
 /* Add padding above inbox if there are no tabs */
@@ -1458,10 +1622,11 @@ html.simpl.noSplitPane .aeF div[role="main"][class="nH"] {
   margin: 40px auto 200px auto;
 }
 
-/* Correctly position toolbar in Conversation view */
-html.simpl.noSplitPane .aeH .G-atb[gh="tm"] {
+/* Correctly position toolbar in Conversation view
+html.simpl.noSplitPane .aeH .G-atb[gh='tm'] {
   top: 0px !important;
 }
+*/
 
 /* Center "Select all?" butter bar */
 html.simpl.readingPane.noSplitPane .Tm .ya {
@@ -1481,7 +1646,7 @@ html.simpl.readingPane.noSplitPane .Tm .ya {
  * CONVERSATION VIEW
  */
 
-/* Not sure why, but sometimes this div below the conversation gets 440px bottom padding */
+/* Not sure why, but sometimes this div (the footer I believe) below the conversation gets 440px bottom padding */
 html.simpl .pfiaof {
   padding-bottom: 0px !important;
 }
@@ -1940,7 +2105,9 @@ html.simpl .streak__appToolbarButton_title {
 
 /* MIXMAX ------------------------------------------ */
 
-html.simpl div.G-atb div.mixmax-reminder-thread-button {
+/* Turn big blue buttons in action bar into subtle gray icon buttons */
+html.simpl div.G-atb div.mixmax-reminder-thread-button,
+html.simpl div.G-atb div.mixmax-collaborator-thread-button {
   font-size: 0 !important;
   background-image: linear-gradient(transparent, transparent) !important;
   background-color: transparent !important;
@@ -1949,9 +2116,47 @@ html.simpl div.G-atb div.mixmax-reminder-thread-button {
   border: none !important;
   box-shadow: none !important;
   width: 20px !important;
-  padding-left: 0px !important;
+  padding-left: 8px !important;
   min-width: 20px !important;
-  padding-right: 0px !important;
+  padding-right: 8px !important;
+}
+html.simpl div.G-atb div.mixmax-reminder-thread-button {
+  padding-left: 0px !important;
+}
+html.simpl div.G-atb div.mixmax-reminder-thread-button i,
+html.simpl div.G-atb div.mixmax-collaborator-thread-button i {
+  font-size: initial !important;
+  padding: 0 8px;
+}
+
+/* Turn labeled color buttons in the conversation into grey icons */
+html.simpl .mixmax-export-buttons .js-mixmax-export-menu-button-text {
+  display: none !important;
+}
+html.simpl .mixmax-export-buttons {
+  margin: 1px 8px 0 16px !important;
+}
+html.simpl .mixmax-export-buttons ~ .mixmax-reply-button,
+html.simpl .mixmax-export-buttons + div[role="button"] {
+  margin-left: 4px !important;
+}
+html.simpl .mixmax-export-buttons i.mixmax-icon-export {
+  background-color: #5f6368;
+}
+/* If/when I support a true dark theme...
+html.simpl.lightTheme .mixmax-export-buttons i.mixmax-icon-export {
+  background-color: #5f6368;
+}
+html.simpl.darkTheme .mixmax-export-buttons i.mixmax-icon-export,
+html.simpl.mediumTheme .mixmax-export-buttons i.mixmax-icon-export {
+  background-color: #fff;
+}
+*/
+html.simpl.mixmax
+  table[role="presentation"]
+  div[role="listitem"]
+  td[rowspan="2"] {
+  width: 123px !important;
 }
 
 /* MAIL TRACK ---------------------------------------- */

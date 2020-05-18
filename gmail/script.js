@@ -1,5 +1,5 @@
 /* ==================================================
- * SIMPLIFY GMAIL v1.7.9
+ * SIMPLIFY GMAIL v1.7.12
  * By Michael Leggett: leggett.org
  * Copyright (c) 2020 Michael Hart Leggett
  * Repo: github.com/leggett/simplify/blob/master/gmail/
@@ -192,21 +192,27 @@ function showNotification(msg, actions, hideAfter) {
   }
 
   // Add content to notification div
-  notificationBox.innerHTML = msg;
+  notificationBox.textContent = msg;
 
   // Add primary action to notification div
   if (actions == "settingsLink") {
     notificationBox.innerHTML +=
       '<br><button id="openSettings">Open Simplify settings</button>';
-    document.querySelector("#simplNotification #openSettings").addEventListener(
-      "click",
-      function () {
-        window.open(optionsUrl, "_blank");
-        notificationBox.style.display = "none";
-        clearTimeout(autoCloseNotification);
-      },
-      false
-    );
+    // TODO: Why do I have to delay this so the button is in the DOM and I can add the function?
+    setTimeout(function () {
+      document
+        .querySelector("#simplNotification #openSettings")
+        .addEventListener(
+          "click",
+          function () {
+            console.log(optionsUrl);
+            window.open(optionsUrl, "_blank");
+            notificationBox.style.display = "none";
+            clearTimeout(autoCloseNotification);
+          },
+          false
+        );
+    }, 100);
   } else if (actions == "inboxGmailSettings") {
     notificationBox.innerHTML +=
       '<br><button id="gmailSettings">Open Gmail settings</button>';
@@ -284,6 +290,7 @@ const defaultParam = {
   addOns: null,
   addOnsCount: 3,
   otherExtensions: null,
+  chatClosed: null,
   elements: {
     searchParent: ".gb_pe",
     menuButton: ".gb_Dc.gb_Kc.gb_Lc > div:first-child",
@@ -377,10 +384,12 @@ if (simplify[u].previewPane) {
     if (simplifyDebug)
       console.log("Loading with side-by-side multiple inboxes");
     htmlEl.classList.add("multiBoxHorz");
+    htmlEl.classList.remove("multiBoxVert2", "noSplitPane", "readingPane");
   } else if (simplify[u].multipleInboxes == "vertical") {
     if (simplifyDebug)
       console.log("Loading with vertically stacked multiple inboxes");
-    htmlEl.classList.add("multiBoxVert");
+    htmlEl.classList.add("multiBoxVert2", "noSplitPane", "readingPane");
+    htmlEl.classList.remove("multiBoxHorz");
   }
 }
 
@@ -452,6 +461,19 @@ if (simplify[u].otherExtensions) {
   htmlEl.classList.add("otherExtensions");
 }
 
+// Hide chat if it was last seen closed
+if (simplify[u].chatClosed === undefined) {
+  simplify[u].chatClosed = false;
+  htmlEl.classList.remove("chatClosed");
+  updateParam("chatClosed", false);
+  if (simplifyDebug) console.log("Initialized simplify.chatClosed");
+} else if (simplify[u].chatClosed) {
+  if (simplifyDebug) console.log("Loading with chat minimized");
+
+  // Hide it while Gmail finishes loading
+  htmlEl.classList.add("chatClosed");
+}
+
 // Add .popout if this is a popped out email
 if (isPopout) {
   htmlEl.classList.add("popout");
@@ -465,7 +487,7 @@ function handleKeyboardShortcut(event) {
   // If Escape was pressed, close conversation or search
   if (event.key === "Escape" && simplSettings.kbsEscape) {
     // Only close if focus wasn't in an input or content editable div
-    if (!event.target.isContentEditable) {
+    if (!event.target.isContentEditable && event.target.tagName != "INPUT") {
       if (simplifyDebug)
         console.log("Pressed esc: check to see if in a conversation");
 
@@ -483,11 +505,7 @@ function handleKeyboardShortcut(event) {
               closeSearchUrl
           );
         location.hash = closeSearchUrl;
-      }
-      // TODO: I wonder if this is a bad idea? Maybe people press escape to
-      // defocus something in Settings that isn't content editable but they
-      // don't mean to leave settings?
-      else if (inSettings) {
+      } else if (inSettings) {
         if (simplifyDebug)
           console.log(
             "Pressed esc: In settings, return to previous list view: " +
@@ -495,7 +513,7 @@ function handleKeyboardShortcut(event) {
           );
         location.hash = closeSettingsUrl;
       }
-      // TODO: maybe return to Inbox if anywhere else? Could be a setting
+      // Return to Inbox if anywhere else (this might have unintended consequences)
       else {
         location.hash = "#inbox";
         if (simplifyDebug)
@@ -664,8 +682,14 @@ window.onhashchange = function () {
     detectTheme();
   }
 
-  if (detectReadingPaneLater) {
+  // Used to only run on detectReadingPaneLater == true
+  // Seems silly to check for this every time. Will do something smarter in v2
+  if (inList) {
     detectReadingPane();
+  }
+
+  if (inInbox && detectMultipleInboxesLater) {
+    detectMultipleInboxes();
   }
 
   // See if we need to date group the view
@@ -1065,24 +1089,29 @@ function initSearchFocus() {
         }
       }, 100);
     });
-    searchInput.addEventListener("blur", () => {
+    searchInput.addEventListener("blur", (e) => {
       // Remove searchFocus from html element
       htmlEl.classList.remove("searchFocused");
 
       // Hide search box if it loses focus, is empty, and was previously hidden
-      if (simplifyDebug) {
+      if (simplifyDebug)
         console.log(
-          "Search for '%s' with [u]ms set to %s and ss.ms set to %s",
+          "Search for '%s' with [u]minimizeSearch set to %s and simplifySettings.minimizeSearch set to %s",
           searchInput.value,
           simplify[u].minimizeSearch,
           simplSettings.minimizeSearch
         );
-      }
       if (
         (searchInput.value == "" || searchInput.value == null) &&
-        (simplify[u].minimizeSearch || simplSettings.minimizeSearch)
+        (simplify[u].minimizeSearch || simplSettings.minimizeSearch) &&
+        e.target.name != "q" &&
+        e.target.gh != "sda"
       ) {
+        if (simplifyDebug) console.log("Hide search. Clicked on", e.target);
         htmlEl.classList.add("hideSearch");
+      } else {
+        if (simplifyDebug)
+          console.log("Don't close search. Clicked on", e.target);
       }
     });
   } else {
@@ -1120,7 +1149,6 @@ function initSettings() {
       function () {
         if (inSettings) {
           location.hash = closeSettingsUrl;
-          // htmlEl.classList.remove('inSettings');
         }
       },
       false
@@ -1276,8 +1304,7 @@ let readingPaneObserver;
 function detectReadingPane() {
   // Did Gmail load in a conversation in No Split Pane? If so, we can't
   // detect if this is Reading Pane or not. Do it later when back in a list view.
-  const isConversation = /([^(#search),(#label),(#advanced-search)]\/[A-Za-z]{28,})$/;
-  if (location.href.search(isConversation) >= 0) {
+  if (inMsg) {
     detectReadingPaneLater = true;
     if (simplifyDebug)
       console.log("Simplify: in conversation view: detect Reading Pane later");
@@ -1361,24 +1388,21 @@ function detectReadingPane() {
       if (readingPaneObserver !== undefined) {
         if (simplifyDebug) console.log(readingPaneObserver);
         readingPaneObserver.disconnect();
-      } else {
-        if (simplifyDebug) console.log(readingPaneObserver);
       }
       readingPaneObserver = new MutationObserver(readingPaneObserverCallback);
       if (simplifyDebug) console.log(readingPaneObserver);
 
       // Start observing the target node for configured mutations
       if (simplifyDebug)
-        console.log("Adding mutation observer for Reading Pane");
+        console.log(
+          "Adding mutation observer for Reading Pane",
+          readingPaneToggle
+        );
       readingPaneObserver.observe(readingPaneToggle, readingPaneObserverConfig);
-      // BUG: The readingPaneToggle isn't being found if I load on search
-      // BUG: I think there may be more than one toggle too sometimes
 
       // Multiple Inboxes only works when Reading pane is disabled
-      // TODO: I think Gmail removed the ability to have both enabled,
-      //   this may not be needed any more
       updateParam("multipleInboxes", "none");
-      htmlEl.classList.remove("multiBoxVert");
+      htmlEl.classList.remove("multiBoxVert2");
       htmlEl.classList.remove("multiBoxHorz");
     } else {
       detectReadingPaneLoops++;
@@ -1391,8 +1415,10 @@ function detectReadingPane() {
         setTimeout(detectReadingPane, 500);
       } else {
         if (simplifyDebug) console.log("Giving up on detecting reading pane");
-        htmlEl.classList.remove("readingPane");
-        htmlEl.classList.remove("noSplitPane");
+        if (simplify[u].multipleInboxes != "vertical") {
+          htmlEl.classList.remove("readingPane");
+          htmlEl.classList.remove("noSplitPane");
+        }
         updateParam("previewPane", false);
         updateParam("noSplitPane", false);
       }
@@ -1450,9 +1476,6 @@ function detectReadingPaneWidth() {
       }
     }
   }
-
-  // This is auto until the page loads... need to add a mutation observer
-  // for the Gmail loading screen going away and then trigger things like this
 }
 
 // Determine number of add-ons and set the height of the add-ons pane accordingly
@@ -1562,6 +1585,24 @@ function detectAddOns() {
   }
 }
 
+// Helper function to simulate clicking on an element
+function simulateClick(el) {
+  const dispatchMouseEvent = function (targetEl, type) {
+    const event = new MouseEvent(type, {
+      view: window,
+      bubbles: true,
+      cancelable: true,
+    });
+    targetEl.dispatchEvent(event);
+  };
+  dispatchMouseEvent(el, "mouseover");
+  dispatchMouseEvent(el, "mousedown");
+  dispatchMouseEvent(el, "click");
+  dispatchMouseEvent(el, "mouseup");
+  dispatchMouseEvent(el, "mouseout");
+  if (simplifyDebug) console.log("Just clicked on", el);
+}
+
 // Detect Right Side Chat (why hasn't Gmail killed this already?)
 let detectRightSideChatLoops = 0;
 function detectRightSideChat() {
@@ -1576,14 +1617,52 @@ function detectRightSideChat() {
     } else {
       htmlEl.classList.remove("rhsChat");
       updateParam("rhsChat", false);
+
+      // Close chat roster if it was closed last time
+      if (simplify[u].chatClosed) {
+        // Remove the temporary band-aid
+        htmlEl.classList.remove("chatClosed");
+
+        // Simulate clicking on the talk tab if it was supposed to be closed
+        const activeChatTab = document.querySelector(
+          '.aeN div[role="complementary"] div[gh="gt"] .J-KU-KO'
+        );
+        if (activeChatTab) simulateClick(activeChatTab);
+      }
+      /* Add event listener to save the minimized state of the chat roster */
+      const rosterParent = document.querySelector(
+        '.aeN div[role="complementary"]'
+      );
+      if (simplifyDebug && rosterParent) console.log("Chat roster found");
+      const rosterObserver = new MutationObserver((mutationsList, observer) => {
+        mutationsList.forEach((mutation) => {
+          if (
+            mutation.target.attributes.style.value.search("height: 0px") === -1
+          ) {
+            // Roster open
+            updateParam("chatClosed", false);
+            if (simplifyDebug) console.log("Chat roster opened");
+          } else {
+            // Roster minimized
+            updateParam("chatClosed", true);
+            if (simplifyDebug) console.log("Chat roster closed");
+          }
+        });
+      });
+      rosterObserver.observe(rosterParent, {
+        attributes: true,
+        attributeFilter: ["style"],
+        childList: false,
+        subtree: false,
+      });
     }
   } else {
     detectRightSideChatLoops++;
     if (simplifyDebug)
       console.log("detectRhsChat loop #" + detectRightSideChatLoops);
 
-    // only try 4 times and then assume no add-on pane
-    if (detectRightSideChatLoops < 5) {
+    // only try 10 times and then assume no add-on pane
+    if (detectRightSideChatLoops < 10) {
       // Call init function again if the add-on pane wasn't loaded yet
       setTimeout(detectRightSideChat, 500);
     } else {
@@ -1676,33 +1755,75 @@ function toggleMenu() {
 }
 
 // Detect Multiple Inboxes
+let detectMultipleInboxesLoops = 0;
+let detectMultipleInboxesLater = false;
 function detectMultipleInboxes() {
-  const viewAllButton = document.querySelectorAll(
-    'div[role="main"] span[action="viewAll"]'
-  ).length;
-  if (viewAllButton > 0) {
-    if (simplifyDebug) console.log("Multiple inboxes found");
+  if (!inInbox) {
+    // If not in the inbox, detect later
+    detectMultipleInboxesLater = true;
+    return;
+  } else {
+    detectMultipleInboxesLater = false;
+    const inboxLoaded = document.querySelectorAll(".ae4").length > 0;
+    const threadList = document.querySelector('div[gh="tl"]');
 
-    // Multiple Inboxes only works when Reading pane is disabled
-    if (simplify[u].previewPane) {
-      // TODO: If both multiple inboxes and preview pane are enabled, throw an error
-      // TODO: what do we do with the multiple inboxes class names & localStorage var?
-    } else {
-      const actionBars = document.querySelectorAll('.G-atb[gh="tm"]').length;
-      if (actionBars > 1) {
-        htmlEl.classList.add("multiBoxVert");
-        htmlEl.classList.remove("multiBoxHorz");
-        updateParam("multipleInboxes", "vertical");
+    if (inboxLoaded && threadList) {
+      const multiBoxes = document.querySelectorAll(
+        '.ae4:not([role="tabpanel"])'
+      );
+
+      if (multiBoxes.length > 1) {
+        // Vertical or Horizontal setup?
+        let sectionWidth = parseInt(
+          window.getComputedStyle(multiBoxes[0]).width
+        );
+        let inboxWidth = parseInt(window.getComputedStyle(threadList).width);
+        if (simplifyDebug)
+          console.log(
+            "Multiple inboxes found",
+            inboxWidth,
+            sectionWidth,
+            multiBoxes.length,
+            multiBoxes
+          );
+
+        if (inboxWidth <= sectionWidth * 2) {
+          if (simplifyDebug) console.log("Multiple inboxes are vertical");
+          // TODO: The vertically stacked multiple inboxes is the same as noSplitPane
+          htmlEl.classList.add("multiBoxVert2", "readingPane", "noSplitPane");
+          htmlEl.classList.remove("multiBoxHorz");
+          updateParam("multipleInboxes", "vertical");
+        } else {
+          if (simplifyDebug) console.log("Multiple inboxes are side by side");
+          htmlEl.classList.add("multiBoxHorz");
+          htmlEl.classList.remove(
+            "multiBoxVert2",
+            "readingPane",
+            "noSplitPane"
+          );
+          updateParam("multipleInboxes", "horizontal");
+        }
+
+        // Multiple Inboxes only works when Reading pane is disabled
+        // htmlEl.classList.remove('readingPane', 'noSplitPane');
+        updateParam("previewPane", false);
+        updateParam("noSplitPane", false);
       } else {
-        htmlEl.classList.add("multiBoxHorz");
-        htmlEl.classList.remove("multiBoxVert");
-        updateParam("multipleInboxes", "horizontal");
+        if (simplifyDebug) console.log("Multiple inboxes not found");
+        updateParam("multipleInboxes", "none");
+        htmlEl.classList.remove("multiBoxVert2");
+        htmlEl.classList.remove("multiBoxHorz");
+      }
+    } else {
+      detectMultipleInboxesLoops++;
+      if (detectMultipleInboxesLoops < 10) {
+        setTimeout(detectMultipleInboxes, 500);
+        if (simplifyDebug)
+          console.log(
+            "Detect multiple inboxes loop #" + detectMultipleInboxesLoops
+          );
       }
     }
-  } else {
-    updateParam("multipleInboxes", "none");
-    htmlEl.classList.remove("multiBoxVert");
-    htmlEl.classList.remove("multiBoxHorz");
   }
 }
 
@@ -1723,16 +1844,34 @@ function testPagination() {
     const paginationDivs = document.querySelectorAll(".aeH div.ar5");
     paginationDivs.forEach(function (pagination) {
       // How many messages in the list?
+      let msgCountDivs = pagination.querySelectorAll("span.ts");
+      if (msgCountDivs.length == 3) {
+        let msgFirst = parseInt(msgCountDivs[0].innerText);
+        let msgLast = parseInt(msgCountDivs[1].innerText);
+        let msgCount = parseInt(msgCountDivs[2].innerText);
+
+        // Hide pagination control if the total count is less than 100
+        if (msgFirst == 1 && msgLast == msgCount) {
+          pagination.style.display = "none";
+          if (simplifyDebug) console.log("Hide pagination controls");
+        } else {
+          pagination.style.display = "inline-block";
+          if (simplifyDebug) console.log("Show pagination controls");
+        }
+      } else {
+        if (simplifyDebug) console.log("Didn't find pagination controls");
+      }
+
+      /*
       const pageButtons = pagination.querySelectorAll(
         'div[role="button"][aria-disabled="true"]'
       );
-
-      // Hide pagination control if the total count is less than 100
       if (pageButtons.length >= 2) {
         pagination.style.display = "none";
       } else {
         pagination.style.display = "inline-block";
       }
+      */
     });
   }
 }
@@ -1829,6 +1968,9 @@ function detectOtherExtensions() {
         }
         extensionEl.style.setProperty("right", `${extensionsWidth}px`);
         extensionsWidth += extension[1].width;
+        if (extension[0].search("mixmax") !== -1) {
+          htmlEl.classList.add("mixmax");
+        }
         if (simplifyDebug)
           console.log(`Extensions - right position now: ${extensionsWidth}px`);
       } else {
