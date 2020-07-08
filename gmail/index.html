@@ -8,11 +8,11 @@
     />
     <link
       rel="shortcut icon"
-      href="img/favicon.ico"
+      href="../img/favicon.ico"
       type="image/x-icon"
       sizes="48x48"
     />
-    <link rel="icon" href="img/favicon_192.png" sizes="192x192" />
+    <link rel="icon" href="../img/favicon_192.png" sizes="192x192" />
 
     <style type="text/css">
       * {
@@ -164,27 +164,27 @@
         <span class="after">Before vs <b>after</b></span>
       </p>
       <img
-        src="screens/inbox_simplify.png"
+        src="../screens/inbox_simplify.png"
         onclick="toggleImg(this, 'inbox', true)"
         id="tl"
       /><br /><br /><br /><br />
       <img
-        src="screens/cv_simplify.png"
+        src="../screens/cv_simplify.png"
         onclick="toggleImg(this, 'cv', true)"
         id="cv"
       /><br /><br />
 
 			<p class="label">More screenshots</p>
-			<img srcset="screens/01_inbox.png 1x, screens/01_inbox-2x.png 2x" /><br />
-      <img srcset="screens/02_inbox_sa.png 1x, screens/02_inbox_sa-2x.png 2x" /><br />
-      <img srcset="screens/03_inbox_nav.png 1x, screens/03_inbox_nav-2x.png 2x" /><br />
-      <img srcset="screens/04_inbox_addons.png 1x, screens/04_inbox_addons-2x.png 2x" /><br />
-      <img srcset="screens/05_inbox_themed.png 1x, screens/05_inbox_themed-2x.png 2x" /><br />
-      <img srcset="screens/06_inbox_dark.png 1x, screens/06_inbox_dark-2x.png 2x" /><br />
-      <img srcset="screens/07_convo.png 1x, screens/07_convo-2x.png 2x" /><br />
-      <img srcset="screens/08_convo_themed.png 1x, screens/08_convo_themed-2x.png 2x" /><br />
-      <img srcset="screens/09_convo_dark.png 1x, screens/09_convo_dark-2x.png 2x" /><br />
-      <img srcset="screens/10_reading_pane.png 1x, screens/10_reading_pane-2x.png 2x" />
+			<img srcset="../screens/01_inbox.png 1x, ../screens//01_inbox-2x.png 2x" /><br />
+      <img srcset="../screens/02_inbox_sa.png 1x, ../screens//02_inbox_sa-2x.png 2x" /><br />
+      <img srcset="../screens/03_inbox_nav.png 1x, ../screens//03_inbox_nav-2x.png 2x" /><br />
+      <img srcset="../screens/04_inbox_addons.png 1x, ../screens//04_inbox_addons-2x.png 2x" /><br />
+      <img srcset="../screens/05_inbox_themed.png 1x, ../screens//05_inbox_themed-2x.png 2x" /><br />
+      <img srcset="../screens/06_inbox_dark.png 1x, ../screens//06_inbox_dark-2x.png 2x" /><br />
+      <img srcset="../screens/07_convo.png 1x, ../screens//07_convo-2x.png 2x" /><br />
+      <img srcset="../screens/08_convo_themed.png 1x, ../screens//08_convo_themed-2x.png 2x" /><br />
+      <img srcset="../screens/09_convo_dark.png 1x, ../screens//09_convo_dark-2x.png 2x" /><br />
+      <img srcset="../screens/10_reading_pane.png 1x, ../screens//10_reading_pane-2x.png 2x" />
 		</div>
 
     <a name="about"></a>
@@ -408,20 +408,20 @@
     function toggleImg(img, which, shouldStop) {
       if (which == "inbox") {
         if (img.src.indexOf("inbox_simplify.png") > 0) {
-          img.src = "screens/inbox.png";
+          img.src = "../screens/inbox.png";
           document.getElementById("mainLabel").classList.add("before");
           document.getElementById("mainLabel").classList.remove("after");
         } else {
-          img.src = "screens/inbox_simplify.png";
+          img.src = "../screens/inbox_simplify.png";
           document.getElementById("mainLabel").classList.remove("before");
           document.getElementById("mainLabel").classList.add("after");
         }
         if (shouldStop) clearInterval(autoCycleTL);
       } else {
         if (img.src.indexOf("cv_simplify.png") > 0) {
-          img.src = "screens/cv.png";
+          img.src = "../screens/cv.png";
         } else {
-          img.src = "screens/cv_simplify.png";
+          img.src = "../screens/cv_simplify.png";
         }
         if (shouldStop) clearInterval(autoCycleCV);
       }
