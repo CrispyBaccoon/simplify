@@ -299,6 +299,9 @@ html.simpl .bir a {
 html.simpl #gb a[href="#inbox"] {
     display: none !important;
 }
+.gb_ma {
+    display: none !important;
+}
 
 /* Hide App Switcher */
 html.simpl #gbwa {
@@ -338,7 +341,7 @@ html.simpl.addOnsOpen header#gb {
 /* Hide Support button */
 html.simpl #gb .zo,
 html.simpl #gb img[src*="help_outline"] {
-  display: none;
+    display: none;
 }
 
 /* ====================================================================
@@ -560,61 +563,61 @@ States (text button labels)
     }
 }
 @media only screen and (min-width: 1278.98px) {
-  /* DETAULT VIEWS: Move actions to left edge of content */
-  html.simpl {
-    --content-width: 960px;
-    --left-offset: 60px;
-  }
-  html.simpl.quickSettings {
-    --left-offset: 60px; /* was 88px */
-  }
-  html.simpl.navOpen {
-    --left-offset: -32px;
-  }
-  html.simpl.navOpen.quickSettings {
-    --left-offset: -32px; /* was -4px */
-  }
-  html.simpl.readingPane.navOpen:not(.noSplitPane) {
-    --left-offset: -1px;
-  }
-  html.simpl.rhsChat.navOpen {
-    --left-offset: 68px;
-    --content-width: 1164px;
-  }
-  html.simpl.rhsChat:not(.navOpen) {
-    --left-offset: 160px;
-  }
-  html.simpl.addOnsOpen,
-  html.simpl.addOnsOpen.rhsChat {
-    --left-offset: 210px;
-    --content-width: 1260px;
-  }
-  html.simpl.addOnsOpen.rhsChat {
-    --left-offset: 12px;
-  }
-  html.simpl.addOnsOpen.navOpen {
-    --left-offset: 118px;
-  }
-  html.simpl.addOnsOpen.rhsChat.navOpen {
-    --left-offset: -82px;
-  }
-  /* No Split Reading pane */
-  html.simpl.noSplitPane {
-    --left-offset: 64px;
-  }
-  html.simpl.noSplitPane.navOpen {
-    --left-offset: -60px;
-  }
-  html.simpl.noSplitPane.addOnsOpen {
-    --content-width: 960px;
-    --left-offset: 212px;
-  }
-  html.simpl.noSplitPane.navOpen.addOnsOpen {
-    --left-offset: 90px;
-  }
+    /* DETAULT VIEWS: Move actions to left edge of content */
+    html.simpl {
+        --content-width: 960px;
+        --left-offset: 60px;
+    }
+    html.simpl.quickSettings {
+        --left-offset: 60px; /* was 88px */
+    }
+    html.simpl.navOpen {
+        --left-offset: -32px;
+    }
+    html.simpl.navOpen.quickSettings {
+        --left-offset: -32px; /* was -4px */
+    }
+    html.simpl.readingPane.navOpen:not(.noSplitPane) {
+        --left-offset: -1px;
+    }
+    html.simpl.rhsChat.navOpen {
+        --left-offset: 68px;
+        --content-width: 1164px;
+    }
+    html.simpl.rhsChat:not(.navOpen) {
+        --left-offset: 160px;
+    }
+    html.simpl.addOnsOpen,
+    html.simpl.addOnsOpen.rhsChat {
+        --left-offset: 210px;
+        --content-width: 1260px;
+    }
+    html.simpl.addOnsOpen.rhsChat {
+        --left-offset: 12px;
+    }
+    html.simpl.addOnsOpen.navOpen {
+        --left-offset: 118px;
+    }
+    html.simpl.addOnsOpen.rhsChat.navOpen {
+        --left-offset: -82px;
+    }
+    /* No Split Reading pane */
+    html.simpl.noSplitPane {
+        --left-offset: 64px;
+    }
+    html.simpl.noSplitPane.navOpen {
+        --left-offset: -60px;
+    }
+    html.simpl.noSplitPane.addOnsOpen {
+        --content-width: 960px;
+        --left-offset: 212px;
+    }
+    html.simpl.noSplitPane.navOpen.addOnsOpen {
+        --left-offset: 90px;
+    }
 
-  /* Apply variables to align left edge except if the menu and addOns or rhsChat are both open */
-  html.simpl:not(.readingPane):not(.multiBoxHorz):not(.multiBoxVert):not(.addOnsOpen):not(.rhsChat):not(.textButtons)
+    /* Apply variables to align left edge except if the menu and addOns or rhsChat are both open */
+    html.simpl:not(.readingPane):not(.multiBoxHorz):not(.multiBoxVert):not(.addOnsOpen):not(.rhsChat):not(.textButtons)
     .aeH
     .G-atb,
   html.simpl:not(.readingPane):not(.multiBoxHorz):not(.multiBoxVert):not(.navOpen):not(.textButtons)
@@ -626,12 +629,12 @@ States (text button labels)
   html.simpl.noSplitPane:not(.multiBoxHorz):not(.multiBoxVert):not(.textButtons) /* :not(.multiBoxVert2):not(.readingPane) */
     .aeH
     .G-atb {
-    padding-left: calc(
-      ((100vw - var(--content-width)) / 2) - var(--left-offset)
-    );
-    margin-left: 16px !important; /* 44px */
-  }
-  /*
+        padding-left: calc(
+            ((100vw - var(--content-width)) / 2) - var(--left-offset)
+        );
+        margin-left: 16px !important; /* 44px */
+    }
+    /*
   html.simpl.multiBoxVert2 .G-atb[gh="tm"] {
     padding-left: calc(
       ((100vw - var(--content-width)) / 2) - var(--left-offset)
@@ -646,47 +649,47 @@ States (text button labels)
   }
   */
 
-  /* Adjust width of action bar for reading pane */
-  html.simpl.readingPane.hideSearch:not(.navOpen) .G-atb[gh="tm"] {
-    width: calc(100vw - 234px);
-  }
-  html.simpl.readingPane:not(.hideSearch):not(.navOpen) .G-atb[gh="tm"] {
-    width: calc(var(--action-bar-width) - 126px);
-  }
-  html.simpl.readingPane.navOpen.hideSearch .G-atb[gh="tm"] {
-    width: calc(100vw - 430px);
-  }
-  html.simpl.readingPane.navOpen:not(.hideSearch) .G-atb[gh="tm"] {
-    width: calc(var(--action-bar-width) - 126px);
-  }
+    /* Adjust width of action bar for reading pane */
+    html.simpl.readingPane.hideSearch:not(.navOpen) .G-atb[gh="tm"] {
+        width: calc(100vw - 234px);
+    }
+    html.simpl.readingPane:not(.hideSearch):not(.navOpen) .G-atb[gh="tm"] {
+        width: calc(var(--action-bar-width) - 126px);
+    }
+    html.simpl.readingPane.navOpen.hideSearch .G-atb[gh="tm"] {
+        width: calc(100vw - 430px);
+    }
+    html.simpl.readingPane.navOpen:not(.hideSearch) .G-atb[gh="tm"] {
+        width: calc(var(--action-bar-width) - 126px);
+    }
 
-  /* Correct width of action bar for No Split reading pane */
-  html.simpl.noSplitPane.hideSearch:not(.navOpen) .G-atb[gh="tm"] {
-    width: calc(var(--content-width) / 2 + 50vw - 170px);
-  }
-  html.simpl.noSplitPane.hideSearch.navOpen .G-atb[gh="tm"] {
-    width: calc(var(--content-width) / 2 + 50vw - 294px);
-  }
-  html.simpl.noSplitPane:not(.navOpen):not(.hideSearch) .G-atb[gh="tm"] {
-    width: calc(var(--content-width) / 2 + 50vw - 152px - 16%);
-  }
-  html.simpl.noSplitPane.navOpen:not(.hideSearch) .G-atb[gh="tm"] {
-    width: calc(var(--content-width) / 2 + 50vw - 276px - 16%);
-  }
-  html.simpl.noSplitPane.addOnsOpen:not(.hideSearch) .G-atb[gh="tm"] {
-    width: calc(var(--content-width) / 2 + 50vw - 253px - 16%);
-  }
-  html.simpl.noSplitPane.hideSearch.addOnsOpen:not(.navOpen) .G-atb[gh="tm"] {
-    width: calc(var(--content-width) / 2 + 50vw - 324px);
-  }
-  html.simpl.noSplitPane.hideSearch.addOnsOpen.navOpen .G-atb[gh="tm"] {
-    width: calc(var(--content-width) / 2 + 50vw - 446px);
-  }
-  html.simpl.noSplitPane.addOnsOpen.navOpen:not(.hideSearch) .G-atb[gh="tm"] {
-    width: calc(var(--content-width) / 2 + 50vw - 375px - 16%);
-  }
+    /* Correct width of action bar for No Split reading pane */
+    html.simpl.noSplitPane.hideSearch:not(.navOpen) .G-atb[gh="tm"] {
+        width: calc(var(--content-width) / 2 + 50vw - 170px);
+    }
+    html.simpl.noSplitPane.hideSearch.navOpen .G-atb[gh="tm"] {
+        width: calc(var(--content-width) / 2 + 50vw - 294px);
+    }
+    html.simpl.noSplitPane:not(.navOpen):not(.hideSearch) .G-atb[gh="tm"] {
+        width: calc(var(--content-width) / 2 + 50vw - 152px - 16%);
+    }
+    html.simpl.noSplitPane.navOpen:not(.hideSearch) .G-atb[gh="tm"] {
+        width: calc(var(--content-width) / 2 + 50vw - 276px - 16%);
+    }
+    html.simpl.noSplitPane.addOnsOpen:not(.hideSearch) .G-atb[gh="tm"] {
+        width: calc(var(--content-width) / 2 + 50vw - 253px - 16%);
+    }
+    html.simpl.noSplitPane.hideSearch.addOnsOpen:not(.navOpen) .G-atb[gh="tm"] {
+        width: calc(var(--content-width) / 2 + 50vw - 324px);
+    }
+    html.simpl.noSplitPane.hideSearch.addOnsOpen.navOpen .G-atb[gh="tm"] {
+        width: calc(var(--content-width) / 2 + 50vw - 446px);
+    }
+    html.simpl.noSplitPane.addOnsOpen.navOpen:not(.hideSearch) .G-atb[gh="tm"] {
+        width: calc(var(--content-width) / 2 + 50vw - 375px - 16%);
+    }
 
-  /* Move pagination controls to right edge of content
+    /* Move pagination controls to right edge of content
 	 * while leaving settings to far right */
     html.simpl.hideSearch {
         --right-offset: 158px;
@@ -1159,19 +1162,19 @@ html.simpl.readingPane.inSearch:not(.noSplitPane) .aeF .G-atb.PY ~ .UI .ae4 {
 
 /* Make space for the Did you mean bar when it comes up */
 html.simpl.inSearch .Wz {
-  margin-top: 70px;
-  margin-bottom: -50px;
+    margin-top: 70px;
+    margin-bottom: -50px;
 }
 html.simpl.inSearch.noSplitPane .Wz {
-  margin-top: 70px;
-  margin-bottom: -28px;
-  max-width: var(--content-width);
-  margin-left: auto;
-  margin-right: auto;
+    margin-top: 70px;
+    margin-bottom: -28px;
+    max-width: var(--content-width);
+    margin-left: auto;
+    margin-right: auto;
 }
 html.simpl.inSearch.readingPane:not(.noSplitPane) .Wz {
-  max-width: var(--readingPane-width);
-  margin-bottom: 0px;
+    max-width: var(--readingPane-width);
+    margin-bottom: 0px;
 }
 
 /* Keep the action bar from covering the left nav */
@@ -1467,7 +1470,7 @@ html.simpl .aKh .aDG {
 html.simpl div[gh="tl"] .aKB, /* old way */
 html.simpl div[gh="tl"] div[role="tabpanel"] > div.Cp:first-child,
 html.simpl div[gh="tl"] .U9:first-child + .Cp + .Cp {
-  display: none;
+    display: none;
 }
 
 /* Dim attachment type icons on read messages */
@@ -1574,18 +1577,18 @@ html.simpl.readingPane .UJ {
 
 /* Adjust width of action bar for small resolutions */
 @media only screen and (max-width: 1278.98px) {
-  html.simpl.readingPane.hideSearch .G-atb[gh="tm"] {
-    width: calc(100vw - 234px);
-  }
-  html.simpl.readingPane:not(.hideSearch) .G-atb[gh="tm"] {
-    width: calc(var(--action-bar-width) - 126px);
-  }
-  html.simpl.readingPane.addOnsOpen.hideSearch .G-atb[gh="tm"] {
-    width: calc(100vw - 502px);
-  }
-  html.simpl.readingPane.addOnsOpen:not(.hideSearch) .G-atb[gh="tm"] {
-    width: calc(var(--action-bar-width) - 366px);
-  }
+    html.simpl.readingPane.hideSearch .G-atb[gh="tm"] {
+        width: calc(100vw - 234px);
+    }
+    html.simpl.readingPane:not(.hideSearch) .G-atb[gh="tm"] {
+        width: calc(var(--action-bar-width) - 126px);
+    }
+    html.simpl.readingPane.addOnsOpen.hideSearch .G-atb[gh="tm"] {
+        width: calc(100vw - 502px);
+    }
+    html.simpl.readingPane.addOnsOpen:not(.hideSearch) .G-atb[gh="tm"] {
+        width: calc(var(--action-bar-width) - 366px);
+    }
 }
 
 /* Reduce left margin on main view */
