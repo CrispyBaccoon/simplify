@@ -15,6 +15,10 @@
     <link rel="icon" href="img/favicon_192.png" sizes="192x192" />
 
     <style type="text/css">
+      :root {
+        font-size: 62.5%;
+      }
+
       * {
         margin: 0;
         padding: 0;
@@ -22,7 +26,7 @@
       }
       body {
         font-family: "Source Sans Pro", sans-serif;
-        font-size: 1.3em;
+        font-size: 2.1rem;
       }
       p {
         line-height: 3em;
@@ -37,30 +41,34 @@
       }
       h2 {
         font-weight: 600;
-        font-size: 24px;
+        font-size: 2.4rem;
         padding-bottom: 0.5em;
         text-decoration: none;
       }
       .box {
         width: 100%;
-        padding: 4vw 10vw 6vw 10vw;
+        padding: 4rem 10vw 4rem 10vw;
         border-bottom: 2px solid rgba(0, 0, 0, 0.04);
       }
       .box p:not(.label) {
         max-width: 850px;
       }
       body .box.title:first-child {
-        padding: 6vw 10vw 10vw 10vw;
+        padding: 16rem 10vw 18rem 10vw;
       }
       .box.title {
-        padding: 4vw 10vw 2vw 10vw;
+        padding: 6rem 10vw 0 10vw;
         border-bottom: none;
+        overflow: auto;
+      }
+      .box.title + .box {
+        padding-top: 1rem;
       }
       .box.gray {
         background-color: rgba(0, 0, 0, 0.04);
       }
       .box.closed {
-        padding: 4vw 10vw 3vw 10vw;
+        padding: 4rem 10vw 4rem 10vw;
       }
       .box.closed h2 {
         color: blue;
@@ -70,11 +78,16 @@
       .box.closed p {
         display: none;
       }
+      .box.footer {
+        padding-top: 100px;
+        padding-bottom: 40px;
+        color: #999;
+      }
 
       #screens {
         background-color: white;
         padding: 5vw 10vw;
-        font-size: 15px;
+        font-size: 1.5rem;
         text-transform: uppercase;
         text-align: center;
         color: #ccc;
@@ -82,31 +95,37 @@
       #screens img {
         width: 100%;
         max-width: 1400px;
-        margin: 0 auto 10vh auto;
+        margin: 0 auto 3rem auto;
+      }
+      #screens img[onclick] {
+        margin-bottom: 20rem;
       }
 
       .button {
         font-family: "Source Sans Pro", sans-serif;
-        font-size: 0.8em;
+        font-size: 1.8rem;
         font-weight: 600;
         color: white;
-        padding: 16px 24px;
+        padding: 12px 20px;
         background: #0a6cdd;
-        /* background: linear-gradient(155deg, rgba(26,35,126,1) 0%, rgba(0,150,136,1) 100%); */
         border-radius: 8px;
         border: 2px solid #0a6cdd;
         text-decoration: none;
         text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
         box-shadow: inset 0 -1px 0 rgba(100, 121, 143, 0.122),
           0 3px 4px -2px rgba(0, 0, 0, 0.3);
-        margin-right: 16px;
+        margin: 0 0.75em 0.75em 0;
+        float: left;
+        white-space: nowrap;
       }
       .button.secondary {
         color: #0a6cdd;
         background: #fff;
-        /*border: 2px solid rgba(10,108,221,0.7);*/
         border: 2px solid rgba(0, 0, 0, 0.12);
         text-shadow: 0 1px 1px rgba(0, 0, 0, 0.12);
+      }
+      .button.mobileOnly {
+        display: none;
       }
 
       p {
@@ -127,6 +146,48 @@
       .label.after span.before {
         display: none;
       }
+
+      @media screen and (max-device-width: 420px) {
+        :root {
+          font-size: 180%;
+        }
+
+        body .box.title:first-child {
+          padding: 4rem 10vw 6rem 10vw;
+        }
+
+        .button {
+          float: none;
+          display: block;
+          width: 70vw;
+          text-align: center;
+          margin: 1em auto;
+          padding: 0.5em 2em;
+        }
+        .button.mobileOnly {
+          display: block;
+        }
+        html:not(.showInstallButtons) .button.install {
+          display: none;
+        }
+        html.showInstallButtons .button.showInstall {
+          display: none;
+        }
+
+        #screens img[onclick] {
+          margin-bottom: 6rem;
+        }
+        #screens {
+          padding: 5rem 0;
+        }
+
+        .box.title {
+          padding: 6rem 10vw 2rem 10vw;
+        }
+        iframe {
+          display: none;
+        }
+      }
     </style>
   </head>
 
@@ -134,20 +195,27 @@
     <div class="box title gray">
       <h1>Simplify <em>/</em> Gmail</h1>
       <p>
-        A browser extension that brings the simplicity of Google Inbox to Gmail.
+        A browser extension that makes Gmail more simple, capable, and
+        respectful.
       </p>
+      <a class="button mobileOnly" href="#screens">Screenshots</a>
       <a
-        class="button"
+        class="button mobileOnly showInstall"
+        onclick="document.documentElement.classList.add('showInstallButtons')"
+        >Install</a
+      >
+      <a
+        class="button install"
         href="https://chrome.google.com/webstore/detail/simplify-gmail/pbmlfaiicoikhdbjagjbglnbfcbcojpj"
         >For Chrome</a
       >
       <a
-        class="button"
+        class="button install"
         href="https://addons.mozilla.org/firefox/addon/simplifygmail/"
         >For Firefox</a
       >
       <a
-        class="button"
+        class="button install"
         href="https://microsoftedge.microsoft.com/addons/detail/mpohnjhkncdalhjdhpiphajhiahmcapn"
         >For Edge</a
       >
@@ -157,6 +225,7 @@
       <a class="button secondary" href="#newsletter">Newsletter</a>
     </div>
 
+    <a name="screens"></a>
     <!-- prettier-ignore -->
     <div id="screens" class="box">
       <p id="mainLabel" class="label after">
@@ -167,12 +236,12 @@
         src="screens/inbox_simplify.png"
         onclick="toggleImg(this, 'inbox', true)"
         id="tl"
-      /><br /><br /><br /><br />
+      /><br />
       <img
         src="screens/cv_simplify.png"
         onclick="toggleImg(this, 'cv', true)"
         id="cv"
-      /><br /><br />
+      /><br />
 
 			<p class="label">More screenshots</p>
 			<img srcset="screens/01_inbox.png 1x, screens/01_inbox-2x.png 2x" /><br />
@@ -200,6 +269,11 @@
         only ever shared them with friends. With the unfortunate demise of
         Google Inbox, I wanted to offer a more simplified Gmail experience to
         everyone.
+        <a
+          href="https://simplify.substack.com/p/the-future-of-simplify"
+          target="_new"
+          >Read more about the future of Simplify</a
+        >.
       </p>
     </div>
 
@@ -386,9 +460,46 @@
     <div class="box title gray">
       <h1>On Simplify, a newsletter</h1>
       <p>
-        Follow the building of Simplify Gmail v2, future products, and the
-        company behind it all. <br />Check it out at
-        <a href="https://on.simpl.fyi" target="_blank">on.simpl.fyi</a>
+        Get updates on Simplify Gmail v2 (in development), future products, and
+        the company behind it all at
+        <a href="https://on.simpl.fyi" target="_blank">on.simpl.fyi</a>.
+      </p>
+      <p>
+        <b
+          ><a
+            href="https://simplify.substack.com/p/the-future-of-simplify"
+            target="_new"
+            >The Future of Simplify</a
+          ></b
+        ><br />
+        Since Simplify Gmail launched over a year ago, more than 150,000 people
+        have tried it, and about half of them are still active users. I’m
+        delighted with how many people I’ve reached and what I’ve been able to
+        do so far. But I want to expand what Simplify can do, and do it better.
+      </p>
+      <p>
+        <b
+          ><a
+            href="https://simplify.substack.com/p/simplify-gmail-v2-sneak-peak"
+            target="_new"
+            >Simplify Gmail v2: Sneak Peek</a
+          ></b
+        ><br />
+        There are so many improvements in Simplify v2, I’m seriously struggling
+        with where to start. I also want to get into the details and explain the
+        changes I’m making, but that takes time away from finishing Simplify v2.
+      </p>
+      <p>
+        <b
+          ><a
+            href="https://simplify.substack.com/p/simplify-gmail-compose"
+            target="_new"
+            >Simplify Gmail v2: Compose</a
+          ></b
+        ><br />
+        Once upon a time, Gmail had a simple compose experience. But it was lost
+        due to many years of launches. Simplify v2 is bringing it back and
+        making compose better than ever.
       </p>
       <iframe
         src="https://simplify.substack.com/embed"
@@ -403,6 +514,7 @@
         scrolling="no"
       ></iframe>
     </div>
+    <div class="box gray footer">Copyright © 2020, Michael Leggett</div>
   </body>
   <script type="text/javascript">
     function toggleImg(img, which, shouldStop) {

@@ -1,5 +1,5 @@
 /* ==================================================
- * SIMPLIFY GMAIL v1.7.16
+ * SIMPLIFY GMAIL v1.7.17
  * By Michael Leggett: leggett.org
  * Copyright (c) 2020 Michael Hart Leggett
  * Repo: github.com/leggett/simplify/blob/master/gmail/
@@ -278,33 +278,33 @@ const u = isDelegate
 let simplify = {};
 
 const defaultParam = {
-    username: "",
-    previewPane: null,
-    noSplitPane: null,
-    readingPaneWidth: "var(--content-width)",
-    multipleInboxes: "",
-    theme: "",
-    navOpen: null,
-    density: "",
-    textButtons: null,
-    rhsChat: null,
-    minimizeSearch: null,
-    addOns: null,
-    addOnsCount: 3,
-    otherExtensions: null,
-    chatClosed: null,
-    quickSettings: false,
-    elements: {
-        searchParent: ".gb_pe",
-        menuButton: ".gb_Dc.gb_Kc.gb_Lc > div:first-child",
-        menuContainer: ".gb_Dc.gb_Kc.gb_Lc",
-        backButton: ".gb_cc.gb_fc.gb_va",
-        supportButton: ".gb_fe.gb_de",
-        accountButton: ".gb_x.gb_Ea.gb_f",
-        accountWrapper: false,
-        gsuiteLogo: false,
-        oneGoogleRing: false,
-    },
+  username: "",
+  previewPane: null,
+  noSplitPane: null,
+  readingPaneWidth: "var(--content-width)",
+  multipleInboxes: "",
+  theme: "",
+  navOpen: null,
+  density: "",
+  textButtons: null,
+  rhsChat: null,
+  minimizeSearch: null,
+  addOns: null,
+  addOnsCount: 3,
+  otherExtensions: null,
+  chatClosed: null,
+  quickSettings: false,
+  elements: {
+    searchParent: ".gb_pe",
+    menuButton: ".gb_Dc.gb_Kc.gb_Lc > div:first-child",
+    menuContainer: ".gb_Dc.gb_Kc.gb_Lc",
+    backButton: ".gb_cc.gb_fc.gb_va",
+    supportButton: ".gb_Le.gb_Je",
+    accountButton: ".gb_x.gb_Ea.gb_f",
+    accountWrapper: false,
+    gsuiteLogo: false,
+    oneGoogleRing: false,
+  },
 };
 
 // Helper function to init or reset the localStorage variable
@@ -728,54 +728,65 @@ window.onhashchange = function () {
 // Detect and cache classNames that often change so we can inject CSS
 let detectClassNamesLoops = 0;
 function detectClassNames() {
-    const searchForm = document.querySelector('form[role="search"]');
+  const searchForm = document.querySelector('form[role="search"]');
 
-    if (searchForm) {
-        if (simplifyDebug) console.log("Detecting class names...");
+  if (searchForm) {
+    if (simplifyDebug) console.log("Detecting class names...");
 
-        // Search parent
-        const searchParent = searchForm.parentElement.classList.value.trim();
-        simplify[u].elements["searchParent"] =
-            "." + searchParent.replace(/ /g, ".");
+    // Search parent
+    const searchParent = searchForm.parentElement.classList.value.trim();
+    simplify[u].elements["searchParent"] =
+      "." + searchParent.replace(/ /g, ".");
 
-        // Main menu
-        const menuButton = document
-            .querySelector('#gb div path[d*="18h18v-2H3v2zm0"]')
-            .parentElement.parentElement.parentElement.classList.value.trim();
-        simplify[u].elements["menuButton"] =
-            "." + menuButton.replace(/ /g, ".") + " > div:first-child";
-        simplify[u].elements["menuContainer"] =
-            "." + menuButton.replace(/ /g, ".");
+    // Main menu
+    const menuButton = document
+      .querySelector('#gb div path[d*="18h18v-2H3v2zm0"]')
+      .parentElement.parentElement.parentElement.classList.value.trim();
+    simplify[u].elements["menuButton"] =
+      "." + menuButton.replace(/ /g, ".") + " > div:first-child";
+    simplify[u].elements["menuContainer"] = "." + menuButton.replace(/ /g, ".");
 
-        // Back button
-        const backButton = document
-            .querySelector(
-                '#gb div[role="button"] path[d*="11H7.83l5.59-5.59L12"]'
-            )
-            .parentElement.parentElement.classList.value.trim();
-        simplify[u].elements["backButton"] =
-            "." + backButton.replace(/ /g, ".");
+    // Back button
+    const backButton = document
+      .querySelector('#gb div[role="button"] path[d*="11H7.83l5.59-5.59L12"]')
+      .parentElement.parentElement.classList.value.trim();
+    simplify[u].elements["backButton"] = "." + backButton.replace(/ /g, ".");
 
-        // Support button (usually added about 2 seconds after page is loaded)
-        const supportButton = document.querySelector(
-            '#gb path[d*="18h2v-2h-2v2zm1-16C6.48"]'
-        );
-        if (simplifyDebug) {
-            console.log("Detecting class name for support path element:");
-            // console.log(supportButton);
-        }
-        simplify[u].elements["supportButton"] = supportButton
-            ? "." +
-              supportButton.parentElement.parentElement.parentElement.classList.value
-                  .trim()
-                  .replace(/ /g, ".")
-            : simplify[u].elements["supportButton"];
+    /*
+    // Support button (usually added about 2 seconds after page is loaded)
+    const supportButton = document.querySelector(
+      '#gb path[d*="18h2v-2h-2v2zm1-16C6.48"]'
+    );
+    if (simplifyDebug) {
+      console.log("Detecting class name for support path element:");
+      // console.log(supportButton);
+    }
+    simplify[u].elements["supportButton"] = supportButton
+      ? "." +
+        supportButton.parentElement.parentElement.parentElement.classList.value
+          .trim()
+          .replace(/ /g, ".")
+      : simplify[u].elements["supportButton"];
+    */
 
-        // New Quick Settings
-        const quickSettings = document.querySelector(
-            "path[d*='M13.85 22.25h-3.7c-.74 0-1.36-']"
-        );
-        updateParam("quickSettings", quickSettings !== null);
+    // New Quick Settings
+    const quickSettings = document.querySelector(
+      "path[d*='M13.85 22.25h-3.7c-.74 0-1.36-']"
+    );
+    updateParam("quickSettings", quickSettings !== null);
+
+    // Only calling this here so you don't have to refresh Gmail twice the first time it is detected
+    if (simplify[u].quickSettings) {
+      htmlEl.classList.add("quickSettings");
+    }
+
+    // Account switcher (profile pic/name)
+    const accountButton = document.querySelector(
+      `#gb a[aria-label*="${username}"], #gb a[href^="https://accounts.google.com/SignOutOptions"]`
+    );
+    simplify[u].elements["accountButton"] = accountButton
+      ? "." + accountButton.classList.value.trim().replace(/ /g, ".")
+      : false;
 
         // Only calling this here so you don't have to refresh Gmail twice the first time it is detected
         if (simplify[u].quickSettings) {
@@ -850,12 +861,52 @@ function addCSS(css, pos) {
 // This is all CSS that I need to add dynamically as the classNames often change for these elements
 // and I couldn't find a stable way to select the elements other than their classnames
 function addStyles() {
-    // Remove right padding from action bar so search is always correctly placed
+  // Remove right padding from action bar so search is always correctly placed
+  addCSS(
+    `html.simpl #gb ${simplify[u].elements.searchParent} { padding-right: 0px !important; }`
+  );
+
+  // Switch menu button for back button when in Settings
+  addCSS(
+    `html.simpl.inSettings #gb ${simplify[u].elements.menuButton} { display: none !important; }`
+  );
+  addCSS(
+    `html.simpl.inSettings #gb ${simplify[u].elements.backButton} { display: block !important; }`
+  );
+
+  // Hide the oneGoogle Ring if it is there
+  if (simplify[u].elements["oneGoogleRing"]) {
+    addCSS(
+      `html.simpl #gb ${simplify[u].elements.oneGoogleRing} { display: none !important; }`
+    );
+  }
+
+  /*
+  // Hide the support button if it is there
+  if (simplify[u].elements["supportButton"]) {
     addCSS(
         `html.simpl #gb ${simplify[u].elements.searchParent} { padding-right: 0px !important; }`
     );
+  }
+  */
 
-    // Switch menu button for back button when in Settings
+  // Move quick settings
+  /*
+  if (simplify[u].elements["quickSettings"]) {
+    addCSS(
+      `html.simpl #gb ${simplify[u].elements.quickSettings} { display: none !important; }`
+    );
+  }
+  */
+
+  // Restyle the profile name into an icon for delegated accounts
+  if (simplify[u].elements["accountButton"]) {
+    let delegatedAccountButtonCss =
+      "font-size:0px; width:32px; height:32px; margin:4px 6px 0 6px; line-height:26px; ";
+    delegatedAccountButtonCss +=
+      "border-radius:18px; background-color:rgba(0,0,0,0.85); font-weight:bold; ";
+    delegatedAccountButtonCss +=
+      "text-align:center; text-transform:uppercase; overflow:hidden;";
     addCSS(
         `html.simpl.inSettings #gb ${simplify[u].elements.menuButton} { display: none !important; }`
     );
@@ -2346,52 +2397,20 @@ const quickSettingsObserver = {
             return;
         }
 
-        // Only try so many times
-        if (this.tries > 30) {
-            if (simplifyDebug) console.log("Cound't find Quick Settings.");
-            this.tries = 0;
-            this.disconnect();
-            return;
+    // Find element to observe (style tag with theme css in it)
+    this.element = document.querySelector('.bkK ~ .nH.nn[style*="min-width"]');
+    if (!this.element) {
+      this.tries += 1;
+      setTimeout(this.start.bind(this), 100);
+    } else {
+      this.obs = new MutationObserver((mutations) => {
+        if (mutations.some((m) => parseInt(m.target.style.width) < 60)) {
+          if (simplifyDebug) console.log("Quick Settings closed");
+          document.documentElement.classList.remove("quickSettingsOpen");
         }
-
-        // Find element to observe (style tag with theme css in it)
-        this.element = document.querySelector(
-            '.bkK ~ .nH.nn[style*="min-width"]'
-        );
-        if (!this.element) {
-            this.tries += 1;
-            setTimeout(this.start.bind(this), 100);
-        } else {
-            this.obs = new MutationObserver((mutations) => {
-                if (
-                    mutations.some((m) => parseInt(m.target.style.width) < 60)
-                ) {
-                    console.log("Quick Settings closed");
-                    document.documentElement.classList.remove(
-                        "quickSettingsOpen"
-                    );
-                }
-                if (
-                    mutations.some((m) => parseInt(m.target.style.width) > 290)
-                ) {
-                    console.log("Quick Settings open");
-                    document.documentElement.classList.add("quickSettingsOpen");
-                }
-            });
-            this.observe();
-        }
-    },
-
-    observe() {
-        if (simplifyDebug) console.log("Starting quick settings observer");
-        this.obs.observe(this.element, this.config);
-    },
-
-    disconnect() {
-        if (this.obs !== null) {
-            this.obs.disconnect();
-            this.obs = null;
-            this.tries = 0;
+        if (mutations.some((m) => parseInt(m.target.style.width) > 290)) {
+          if (simplifyDebug) console.log("Quick Settings open");
+          document.documentElement.classList.add("quickSettingsOpen");
         }
     },
 };
