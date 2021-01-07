@@ -1,5 +1,5 @@
 /* ==================================================
- * SIMPLIFY GMAIL v1.7.17
+ * SIMPLIFY GMAIL v1.7.19
  * By Michael Leggett: leggett.org
  * Copyright (c) 2020 Michael Hart Leggett
  * Repo: github.com/leggett/simplify/blob/master/gmail/
@@ -309,13 +309,13 @@ const defaultParam = {
 
 // Helper function to init or reset the localStorage variable
 function resetLocalStorage(userNum) {
-    window.localStorage.clear();
-    if (userNum) {
-        simplify[u] = defaultParam;
-        window.localStorage.simplify = JSON.stringify(simplify);
-    } else {
-        window.localStorage.simplify = JSON.stringify({ 0: defaultParam });
-    }
+  window.localStorage.clear();
+  if (userNum) {
+    simplify[u] = defaultParam;
+    window.localStorage.simplify = JSON.stringify(simplify);
+  } else {
+    window.localStorage.simplify = JSON.stringify({ 0: defaultParam });
+  }
 }
 
 // Initialize local storage if undefined
@@ -773,11 +773,40 @@ function detectClassNames() {
       : simplify[u].elements["supportButton"];
     */
 
-        // New Quick Settings
-        const quickSettings = document.querySelector(
-            "path[d*='M13.85 22.25h-3.7c-.74 0-1.36-']"
-        );
-        updateParam("quickSettings", quickSettings !== null);
+    // New Quick Settings
+    const quickSettings = document.querySelector(
+      "path[d*='M13.85 22.25h-3.7c-.74 0-1.36-']"
+    );
+    updateParam("quickSettings", quickSettings !== null);
+
+    // Only calling this here so you don't have to refresh Gmail twice the first time it is detected
+    if (simplify[u].quickSettings) {
+      htmlEl.classList.add("quickSettings");
+    }
+
+    // Account switcher (profile pic/name)
+    const accountButton = document.querySelector(
+      `#gb a[aria-label*="${username}"], #gb a[href^="https://accounts.google.com/SignOutOptions"]`
+    );
+    simplify[u].elements["accountButton"] = accountButton
+      ? "." + accountButton.classList.value.trim().replace(/ /g, ".")
+      : false;
+
+    // Account wrapper (for Gsuite accounts)
+    const accountWrapper = document.querySelector(
+      '#gb div[href^="https://accounts.google.com/SignOutOptions"]'
+    );
+    simplify[u].elements["accountWrapper"] = accountWrapper
+      ? "." + accountWrapper.classList.value.trim().replace(/ /g, ".")
+      : false;
+
+    // Gsuite company logo
+    const gsuiteLogo = document.querySelector(
+      '#gb img[src^="https://admin.google.com"], #gb img[src*="/a/cpanel"]'
+    );
+    simplify[u].elements["gsuiteLogo"] = gsuiteLogo
+      ? "." + gsuiteLogo.parentElement.classList.value.trim().replace(/ /g, ".")
+      : false;
 
         // Only calling this here so you don't have to refresh Gmail twice the first time it is detected
         if (simplify[u].quickSettings) {
@@ -1468,15 +1497,18 @@ function detectReadingPane() {
                 }
             };
 
-            // Create an observer instance linked to the callback function
-            if (readingPaneObserver !== undefined) {
-                if (simplifyDebug) console.log(readingPaneObserver);
-                readingPaneObserver.disconnect();
-            }
-            readingPaneObserver = new MutationObserver(
-                readingPaneObserverCallback
-            );
-            if (simplifyDebug) console.log(readingPaneObserver);
+      // Start observing the target node for configured mutations
+      if (simplifyDebug)
+        console.log(
+          "Adding mutation observer for Reading Pane",
+          readingPaneToggle
+        );
+      if (readingPaneToggle) {
+        readingPaneObserver.observe(
+          readingPaneToggle,
+          readingPaneObserverConfig
+        );
+      }
 
             // Start observing the target node for configured mutations
             if (simplifyDebug)
@@ -1775,9 +1807,53 @@ function detectRightSideChat() {
             });
         }
     } else {
-        detectRightSideChatLoops++;
-        if (simplifyDebug)
-            console.log("detectRhsChat loop #" + detectRightSideChatLoops);
+      htmlEl.classList.remove("rhsChat");
+      updateParam("rhsChat", false);
+
+      // Close chat roster if it was closed last time
+      if (simplify[u].chatClosed) {
+        // Remove the temporary band-aid
+        htmlEl.classList.remove("chatClosed");
+
+        // Simulate clicking on the talk tab if it was supposed to be closed
+        const activeChatTab = document.querySelector(
+          '.aeN div[role="complementary"] div[gh="gt"] .J-KU-KO'
+        );
+        if (activeChatTab) simulateClick(activeChatTab);
+      }
+      /* Add event listener to save the minimized state of the chat roster */
+      const rosterParent = document.querySelector(
+        '.aeN div[role="complementary"]'
+      );
+      if (simplifyDebug && rosterParent) console.log("Chat roster found");
+      const rosterObserver = new MutationObserver((mutationsList, observer) => {
+        mutationsList.forEach((mutation) => {
+          if (
+            mutation.target.attributes.style.value.search("height: 0px") === -1
+          ) {
+            // Roster open
+            updateParam("chatClosed", false);
+            if (simplifyDebug) console.log("Chat roster opened");
+          } else {
+            // Roster minimized
+            updateParam("chatClosed", true);
+            if (simplifyDebug) console.log("Chat roster closed");
+          }
+        });
+      });
+      if (rosterParent) {
+        rosterObserver.observe(rosterParent, {
+          attributes: true,
+          attributeFilter: ["style"],
+          childList: false,
+          subtree: false,
+        });
+      }
+    }
+  } else {
+    detectRightSideChatLoops++;
+    if (simplifyDebug)
+      console.log("detectRhsChat loop #" + detectRightSideChatLoops);
 
         // only try 10 times and then assume no add-on pane
         if (detectRightSideChatLoops < 10) {
