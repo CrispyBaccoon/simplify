@@ -1,5 +1,5 @@
 /* ====================================================================
- * SIMPLIFY GMAIL v1.7.19
+ * SIMPLIFY GMAIL v1.7.21
  * By Michael Leggett: leggett.org
  * Copyright (c) 2020 Michael Hart Leggett
  * Repo: github.com/leggett/simplify/blob/master/gmail/
@@ -1230,8 +1230,9 @@ html.simpl .bym {
     box-shadow: none !important;
 }
 html.simpl .bhZ div[role="complementary"],
-html.simpl .bhZ div[gh="ns"] {
-    display: none !important;
+html.simpl .bhZ div[gh="ns"],
+html.simpl .bhZ > .Xa {
+  display: none !important;
 }
 
 /* Hide nav when minimized or in Settings */
