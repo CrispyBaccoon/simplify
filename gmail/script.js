@@ -2301,9 +2301,9 @@ const quickSettingsObserver = {
 
 /* ========================================================================================== */
 
-function announceSimplifyV2() {
-  showNotification("Simplify Gmail v2 is coming!", "settingsLink", 30);
-}
+// function announceSimplifyV2() {
+//   showNotification("Simplify Gmail v2 is coming!", "settingsLink", 30);
+// }
 
 /* ========================================================================================== */
 
