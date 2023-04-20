@@ -178,7 +178,7 @@ function addSettingsLink() {
 */
 
 // == IN-GMAIL SIMPLIFY NOTIFICATIONS ======================================
-const optionsUrl = chrome.extension.getURL("options.html");
+const optionsUrl = chrome.runtime.getURL("options.html");
 function showNotification(msg, actions, hideAfter) {
   let notificationBox = document.getElementById("simplNotification");
   if (notificationBox) {
