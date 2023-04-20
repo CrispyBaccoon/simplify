@@ -1,7 +1,7 @@
 {
   "name": "Simplify Gmail",
   "version": "1.7.21",
-  "manifest_version": 2,
+  "manifest_version": 3,
   "description": "Simplifies Gmail interface to the bare minimum",
   "homepage_url": "https://simpl.fyi",
   "icons": {
@@ -16,7 +16,9 @@
     "page": "options.html",
     "open_in_tab": true
   },
-  "web_accessible_resources": ["options.html"],
+  "web_accessible_resources": [
+    { "resources": ["options.html"], "matches": ["*://*/*"] }
+  ],
   "content_scripts": [
     {
       "matches": ["https://mail.google.com/*"],
@@ -29,8 +31,9 @@
   "permissions": ["storage"],
   "page_action": {},
   "background": {
-    "scripts": ["toggle.js"],
-    "persistent": false
+    "service_worker": "toggle.js"
   },
-  "content_security_policy": "default-src 'none'; style-src 'self'; script-src 'self'; img-src 'self'"
+  "content_security_policy": {
+    "extension_pages": "default-src 'none'; style-src 'self'; script-src 'self'; img-src 'self'"
+  }
 }
