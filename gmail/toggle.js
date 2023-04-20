@@ -31,17 +31,15 @@ function updatePageAction(tabId, toggled) {
     });
 }
 
-chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
-    if (message.action === 'activate_page_action') {
-        const tabId = sender.tab.id;
-        updatePageAction(tabId, true);
-        chrome.pageAction.show(tabId);
+chrome.runtime.onMessage.addListener(({ type }, sender, _) => {
+    if (type == 'activate_page_action') {
+        updatePageAction(sender.tab.id, true);
+        chrome.pageAction.show(sender.tab.id);
     }
 });
 
-chrome.pageAction.onClicked.addListener(function (tab) {
-    const tabId = tab.id;
-    chrome.tabs.sendMessage(tabId, {action: 'toggle_simpl'}, function(response) {
-        updatePageAction(tabId, response.toggled);
+chrome.pageAction.onClicked.addListener(async (tab) => {
+    chrome.tabs.sendMessage(tab.id, { action: 'toggle_simpl' }, (res) => {
+        updatePageAction(tab.id, res.toggled);
     });
 });
