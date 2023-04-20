@@ -2299,14 +2299,6 @@ const quickSettingsObserver = {
   },
 };
 
-/* ========================================================================================== */
-
-// function announceSimplifyV2() {
-//   showNotification("Simplify Gmail v2 is coming!", "settingsLink", 30);
-// }
-
-/* ========================================================================================== */
-
 // Initialize styles as soon as head is ready
 const initStyleObserver = new MutationObserver(initStyle);
 function observeHead() {
@@ -2347,9 +2339,6 @@ function initOnPageLoad() {
   observePagination();
   quickSettingsObserver.start();
   checkLocalVar();
-
-  // Announce Simplify v2!
-  announceSimplifyV2();
 
   // 3rd party extensions take a few seconds to load
   setTimeout(detectOtherExtensions, 5000);
